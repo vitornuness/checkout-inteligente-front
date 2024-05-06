@@ -1,7 +1,15 @@
-<script setup></script>
+<script setup>
+import { RouterLink } from "vue-router";
+</script>
 
 <template>
-    <main>
-        <h1>Cart</h1>
-    </main>
+    <div class="container">
+        <div class="col-sm-2">
+            <div class="row">
+                <RouterLink to="checkout" class="btn btn-primary"
+                    >Finalizar</RouterLink
+                >
+            </div>
+        </div>
+    </div>
 </template>

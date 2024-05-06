@@ -1,7 +1,9 @@
-<script setup></script>
+<script setup>
+import Banner from "../components/home/Banner.vue";
+import ProductList from "../components/home/ProductList.vue";
+</script>
 
 <template>
-    <main>
-        <h1>Home</h1>
-    </main>
+    <Banner />
+    <ProductList />
 </template>

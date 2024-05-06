@@ -1,9 +1,19 @@
 <script setup>
 import { RouterView } from "vue-router";
+
+// Components
+import Header from "./components/Header.vue";
+import Footer from "./components/Footer.vue";
 </script>
 
 <template>
-    <header><p>Header</p></header>
+    <Header />
     <router-view />
-    <footer><p>Footer</p></footer>
+    <Footer />
 </template>
+
+<style>
+body {
+    background: #f7f1f1;
+}
+</style>
