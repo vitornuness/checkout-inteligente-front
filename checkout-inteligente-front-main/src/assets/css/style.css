@@ -1,0 +1,30 @@
+:root {
+    --white: #fafafa;
+    --grey: #707070;
+    --black: #080c12;
+
+    --dark-blue-010: #13293d;
+    --dark-red-010: #cc2020;
+    --dark-green-010: #32830d;
+}
+
+*,
+*:after,
+*:before {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+}
+
+body::-webkit-scrollbar {
+    width: 10px;
+}
+
+body::-webkit-scrollbar-track {
+    background: #b9b9b9;
+}
+
+body::-webkit-scrollbar-thumb {
+    background-color: #707070;
+}
