@@ -74,6 +74,13 @@ import { RouterLink } from "vue-router";
                                     </li>
                                     <li><hr class="dropdown-divider" /></li>
                                     <li>
+                                        <router-link
+                                            class="dropdown-item"
+                                            to="/products"
+                                            >Produtos</router-link
+                                        >
+                                    </li>
+                                    <li>
                                         <a class="dropdown-item" href="#"
                                             >Sair</a
                                         >
