@@ -16,42 +16,37 @@ function login(email, password) {
 </script>
 
 <template>
-    <div class="container">
-        <div class="center">
-            <h1>Entre na sua conta</h1>
-            <div class="form row g-3 m-4 needs-validation" novalidate>
-                <div class="row">
-                    <label for="email" class="form-label">E-mail</label>
-                    <input
-                        type="email"
-                        class="form-control mb-4"
-                        id="email"
-                        name="email"
-                        v-model="email"
-                        placeholder="Digite seu e-mail"
-                        required
-                    />
-                </div>
-                <div class="row">
-                    <label for="password" class="form-label">Senha</label>
-                    <input
-                        type="password"
-                        class="form-control"
-                        id="password"
-                        name="password"
-                        v-model="password"
-                        placeholder="Digite sua senha"
-                        required
-                    />
-                </div>
-                <div class="row my-4">
-                    <button
-                        class="btn btn-primary"
-                        @click="login(email, password)"
-                    >
-                        Entrar
-                    </button>
-                </div>
+    <div class="container center">
+        <h1>Entre na sua conta</h1>
+        <div class="form row g-3 m-4 needs-validation" novalidate>
+            <div class="row">
+                <label for="email" class="form-label">E-mail</label>
+                <input
+                    type="email"
+                    class="form-control mb-4"
+                    id="email"
+                    name="email"
+                    v-model="email"
+                    placeholder="Digite seu e-mail"
+                    required
+                />
+            </div>
+            <div class="row">
+                <label for="password" class="form-label">Senha</label>
+                <input
+                    type="password"
+                    class="form-control"
+                    id="password"
+                    name="password"
+                    v-model="password"
+                    placeholder="Digite sua senha"
+                    required
+                />
+            </div>
+            <div class="row my-4">
+                <button class="btn btn-primary" @click="login(email, password)">
+                    Entrar
+                </button>
             </div>
         </div>
     </div>
