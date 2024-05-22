@@ -6,12 +6,12 @@ import { RouterLink } from "vue-router";
     <div class="container-fluid mb-2 p-2 header">
         <nav class="navbar navbar-expand-lg">
             <div class="container d-flex justify-content-between">
-                <div>
+                <div class="col-md-2">
                     <RouterLink to="/" class="navbar-brand text-white"
                         >Loja</RouterLink
                     >
                 </div>
-                <div>
+                <div class="col-md-6">
                     <form class="d-flex" role="search">
                         <input
                             class="form-control"
@@ -56,6 +56,14 @@ import { RouterLink } from "vue-router";
                                     >Registrar-se</RouterLink
                                 >
                             </li>
+                            <li class="nav-item">
+                                <RouterLink
+                                    to="cart"
+                                    class="nav-link text-white"
+                                >
+                                    <i class="bi bi-cart3"></i>
+                                </RouterLink>
+                            </li>
                             <li class="nav-item dropdown">
                                 <a
                                     class="nav-link text-white dropdown-toggle"
@@ -86,14 +94,6 @@ import { RouterLink } from "vue-router";
                                         >
                                     </li>
                                 </ul>
-                            </li>
-                            <li class="nav-item">
-                                <RouterLink
-                                    to="cart"
-                                    class="nav-link text-white"
-                                >
-                                    <i class="bi bi-cart3"></i>
-                                </RouterLink>
                             </li>
                         </ul>
                     </div>
@@ -135,5 +135,11 @@ i:hover,
 
 .dropdown-item:active {
     background: #9193b4;
+}
+
+.right-nav-side {
+    display: flex;
+    justify-content: end;
+    align-items: end;
 }
 </style>
