@@ -91,6 +91,13 @@ import { RouterLink } from "vue-router";
                                     <li>
                                         <router-link
                                             class="dropdown-item"
+                                            to="/categories"
+                                            >Categorias</router-link
+                                        >
+                                    </li>
+                                    <li>
+                                        <router-link
+                                            class="dropdown-item"
                                             to="/orders"
                                             >Pedidos</router-link
                                         >

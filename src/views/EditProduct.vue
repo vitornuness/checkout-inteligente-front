@@ -12,10 +12,11 @@
                     name="name"
                     placeholder="Produto exemplo"
                     required
+                    v-model="product.name"
                 />
             </div>
             <div class="row">
-                <img src="../assets/images/vara_de_pescar.webp" alt="..." />
+                <img :src="product.image" alt="..." />
             </div>
             <div class="row">
                 <label for="image" class="form-label">Imagem</label>
@@ -29,11 +30,15 @@
             </div>
             <div class="row">
                 <label for="category" class="form-label">Categoria</label>
-                <select name="category" id="category" class="form-control">
-                    <option value="Categoria 1">Categoria 1</option>
-                    <option value="Categoria 2">Categoria 2</option>
-                    <option value="Categoria 3">Categoria 3</option>
-                    <option value="Categoria 4">Categoria 4</option>
+                <select
+                    name="category"
+                    id="category"
+                    class="form-control"
+                    v-model="product.category"
+                >
+                    <option v-for="category in categories" :value="category.id">
+                        {{ category.name }}
+                    </option>
                 </select>
             </div>
             <div class="row mt-4">
@@ -47,6 +52,7 @@
                         placeholder="0"
                         value="0"
                         required
+                        v-model="product.quantity"
                     />
                 </div>
                 <div class="col-md-6">
@@ -60,18 +66,95 @@
                         value="1.00"
                         step="0.01"
                         required
+                        v-model="product.price"
                     />
                 </div>
             </div>
             <div class="row my-4 g-4">
-                <button class="btn btn-primary">Confirmar</button>
+                <button class="btn btn-primary" @click="updateProduct()">
+                    Confirmar
+                </button>
                 <router-link to="/products" class="btn btn-danger"
                     >Cancelar</router-link
                 >
-                <button class="btn btn-danger">Deletar</button>
+                <button class="btn btn-danger" @click="deleteProduct()">
+                    Deletar
+                </button>
             </div>
         </div>
     </div>
 </template>
+
+<script>
+import ProductDataService from "../services/ProductDataService";
+import CategoryDataService from "../services/CategoryDataService";
+
+export default {
+    name: "product-edit",
+    data() {
+        return {
+            product: {
+                id: "",
+                name: "",
+                image: "",
+                quantity: "",
+                price: "",
+                category: null,
+            },
+            categories: [],
+        };
+    },
+    methods: {
+        getProduct(id) {
+            ProductDataService.get(id)
+                .then((res) => {
+                    this.product = res.data;
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        },
+        getAllCategories() {
+            CategoryDataService.getAll()
+                .then((res) => {
+                    this.categories = res.data;
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        },
+        updateProduct() {
+            var data = {
+                id: this.product.id,
+                name: this.product.name,
+                image: this.product.image,
+                quantity: this.product.quantity,
+                price: this.product.price,
+                category: this.product.category,
+            };
+
+            ProductDataService.update(data.id, data)
+                .then((res) => {
+                    console.log(res);
+                    this.getProduct(data.id);
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        },
+        deleteProduct() {
+            ProductDataService.delete(this.product.id)
+                .then(this.$router.push("/products"))
+                .catch((err) => {
+                    console.log(res);
+                });
+        },
+    },
+    mounted() {
+        this.getProduct(this.$route.params.id);
+        this.getAllCategories();
+    },
+};
+</script>
 
 <style></style>

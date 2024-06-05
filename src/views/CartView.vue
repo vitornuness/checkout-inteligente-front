@@ -1,8 +1,3 @@
-<script setup>
-import { RouterLink } from "vue-router";
-import ProductCard from "../components/home/ProductCard.vue";
-</script>
-
 <template>
     <div class="container text-center">
         <div class="row align-items-start">
@@ -11,27 +6,29 @@ import ProductCard from "../components/home/ProductCard.vue";
                     <div class="col-md-6">
                         <div class="produtos">
                             <div class="card mb-3 mt-2">
-                                <div class="row g-0">
+                                <div
+                                    class="row g-0"
+                                    v-for="product in cart.products"
+                                >
                                     <div class="col-md-4">
                                         <img
-                                            src="../assets/images/vara_de_pescar.webp"
+                                            :src="product.image"
                                             class="img-fluid mt-3"
-                                            alt="..."
+                                            :alt="product.name"
                                         />
                                     </div>
                                     <div class="col-md-8">
                                         <div class="card-body">
                                             <h5 class="card-title">
-                                                Fornecedor: Rainho Peixes
+                                                {{ product.name }}
                                             </h5>
-                                            <p class="card-text">
-                                                Maleta de pesca completa, com
-                                                tudo.
-                                            </p>
                                             <p class="card-text">
                                                 <small
                                                     class="text-body-secondary"
-                                                    >R$600,00</small
+                                                    >R$
+                                                    {{
+                                                        product.price.toFixed(2)
+                                                    }}</small
                                                 >
                                             </p>
                                             <a
@@ -41,160 +38,6 @@ import ProductCard from "../components/home/ProductCard.vue";
                                             >
                                                 <i class="bi bi-trash"></i>
                                             </a>
-                                            <div
-                                                class="d-flex justify-content-center align-items-center"
-                                            >
-                                                <button
-                                                    class="btn btn-primary"
-                                                    style="
-                                                        height: 2rem;
-                                                        width: 2rem;
-                                                    "
-                                                >
-                                                    -
-                                                </button>
-                                                <p
-                                                    class="mb-0"
-                                                    style="margin: 0.5rem"
-                                                >
-                                                    1
-                                                </p>
-                                                <button
-                                                    class="btn btn-primary"
-                                                    style="
-                                                        height: 2rem;
-                                                        width: 2rem;
-                                                    "
-                                                >
-                                                    +
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card mb-3">
-                                <div class="row g-0">
-                                    <div class="col-md-4 mt-2">
-                                        <img
-                                            src="../assets/images/vara_de_pescar.webp"
-                                            class="img-fluid mt-3"
-                                            alt="..."
-                                        />
-                                    </div>
-                                    <div class="col-md-8">
-                                        <div class="card-body">
-                                            <h5 class="card-title mt-2">
-                                                Fornecedor: Rainho Peixes
-                                            </h5>
-                                            <p class="card-text">
-                                                Essa vara é muito boa pra pescar
-                                                tilapia.
-                                            </p>
-                                            <p class="card-text">
-                                                <small
-                                                    class="text-body-secondary"
-                                                    >R$1450,00</small
-                                                >
-                                            </p>
-                                            <a
-                                                href="#"
-                                                class="d-flex align-items-end flex-column mb-3"
-                                                style=""
-                                            >
-                                                <i class="bi bi-trash"></i>
-                                            </a>
-                                            <div
-                                                class="d-flex justify-content-center align-items-center"
-                                            >
-                                                <button
-                                                    class="btn btn-primary"
-                                                    style="
-                                                        height: 2rem;
-                                                        width: 2rem;
-                                                    "
-                                                >
-                                                    -
-                                                </button>
-                                                <p
-                                                    class="mb-0"
-                                                    style="margin: 0.5rem"
-                                                >
-                                                    1
-                                                </p>
-                                                <button
-                                                    class="btn btn-primary"
-                                                    style="
-                                                        height: 2rem;
-                                                        width: 2rem;
-                                                    "
-                                                >
-                                                    +
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card mb-3">
-                                <div class="row g-0">
-                                    <div class="col-md-4 mt-2">
-                                        <img
-                                            src="../assets/images/vara_de_pescar.webp"
-                                            class="img-fluid mt-3"
-                                            alt="..."
-                                        />
-                                    </div>
-                                    <div class="col-md-8">
-                                        <div class="card-body">
-                                            <h5 class="card-title mt-2">
-                                                Fornecedor: Rainho Peixes
-                                            </h5>
-                                            <p class="card-text">
-                                                Essa vara é muito boa pra pescar
-                                                tilapia.
-                                            </p>
-                                            <p class="card-text">
-                                                <small
-                                                    class="text-body-secondary"
-                                                    >R$1450,00</small
-                                                >
-                                            </p>
-                                            <a
-                                                href="#"
-                                                class="d-flex align-items-end flex-column mb-3"
-                                                style=""
-                                            >
-                                                <i class="bi bi-trash"></i>
-                                            </a>
-                                            <div
-                                                class="d-flex justify-content-center align-items-center"
-                                            >
-                                                <button
-                                                    class="btn btn-primary"
-                                                    style="
-                                                        height: 2rem;
-                                                        width: 2rem;
-                                                    "
-                                                >
-                                                    -
-                                                </button>
-                                                <p
-                                                    class="mb-0"
-                                                    style="margin: 0.5rem"
-                                                >
-                                                    1
-                                                </p>
-                                                <button
-                                                    class="btn btn-primary"
-                                                    style="
-                                                        height: 2rem;
-                                                        width: 2rem;
-                                                    "
-                                                >
-                                                    +
-                                                </button>
-                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -208,13 +51,16 @@ import ProductCard from "../components/home/ProductCard.vue";
                         <p class="border-start border-end mt-0 mb-0">
                             Falta apenas 32 reais para seu frete gratis!
                         </p>
-                        <input
-                            type="range"
-                            class="form-range border-start border-end border-bottom mb-2"
-                            min="0"
-                            max="100"
-                            id="customRange2"
-                        />
+                        <div
+                            class="progress"
+                            role="progressbar"
+                            aria-label="Basic example"
+                            aria-valuenow="0"
+                            aria-valuemin="0"
+                            aria-valuemax="100"
+                        >
+                            <div class="progress-bar" style="width: 50%"></div>
+                        </div>
                     </div>
 
                     <div class="card col-md-6">
@@ -222,20 +68,21 @@ import ProductCard from "../components/home/ProductCard.vue";
                             <h5 class="card-title">Resumo da compra:</h5>
                         </div>
                         <ul class="list-group list-group-flush">
-                            <li class="list-group-item">Maleta - R$:600,00</li>
-                            <li class="list-group-item">
-                                Vara de pesca - R$1450,00
+                            <li
+                                class="list-group-item"
+                                v-for="product in cart.products"
+                            >
+                                {{ product.name }} - R$ {{ product.price }}
                             </li>
-                            <li class="list-group-item">Total: 2050,00</li>
                         </ul>
                         <div class="card-body">
                             <button type="button" class="btn btn-success">
                                 <div class="row">
-                                    <RouterLink
+                                    <router-link
                                         to="checkout"
                                         class="btn btn-sucess"
                                         style="color: white"
-                                        >Continuar para Pagamento</RouterLink
+                                        >Continuar para Pagamento</router-link
                                     >
                                 </div>
                             </button>
@@ -246,14 +93,45 @@ import ProductCard from "../components/home/ProductCard.vue";
         </div>
     </div>
     <div class="container">
-        <div class="row">
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
+        <div class="row" v-if="products.length > 0">
+            <ProductCard v-for="product in products" :product="product" />
         </div>
     </div>
 </template>
+
+<script>
+import ProductCard from "../components/home/ProductCard.vue";
+import ProductDataService from "../services/ProductDataService";
+export default {
+    name: "cart",
+    components: {
+        ProductCard,
+    },
+    data() {
+        return {
+            cart: {
+                id: "",
+                products: [],
+            },
+            products: [],
+        };
+    },
+    methods: {
+        getAllProducts() {
+            ProductDataService.getAll()
+                .then((res) => {
+                    this.products = res.data;
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        },
+    },
+    mounted() {
+        this.getAllProducts();
+    },
+};
+</script>
 
 <style>
 .produtos {

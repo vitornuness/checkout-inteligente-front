@@ -1,15 +1,31 @@
 <template>
     <div class="col-md-6 col-sm-12 col-lg-3 mb-4">
         <div class="card p-1">
-            <div class="content-card">Image</div>
+            <div class="content-card">{{ product.image }}</div>
             <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">R$ 0,00</p>
+                <h5 class="card-title">{{ product.name }}</h5>
+                <p class="card-text">R$ {{ product.price.toFixed(2) }}</p>
                 <a href="#" class="btn btn-primary">Adicionar</a>
             </div>
         </div>
     </div>
 </template>
+
+<script>
+export default {
+    name: "product-card",
+    props: {
+        product: {
+            id: "",
+            name: "",
+            image: "",
+            category: "",
+            quantity: "",
+            price: "",
+        },
+    },
+};
+</script>
 
 <style>
 .content-card {

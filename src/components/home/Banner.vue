@@ -5,37 +5,18 @@
             class="carousel slide carousel-fade"
             data-bs-ride="carousel"
         >
-            <div class="carousel-indicators">
-                <button
-                    type="button"
-                    data-bs-target="#carouselExampleIndicators"
-                    data-bs-slide-to="0"
-                    class="active"
-                    aria-current="true"
-                    aria-label="Slide 1"
-                ></button>
-                <button
-                    type="button"
-                    data-bs-target="#carouselExampleIndicators"
-                    data-bs-slide-to="1"
-                    aria-label="Slide 2"
-                ></button>
-                <button
-                    type="button"
-                    data-bs-target="#carouselExampleIndicators"
-                    data-bs-slide-to="2"
-                    aria-label="Slide 3"
-                ></button>
-            </div>
             <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <p class="banner-item">Banner 1</p>
-                </div>
-                <div class="carousel-item">
-                    <p class="banner-item">Banner 2</p>
-                </div>
-                <div class="carousel-item">
-                    <p class="banner-item">Banner 3</p>
+                <div
+                    class="carousel-item active"
+                    v-for="campaign in campaigns"
+                    :key="campaign.id"
+                >
+                    <!-- <img
+                        :src="campaign.image"
+                        class="d-block w-100"
+                        :alt="campaign.title"
+                    /> -->
+                    <p class="banner-item">{{ campaign.title }}</p>
                 </div>
             </div>
             <button
@@ -65,6 +46,14 @@
         </div>
     </div>
 </template>
+
+<script>
+export default {
+    props: {
+        campaigns: Array,
+    },
+};
+</script>
 
 <style>
 .banner-item {
