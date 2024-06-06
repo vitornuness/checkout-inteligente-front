@@ -2,10 +2,10 @@
     <div class="container">
         <div class="row my-4">
             <div class="col-10">
-                <h1>Produtos</h1>
+                <h1>Campanhas</h1>
             </div>
             <div class="col-2">
-                <router-link to="products/new">
+                <router-link to="campaigns/new">
                     <button class="btn btn-primary">Adicionar</button>
                 </router-link>
             </div>
@@ -13,37 +13,23 @@
         <div class="row mt-4 card">
             <table
                 class="table table-striped table-hover"
-                v-if="products.length > 0"
+                v-if="campaigns.length > 0"
             >
                 <thead>
                     <tr>
                         <th scope="col">Código</th>
-                        <th scope="col">Imagem</th>
                         <th scope="col">Nome</th>
-                        <th scope="col">Categoria</th>
-                        <th scope="col">Quantidade</th>
-                        <th scope="col">Preço</th>
                         <th scope="col">Ações</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="product in products">
-                        <th scope="row">{{ product.id }}</th>
-                        <td>
-                            <img
-                                :src="`http://localhost:5102/api/images/${product.imageId}`"
-                                :alt="product.name"
-                                width="100vh"
-                            />
-                        </td>
-                        <td>{{ product.name }}</td>
-                        <td>{{ product.category.name }}</td>
-                        <td>{{ product.quantity }}</td>
-                        <td>{{ product.price }}</td>
+                    <tr v-for="campaign in campaigns">
+                        <th scope="row">{{ campaign.id }}</th>
+                        <td>{{ campaign.title }}</td>
                         <td>
                             <div class="actions">
                                 <router-link
-                                    :to="`/products/${product.id}/edit`"
+                                    :to="`/campaigns/${campaign.id}/edit`"
                                     class="btn btn-warning"
                                 >
                                     <i class="bi bi-pencil-square"></i>
@@ -54,7 +40,7 @@
                 </tbody>
             </table>
             <div class="row" v-else>
-                <p>Não há produtos registrados.</p>
+                <p>Não há campanhas registradas.</p>
             </div>
         </div>
         <!-- <div class="row">
@@ -84,35 +70,35 @@
 </template>
 
 <script>
-import ProductDataService from "../services/ProductDataService";
+import CampaignDataService from "../services/CampaignDataService";
 
 export default {
-    name: "products-list",
+    name: "campaign-list",
     data() {
         return {
-            products: [],
+            campaigns: [],
         };
     },
+    watch: {
+        $route: function (to, from) {
+            if (to.path === "/campaigns") {
+                this.getAllCampaigns();
+            }
+        },
+    },
     methods: {
-        getAllProducts() {
-            ProductDataService.getAll()
+        getAllCampaigns() {
+            CampaignDataService.getAll()
                 .then((res) => {
-                    this.products = res.data;
+                    this.campaigns = res.data;
                 })
                 .catch((err) => {
                     console.log(err);
                 });
         },
     },
-    watch: {
-        $route: function (to, from) {
-            if (to.path === "/products") {
-                this.getAllProducts();
-            }
-        },
-    },
     mounted() {
-        this.getAllProducts();
+        this.getAllCampaigns();
     },
 };
 </script>

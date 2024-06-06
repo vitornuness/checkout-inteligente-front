@@ -34,8 +34,10 @@
                         type="file"
                         class="form-control mb-4"
                         id="image"
-                        name="image"
+                        ref="image"
+                        accept="image/*"
                         required
+                        @change="setImage"
                     />
                 </div>
                 <div class="row">
@@ -103,6 +105,7 @@
 <script>
 import ProductDataService from "../services/ProductDataService";
 import CategoryDataService from "../services/CategoryDataService";
+import ImageDataService from "../services/ImageDataService";
 
 export default {
     name: "new-product",
@@ -111,11 +114,11 @@ export default {
             submitted: false,
             product: {
                 name: "",
-                image: "",
                 quantity: "",
                 price: "",
                 categoryId: "",
             },
+            file: "",
             categories: [],
         };
     },
@@ -132,20 +135,33 @@ export default {
         saveProduct() {
             var data = {
                 name: this.product.name,
-                image: this.product.image,
                 quantity: this.product.quantity,
                 price: this.product.price,
                 categoryId: this.product.categoryId,
             };
+
+            var formData = new FormData();
+            formData.append("file", this.file);
+
             ProductDataService.create(data)
                 .then((res) => {
-                    this.submitted = true;
+                    formData.append("productId", res.data.id);
+                    ImageDataService.create(formData)
+                        .then((res) => {
+                            this.submitted = true;
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                        });
                 })
                 .catch((err) => {
                     console.log(err);
                 });
         },
-
+        setImage() {
+            var file = this.$refs.image.files.item(0);
+            this.file = file;
+        },
         newProduct() {
             (this.submitted = false), (this.product = {});
         },

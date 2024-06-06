@@ -90,6 +90,13 @@ export default {
                 });
         },
     },
+    watch: {
+        $route: function (to, from) {
+            if (to.path === "/categories") {
+                this.getAllCategories();
+            }
+        },
+    },
     mounted() {
         this.getAllCategories();
     },

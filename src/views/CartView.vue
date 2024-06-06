@@ -59,7 +59,7 @@
                             aria-valuemin="0"
                             aria-valuemax="100"
                         >
-                            <div class="progress-bar" style="width: 50%"></div>
+                            <div class="progress-bar" style="width: 70%"></div>
                         </div>
                     </div>
 

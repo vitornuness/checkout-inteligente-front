@@ -1,7 +1,12 @@
 <template>
     <div class="col-md-6 col-sm-12 col-lg-3 mb-4">
         <div class="card p-1">
-            <div class="content-card">{{ product.image }}</div>
+            <img
+                :src="`http://localhost:5102/api/images/${product.imageId}`"
+                :alt="product.name"
+                width="100vh"
+                class="card-img-top"
+            />
             <div class="card-body">
                 <h5 class="card-title">{{ product.name }}</h5>
                 <p class="card-text">R$ {{ product.price.toFixed(2) }}</p>
@@ -28,14 +33,6 @@ export default {
 </script>
 
 <style>
-.content-card {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 250px;
-    background: #dddd;
-}
-
 .card {
     border: none;
     border-radius: 4px !important;

@@ -98,6 +98,13 @@ import { RouterLink } from "vue-router";
                                     <li>
                                         <router-link
                                             class="dropdown-item"
+                                            to="/campaigns"
+                                            >Campanhas</router-link
+                                        >
+                                    </li>
+                                    <li>
+                                        <router-link
+                                            class="dropdown-item"
                                             to="/orders"
                                             >Pedidos</router-link
                                         >

@@ -9,9 +9,12 @@ import AddProduct from "../views/AddProduct.vue";
 import EditProduct from "../views/EditProduct.vue";
 import OrderView from "../views/OrderView.vue";
 import UserView from "../views/UserView.vue";
-import CategoryView from "@/views/CategoryView.vue";
-import AddCategory from "@/views/AddCategory.vue";
-import EditCategory from "@/views/EditCategory.vue";
+import CategoryView from "../views/CategoryView.vue";
+import AddCategory from "../views/AddCategory.vue";
+import EditCategory from "../views/EditCategory.vue";
+import CampaignView from "../views/CampaignView.vue";
+import AddCampaign from "../views/AddCampaign.vue";
+import EditCampaign from "../views/EditCampaign.vue";
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -70,6 +73,21 @@ const router = createRouter({
             path: "/categories/:id/edit",
             name: "categoriesEdit",
             component: EditCategory,
+        },
+        {
+            path: "/campaigns",
+            name: "campaigns",
+            component: CampaignView,
+        },
+        {
+            path: "/campaigns/new",
+            name: "campaignsNew",
+            component: AddCampaign,
+        },
+        {
+            path: "/campaigns/:id/edit",
+            name: "campaignsEdit",
+            component: EditCampaign,
         },
         {
             path: "/orders",

@@ -16,7 +16,11 @@
                 />
             </div>
             <div class="row">
-                <img :src="product.image" alt="..." />
+                <img
+                    :src="`http://localhost:5102/api/images/${product.imageId}`"
+                    :alt="product.name"
+                    width="100vh"
+                />
             </div>
             <div class="row">
                 <label for="image" class="form-label">Imagem</label>
@@ -24,8 +28,10 @@
                     type="file"
                     class="form-control mb-4"
                     id="image"
-                    name="image"
+                    ref="image"
+                    accept="image/*"
                     required
+                    @change="setImage"
                 />
             </div>
             <div class="row">
@@ -34,7 +40,7 @@
                     name="category"
                     id="category"
                     class="form-control"
-                    v-model="product.category"
+                    v-model="product.categoryId"
                 >
                     <option v-for="category in categories" :value="category.id">
                         {{ category.name }}
@@ -88,6 +94,7 @@
 <script>
 import ProductDataService from "../services/ProductDataService";
 import CategoryDataService from "../services/CategoryDataService";
+import ImageDataService from "../services/ImageDataService";
 
 export default {
     name: "product-edit",
@@ -99,8 +106,11 @@ export default {
                 image: "",
                 quantity: "",
                 price: "",
-                category: null,
+                categoryId: "",
+                imageId: "",
             },
+            file: "",
+            imageUpdated: false,
             categories: [],
         };
     },
@@ -127,20 +137,36 @@ export default {
             var data = {
                 id: this.product.id,
                 name: this.product.name,
-                image: this.product.image,
                 quantity: this.product.quantity,
                 price: this.product.price,
-                category: this.product.category,
+                categoryId: this.product.categoryId,
+                imageId: this.product.imageId,
             };
+
+            var formData = new FormData();
+            formData.append("file", this.file);
 
             ProductDataService.update(data.id, data)
                 .then((res) => {
-                    console.log(res);
-                    this.getProduct(data.id);
+                    if (this.imageUpdated) {
+                        ImageDataService.update(this.product.imageId, formData)
+                            .then((res) => {
+                                this.submitted = true;
+                            })
+                            .catch((err) => {
+                                console.log(err);
+                            });
+                    }
+                    location.reload();
                 })
                 .catch((err) => {
                     console.log(err);
                 });
+        },
+        setImage() {
+            var file = this.$refs.image.files.item(0);
+            this.file = file;
+            this.imageUpdated = true;
         },
         deleteProduct() {
             ProductDataService.delete(this.product.id)

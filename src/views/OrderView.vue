@@ -75,6 +75,13 @@ export default {
                 });
         },
     },
+    watch: {
+        $route: function (to, from) {
+            if (to.path === "/orders") {
+                this.getAllOrders();
+            }
+        },
+    },
     mounted() {
         this.getAllOrders();
     },

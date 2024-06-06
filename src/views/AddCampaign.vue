@@ -3,18 +3,18 @@
 <template>
     <div class="container center">
         <div v-if="submitted">
-            <h3>Categoria criada com sucesso.</h3>
+            <h3>Campanha criada com sucesso.</h3>
             <button class="btn btn-primary mt-4" @click="newCategory()">
-                Nova Categoria
+                Nova Campanha
             </button>
             <div class="row text-center mt-4">
-                <router-link to="/categories"
-                    >Voltar à lista de categorias</router-link
+                <router-link to="/campaigns"
+                    >Voltar à lista de campanhas</router-link
                 >
             </div>
         </div>
         <div v-else>
-            <h1>Nova categoria</h1>
+            <h1>Nova campanha</h1>
             <div class="form row g-3 m-4 needs-validation" novalidate>
                 <div class="row">
                     <label for="name" class="form-label">Nome</label>
@@ -25,14 +25,14 @@
                         name="name"
                         placeholder="Categoria exemplo"
                         required
-                        v-model="category.name"
+                        v-model="campaign.title"
                     />
                 </div>
                 <div class="row my-4 g-4">
-                    <button class="btn btn-primary" @click="saveCategory()">
+                    <button class="btn btn-primary" @click="saveCampaign()">
                         Adicionar
                     </button>
-                    <router-link to="/categories" class="btn btn-danger"
+                    <router-link to="/campaigns" class="btn btn-danger"
                         >Cancelar</router-link
                     >
                 </div>
@@ -42,25 +42,25 @@
 </template>
 
 <script>
-import CategoryDataService from "../services/CategoryDataService";
+import CampaignDataService from "../services/CampaignDataService";
 
 export default {
-    name: "new-category",
+    name: "new-campaign",
     data() {
         return {
             submitted: false,
-            category: {
-                name: "",
+            campaign: {
+                title: "",
             },
         };
     },
     methods: {
-        saveCategory() {
+        saveCampaign() {
             var data = {
-                name: this.category.name,
+                title: this.campaign.title,
             };
 
-            CategoryDataService.create(data)
+            CampaignDataService.create(data)
                 .then((res) => {
                     this.submitted = true;
                 })
@@ -69,8 +69,8 @@ export default {
                 });
         },
 
-        newCategory() {
-            (this.submitted = false), (this.category = {});
+        newCamáign() {
+            (this.submitted = false), (this.campaign = {});
         },
     },
 };
