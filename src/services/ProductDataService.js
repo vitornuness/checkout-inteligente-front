@@ -14,16 +14,28 @@ class ProductDataService {
         return http.get(`/products/${id}`);
     }
 
-    create(data) {
-        return http.post("/products", data);
+    create(data, token) {
+        return http.post("/products", data, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
     }
 
-    update(id, data) {
-        return http.put(`/products/${id}`, data);
+    update(id, data, token) {
+        return http.put(`/products/${id}`, data, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
     }
 
-    delete(id) {
-        return http.delete(`/products/${id}`);
+    delete(id, token) {
+        return http.delete(`/products/${id}`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
     }
 }
 

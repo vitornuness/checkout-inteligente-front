@@ -1,23 +1,15 @@
-<script setup>
-import { ref } from "vue";
-
-let email = ref("");
-let password = ref("");
-const errors = ref([]);
-
-function login(email, password) {
-    if (emailValidation(email) && passwordValidation(password)) {
-        console.log(email);
-        console.log(password);
-    } else {
-        console.log(errors.value);
-    }
-}
-</script>
+<script setup></script>
 
 <template>
     <div class="container center">
         <h1>Entre na sua conta</h1>
+        <div v-if="messages.length > 0" class="text-danger">
+            <ul>
+                <li v-for="message in messages" :key="message">
+                    {{ message }}
+                </li>
+            </ul>
+        </div>
         <div class="form row g-3 m-4 needs-validation" novalidate>
             <div class="row">
                 <label for="email" class="form-label">E-mail</label>
@@ -26,7 +18,7 @@ function login(email, password) {
                     class="form-control mb-4"
                     id="email"
                     name="email"
-                    v-model="email"
+                    v-model="credential.email"
                     placeholder="Digite seu e-mail"
                     required
                 />
@@ -38,19 +30,64 @@ function login(email, password) {
                     class="form-control"
                     id="password"
                     name="password"
-                    v-model="password"
+                    v-model="credential.password"
                     placeholder="Digite sua senha"
                     required
                 />
             </div>
             <div class="row my-4">
-                <button class="btn btn-primary" @click="login(email, password)">
-                    Entrar
-                </button>
+                <button class="btn btn-primary" @click="login()">Entrar</button>
             </div>
         </div>
     </div>
 </template>
+
+<script>
+import AuthDataService from "../services/AuthDataService";
+import OrderDataService from "../services/OrderDataService";
+import { session } from "../session";
+
+export default {
+    name: "login",
+    data() {
+        return {
+            credential: {
+                email: "",
+                password: "",
+            },
+            messages: [],
+        };
+    },
+    methods: {
+        login() {
+            this.messages = [];
+            var data = {
+                email: this.credential.email,
+                password: this.credential.password,
+            };
+            AuthDataService.login(data)
+                .then((res) => {
+                    var user = res.data.user;
+                    var token = res.data.token;
+                    OrderDataService.getOrderByUser(user.id, token)
+                        .then((res) => {
+                            session().setData(user, res.data, token);
+                            this.$router.push("/");
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                        });
+                })
+                .catch((err) => {
+                    console.log(err);
+                    if (err.response.status === 404) {
+                        this.messages.push("Credenciais inválidas.");
+                    }
+                });
+        },
+    },
+};
+</script>
 
 <style lang="css">
 .center {

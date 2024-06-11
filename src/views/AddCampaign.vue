@@ -44,6 +44,8 @@
 <script>
 import CampaignDataService from "../services/CampaignDataService";
 
+import { session } from "../session";
+
 export default {
     name: "new-campaign",
     data() {
@@ -60,7 +62,7 @@ export default {
                 title: this.campaign.title,
             };
 
-            CampaignDataService.create(data)
+            CampaignDataService.create(data, session().token)
                 .then((res) => {
                     this.submitted = true;
                 })

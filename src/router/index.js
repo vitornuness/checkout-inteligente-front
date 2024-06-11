@@ -16,6 +16,8 @@ import CampaignView from "../views/CampaignView.vue";
 import AddCampaign from "../views/AddCampaign.vue";
 import EditCampaign from "../views/EditCampaign.vue";
 
+import { session } from "../session";
+
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
     routes: [
@@ -28,11 +30,25 @@ const router = createRouter({
             path: "/cart",
             name: "cart",
             component: CartView,
+            beforeEnter: (to, from) => {
+                if (!session().token) {
+                    return "/login";
+                }
+            },
         },
         {
             path: "/checkout",
             name: "checkout",
             component: CheckoutView,
+            beforeEnter: (to, from) => {
+                if (!session().token) {
+                    return "/login";
+                }
+
+                if (session().cart.items.length === 0) {
+                    return "/cart";
+                }
+            },
         },
         {
             path: "/login",
@@ -48,56 +64,155 @@ const router = createRouter({
             path: "/products",
             name: "products",
             component: ProductView,
+            beforeEnter: (to, from) => {
+                if (!session().token) {
+                    return "/login";
+                }
+
+                if (!session().user.admin) {
+                    return "/";
+                }
+            },
         },
         {
             path: "/products/new",
             name: "productsNew",
             component: AddProduct,
+            beforeEnter: (to, from) => {
+                if (!session().token) {
+                    return "/login";
+                }
+
+                if (!session().user.admin) {
+                    return "/";
+                }
+            },
         },
         {
             path: "/products/:id/edit",
             name: "productsEdit",
             component: EditProduct,
+            beforeEnter: (to, from) => {
+                if (!session().token) {
+                    return "/login";
+                }
+
+                if (!session().user.admin) {
+                    return "/";
+                }
+            },
         },
         {
             path: "/categories",
             name: "categories",
             component: CategoryView,
+            beforeEnter: (to, from) => {
+                if (!session().token) {
+                    return "/login";
+                }
+
+                if (!session().user.admin) {
+                    return "/";
+                }
+            },
         },
         {
             path: "/categories/new",
             name: "categoriesNew",
             component: AddCategory,
+            beforeEnter: (to, from) => {
+                if (!session().token) {
+                    return "/login";
+                }
+
+                if (!session().user.admin) {
+                    return "/";
+                }
+            },
         },
         {
             path: "/categories/:id/edit",
             name: "categoriesEdit",
             component: EditCategory,
+            beforeEnter: (to, from) => {
+                if (!session().token) {
+                    return "/login";
+                }
+
+                if (!session().user.admin) {
+                    return "/";
+                }
+            },
         },
         {
             path: "/campaigns",
             name: "campaigns",
             component: CampaignView,
+            beforeEnter: (to, from) => {
+                if (!session().token) {
+                    return "/login";
+                }
+
+                if (!session().user.admin) {
+                    return "/";
+                }
+            },
         },
         {
             path: "/campaigns/new",
             name: "campaignsNew",
             component: AddCampaign,
+            beforeEnter: (to, from) => {
+                if (!session().token) {
+                    return "/login";
+                }
+
+                if (!session().user.admin) {
+                    return "/";
+                }
+            },
         },
         {
             path: "/campaigns/:id/edit",
             name: "campaignsEdit",
             component: EditCampaign,
+            beforeEnter: (to, from) => {
+                if (!session().token) {
+                    return "/login";
+                }
+
+                if (!session().user.admin) {
+                    return "/";
+                }
+            },
         },
         {
             path: "/orders",
             name: "orders",
             component: OrderView,
+            beforeEnter: (to, from) => {
+                if (!session().token) {
+                    return "/login";
+                }
+
+                if (!session().user.admin) {
+                    return "/";
+                }
+            },
         },
         {
             path: "/users",
             name: "users",
             component: UserView,
+            beforeEnter: (to, from) => {
+                if (!session().token) {
+                    return "/login";
+                }
+
+                if (!session().user.admin) {
+                    return "/";
+                }
+            },
         },
     ],
 });

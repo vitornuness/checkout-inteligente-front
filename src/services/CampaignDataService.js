@@ -13,7 +13,7 @@ class CampaignDataService {
         });
     }
 
-    create(data) {
+    create(data, token) {
         return http.post("/campaigns", data);
     }
 

@@ -33,6 +33,8 @@
 <script>
 import CategoryDataService from "../services/CategoryDataService";
 
+import { session } from "../session";
+
 export default {
     name: "category-edit",
     data() {
@@ -59,7 +61,7 @@ export default {
                 name: this.category.name,
             };
 
-            CategoryDataService.update(data.id, data)
+            CategoryDataService.update(data.id, data, session().token)
                 .then((res) => {
                     this.getCategory(data.id);
                 })
@@ -68,7 +70,7 @@ export default {
                 });
         },
         deleteCategory() {
-            CategoryDataService.delete(this.category.id)
+            CategoryDataService.delete(this.category.id, session().token)
                 .then(this.$router.push("/categories"))
                 .catch((err) => {
                     console.log(res);

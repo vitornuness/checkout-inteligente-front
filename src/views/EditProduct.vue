@@ -96,6 +96,8 @@ import ProductDataService from "../services/ProductDataService";
 import CategoryDataService from "../services/CategoryDataService";
 import ImageDataService from "../services/ImageDataService";
 
+import { session } from "../session";
+
 export default {
     name: "product-edit",
     data() {
@@ -146,7 +148,7 @@ export default {
             var formData = new FormData();
             formData.append("file", this.file);
 
-            ProductDataService.update(data.id, data)
+            ProductDataService.update(data.id, data, session().token)
                 .then((res) => {
                     if (this.imageUpdated) {
                         ImageDataService.update(this.product.imageId, formData)
@@ -169,7 +171,7 @@ export default {
             this.imageUpdated = true;
         },
         deleteProduct() {
-            ProductDataService.delete(this.product.id)
+            ProductDataService.delete(this.product.id, session().id)
                 .then(this.$router.push("/products"))
                 .catch((err) => {
                     console.log(res);

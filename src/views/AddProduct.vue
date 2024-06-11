@@ -107,6 +107,8 @@ import ProductDataService from "../services/ProductDataService";
 import CategoryDataService from "../services/CategoryDataService";
 import ImageDataService from "../services/ImageDataService";
 
+import { session } from "../session";
+
 export default {
     name: "new-product",
     data() {
@@ -143,7 +145,7 @@ export default {
             var formData = new FormData();
             formData.append("file", this.file);
 
-            ProductDataService.create(data)
+            ProductDataService.create(data, session().token)
                 .then((res) => {
                     formData.append("productId", res.data.id);
                     ImageDataService.create(formData)

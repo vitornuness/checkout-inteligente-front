@@ -33,6 +33,8 @@
 <script>
 import CampaignDataService from "../services/CampaignDataService";
 
+import { session } from "../session";
+
 export default {
     name: "campaign-edit",
     data() {
@@ -59,7 +61,7 @@ export default {
                 title: this.campaign.title,
             };
 
-            CampaignDataService.update(data.id, data)
+            CampaignDataService.update(data.id, data, session().token)
                 .then((res) => {
                     this.getCampaign(data.id);
                 })
@@ -68,7 +70,7 @@ export default {
                 });
         },
         deleteCampaign() {
-            CampaignDataService.delete(this.category.id)
+            CampaignDataService.delete(this.category.id, session().token)
                 .then(this.$router.push("/categories"))
                 .catch((err) => {
                     console.log(err);

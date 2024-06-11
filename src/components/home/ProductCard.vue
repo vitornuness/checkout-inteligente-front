@@ -10,13 +10,18 @@
             <div class="card-body">
                 <h5 class="card-title">{{ product.name }}</h5>
                 <p class="card-text">R$ {{ product.price.toFixed(2) }}</p>
-                <a href="#" class="btn btn-primary">Adicionar</a>
+                <button class="btn btn-primary" @click="addToCart()">
+                    Adicionar
+                </button>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+import OrderDataService from "../../services/OrderDataService";
+import { session } from "../../session";
+
 export default {
     name: "product-card",
     props: {
@@ -27,6 +32,15 @@ export default {
             category: "",
             quantity: "",
             price: "",
+        },
+    },
+    methods: {
+        addToCart() {
+            OrderDataService.addProduct(
+                session().cart.id,
+                this.product.id,
+                session().token
+            ).catch((err) => console.log(err));
         },
     },
 };
