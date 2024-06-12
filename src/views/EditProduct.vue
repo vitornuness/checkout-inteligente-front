@@ -159,7 +159,7 @@ export default {
                                 console.log(err);
                             });
                     }
-                    location.reload();
+                    this.getProduct(data.id);
                 })
                 .catch((err) => {
                     console.log(err);

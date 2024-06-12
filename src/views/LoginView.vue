@@ -36,7 +36,13 @@
                 />
             </div>
             <div class="row my-4">
-                <button class="btn btn-primary" @click="login()">Entrar</button>
+                <button
+                    class="btn btn-primary"
+                    @click="login()"
+                    @keyup.enter="login()"
+                >
+                    Entrar
+                </button>
             </div>
         </div>
     </div>

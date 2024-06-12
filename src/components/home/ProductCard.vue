@@ -1,15 +1,24 @@
 <template>
     <div class="col-md-6 col-sm-12 col-lg-3 mb-4">
-        <div class="card p-1">
-            <img
-                :src="`http://localhost:5102/api/images/${product.imageId}`"
-                :alt="product.name"
-                width="100vh"
-                class="card-img-top"
-            />
-            <div class="card-body">
-                <h5 class="card-title">{{ product.name }}</h5>
-                <p class="card-text">R$ {{ product.price.toFixed(2) }}</p>
+        <div
+            class="card p-2 d-flex flex-column justify-content-between"
+            style="width: 15rem; height: 20rem; position: relative"
+        >
+            <div style="width: 100%; text-align: center">
+                <img
+                    :src="`http://localhost:5102/api/images/${product.imageId}`"
+                    :alt="product.name"
+                    class="card-img-top"
+                />
+            </div>
+            <div
+                class="card-body d-flex flex-column justify-content-between"
+                style="width: 100%; position: absolute; bottom: 0"
+            >
+                <div>
+                    <h5 class="card-title">{{ product.name }}</h5>
+                    <p class="card-text">R$ {{ product.price.toFixed(2) }}</p>
+                </div>
                 <button class="btn btn-primary" @click="addToCart()">
                     Adicionar
                 </button>
@@ -40,7 +49,19 @@ export default {
                 session().cart.id,
                 this.product.id,
                 session().token
-            ).catch((err) => console.log(err));
+            )
+                .then(() => {
+                    OrderDataService.getOrderByUser(
+                        session().user.id,
+                        session().token
+                    )
+                        .then((res) => {
+                            session().cart = res.data;
+                        })
+                        .catch((err) => console.log(err));
+                    this.$emit("productAdded");
+                })
+                .catch((err) => console.log(err));
         },
     },
 };
@@ -51,6 +72,10 @@ export default {
     border: none;
     border-radius: 4px !important;
     background: #f7f1f1;
+}
+
+.card-img-top {
+    width: 8rem;
 }
 
 .btn-primary {

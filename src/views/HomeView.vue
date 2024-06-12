@@ -1,7 +1,7 @@
 <script setup></script>
 
 <template>
-    <Banner v-if="campaigns.length > 0" :campaigns="campaigns" />
+    <!-- <Banner v-if="campaigns.length > 0" :campaigns="campaigns" /> -->
     <ProductList :products="products" />
 </template>
 

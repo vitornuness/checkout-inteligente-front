@@ -44,7 +44,7 @@ class OrderDataService {
     }
 
     removeProduct(orderId, productId, token) {
-        return http.post(`/orders/${orderId}/products/remove`, {
+        return http.post(`/orders/${orderId}/products/remove`, null, {
             params: {
                 productId: productId,
             },
