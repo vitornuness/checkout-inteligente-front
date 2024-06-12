@@ -26,6 +26,12 @@
 
 ![Carrinho](image-6.png)
 
+### Checkout:
+
+**Apenas se o carrinho não estiver vazio**
+
+![Finalizar pedido](image-18.png)
+
 ## Telas Administrativas:
 
 ### Menu Administrador:
