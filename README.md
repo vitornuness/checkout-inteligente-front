@@ -1,29 +1,87 @@
-# checkout-inteligente
+# Checkout Inteligênte
 
-This template should help get you started developing with Vue 3 in Vite.
+## Telas para todos:
 
-## Recommended IDE Setup
+### Tela Inicial (usuário não logado):
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+![Tela inicial sem usuário](image.png)
 
-## Customize configuration
+### Tela Inicial (usuário logado):
 
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+![Tela inicial com usuário](image-3.png)
 
-## Project Setup
+### Menu Cliente:
 
-```sh
-npm install
-```
+![Menu cliente](image-4.png)
 
-### Compile and Hot-Reload for Development
+### Tela de Registro:
 
-```sh
-npm run dev
-```
+![Tela de Registro](image-2.png)
 
-### Compile and Minify for Production
+### Tela de Login:
 
-```sh
-npm run build
-```
+![Tela de login](image-1.png)
+
+### Carrinho:
+
+![Carrinho](image-6.png)
+
+## Telas Administrativas:
+
+### Menu Administrador:
+
+![Menu administrador](image-5.png)
+
+### Produto:
+
+#### Tela de Produtos:
+
+![Tela de produtos](image-7.png)
+
+#### Tela para adicionar um produto:
+
+![Tela para adicionar produto](image-8.png)
+
+#### Tela para editar ou remover um produto:
+
+![Tela para editar ou remover um produto](image-9.png)
+
+### Categoria:
+
+#### Tela de Categorias:
+
+![Tela de categorias](image-10.png)
+
+#### Tela para adicionar uma categoria:
+
+![Tela para adicionar uma categoria](image-11.png)
+
+#### Tela para editar ou remover uma categoria:
+
+![Tela para editar ou remover uma categoria](image-12.png)
+
+### Campanhas:
+
+#### Tela de campanhas:
+
+![Tela de campanhas](image-13.png)
+
+#### Tela para adicionar uma campanha:
+
+![Tela para adicionar uma campanha](image-14.png)
+
+#### Tela para editar ou remover uma campanha:
+
+![Tela para editar ou remover uma campanha](image-15.png)
+
+### Usuários:
+
+**Admistradores em azul**
+
+![Tela de usuários](image-16.png)
+
+### Pedidos:
+
+**Apenas pedidos finalizados**
+
+![Tela de pedidos](image-17.png)
