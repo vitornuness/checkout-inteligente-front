@@ -1,8 +1,8 @@
 <script setup></script>
 
 <template>
-    <!-- <Banner v-if="campaigns.length > 0" :campaigns="campaigns" /> -->
-    <ProductList :products="products" />
+  <Banner />
+  <ProductList :products="products" />
 </template>
 
 <script>
@@ -14,60 +14,60 @@ import CampaignDataService from "../services/CampaignDataService";
 import { session } from "../session";
 
 export default {
-    name: "home",
-    components: {
-        Banner,
-        ProductList,
+  name: "home",
+  components: {
+    Banner,
+    ProductList,
+  },
+  data() {
+    return {
+      campaigns: [],
+      products: [],
+    };
+  },
+  methods: {
+    getAllProducts() {
+      ProductDataService.getAll()
+        .then((res) => {
+          this.products = res.data;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
-    data() {
-        return {
-            campaigns: [],
-            products: [],
-        };
+    getAllCampaigns() {
+      CampaignDataService.getAll()
+        .then((res) => {
+          this.campaigns = res.data;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
-    methods: {
-        getAllProducts() {
-            ProductDataService.getAll()
-                .then((res) => {
-                    this.products = res.data;
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
-        },
-        getAllCampaigns() {
-            CampaignDataService.getAll()
-                .then((res) => {
-                    this.campaigns = res.data;
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
-        },
-    },
-    mounted() {
-        this.getAllProducts();
-        this.getAllCampaigns();
-        if (session.token) {
-            this.getOrder();
-        }
-    },
+  },
+  mounted() {
+    this.getAllProducts();
+    this.getAllCampaigns();
+    if (session.token) {
+      this.getOrder();
+    }
+  },
 };
 </script>
 
 <style>
 .pagination-content {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .actions {
-    display: flex;
-    gap: 10px;
+  display: flex;
+  gap: 10px;
 }
 
 .bi {
-    color: white;
+  color: white;
 }
 </style>
