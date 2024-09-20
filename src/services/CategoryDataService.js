@@ -6,11 +6,7 @@ class CategoryDataService {
     }
 
     get(id, sort = null) {
-        return http.get(`/categories/${id}`, {
-            params: {
-                sort: sort,
-            },
-        });
+        return http.get(`/categories/${id}`);
     }
 
     create(data) {
