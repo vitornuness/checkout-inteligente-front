@@ -40,7 +40,7 @@ import router from "@/router";
 import CheckoutCard from "../components/checkout/CheckoutCard.vue";
 import OrderDataService from "../services/OrderDataService";
 
-import { session } from "../session";
+import { useUserStore } from "../store/user";
 
 export default {
     name: "checkout",
@@ -49,12 +49,12 @@ export default {
     },
     data() {
         return {
-            cart: session().cart,
+            cart: useUserStore().cart,
         };
     },
     methods: {
         completeOrder() {
-            OrderDataService.completeOrder(order.id, session().token)
+            OrderDataService.completeOrder(order.id, useUserStore().token)
                 .then((res) => {
                     this.$router.push("/");
                 })

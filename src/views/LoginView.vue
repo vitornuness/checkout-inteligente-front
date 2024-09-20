@@ -49,9 +49,11 @@
 </template>
 
 <script>
+import { useUserStore } from "@/store/user";
 import AuthDataService from "../services/AuthDataService";
-import OrderDataService from "../services/OrderDataService";
-import { session } from "../session";
+import { useTokenStore } from "@/store/token";
+import { useCartStore } from "@/store/cart";
+import OrderDataService from "@/services/OrderDataService";
 
 export default {
     name: "login",
@@ -73,16 +75,11 @@ export default {
             };
             AuthDataService.login(data)
                 .then((res) => {
-                    var user = res.data.user;
-                    var token = res.data.token;
-                    OrderDataService.getOrderByUser(user.id, token)
-                        .then((res) => {
-                            session().setData(user, res.data, token);
-                            this.$router.push("/");
-                        })
-                        .catch((err) => {
-                            console.log(err);
-                        });
+                    const userStore = useUserStore();
+                    userStore.setUser(res.data.user);
+                    useTokenStore().setToken(res.data.token);
+                    this.fetchUserOrder();
+                    this.$router.push("/");
                 })
                 .catch((err) => {
                     console.log(err);
@@ -90,6 +87,16 @@ export default {
                         this.messages.push("Credenciais inválidas.");
                     }
                 });
+        },
+
+        fetchUserOrder() {
+            const userStore = useUserStore();
+            const cartStore = useCartStore();
+            OrderDataService.fetchCurrentUserOrder(userStore.user.id).then(
+                (res) => {
+                    cartStore.setCart(res.data);
+                }
+            );
         },
     },
 };

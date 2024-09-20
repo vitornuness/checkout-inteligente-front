@@ -105,9 +105,8 @@
 <script>
 import ProductDataService from "../services/ProductDataService";
 import CategoryDataService from "../services/CategoryDataService";
-import ImageDataService from "../services/ImageDataService";
 
-import { session } from "../session";
+import { useUserStore } from "../store/user";
 
 export default {
     name: "new-product",
@@ -145,16 +144,10 @@ export default {
             var formData = new FormData();
             formData.append("file", this.file);
 
-            ProductDataService.create(data, session().token)
+            ProductDataService.create(data, useUserStore().token)
                 .then((res) => {
                     formData.append("productId", res.data.id);
-                    ImageDataService.create(formData)
-                        .then((res) => {
-                            this.submitted = true;
-                        })
-                        .catch((err) => {
-                            console.log(err);
-                        });
+                    this.submitted = true;
                 })
                 .catch((err) => {
                     console.log(err);

@@ -1,76 +1,24 @@
 import http from "../http-common";
 
 class OrderDataService {
-    getAll() {
-        return http.get("/orders");
+    fetchCurrentUserOrder(id) {
+        return http.get(`/orders/user/${id}/orders/current`);
     }
 
-    get(id) {
-        return http.get(`/orders/${id}`);
+    fetchUserOrders(id) {
+        return http.get(`/orders/user/${id}/orders`);
     }
 
-    getOrderByUser(userId, token) {
-        return http.get(`/orders/current`, {
-            params: {
-                userId: userId,
-            },
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        });
+    completeOrder(id) {
+        return http.post(`/orders/${id}/complete`);
     }
 
-    create(data) {
-        return http.post("/orders", data);
+    addProduct(id) {
+        return http.post(`/orders/${id}/add-product`);
     }
 
-    update(id, data) {
-        return http.put(`/orders/${id}`, data);
-    }
-
-    delete(id) {
-        return http.delete(`/orders/${id}`);
-    }
-
-    addProduct(orderId, productId, token) {
-        return http.post(`/orders/${orderId}/products/add`, null, {
-            params: {
-                productId: productId,
-            },
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        });
-    }
-
-    removeProduct(orderId, productId, token) {
-        return http.post(`/orders/${orderId}/products/remove`, null, {
-            params: {
-                productId: productId,
-            },
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        });
-    }
-
-    completeOrder(orderId, token) {
-        return http.post(`/orders/${orderId}/complete`, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        });
-    }
-
-    getSugestions(orderId, byCampaigns = false, token) {
-        return http.get(`/orders/${orderId}/suggestions`, {
-            params: {
-                byCampaigns: byCampaigns,
-            },
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        });
+    removeProduct(id) {
+        return http.post(`/orders/${id}/remove-product`);
     }
 }
 

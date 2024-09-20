@@ -33,7 +33,7 @@
 <script>
 import CampaignDataService from "../services/CampaignDataService";
 
-import { session } from "../session";
+import { useUserStore } from "../store/user";
 
 export default {
     name: "campaign-edit",
@@ -61,7 +61,7 @@ export default {
                 title: this.campaign.title,
             };
 
-            CampaignDataService.update(data.id, data, session().token)
+            CampaignDataService.update(data.id, data, useUserStore().token)
                 .then((res) => {
                     this.getCampaign(data.id);
                 })
@@ -70,7 +70,7 @@ export default {
                 });
         },
         deleteCampaign() {
-            CampaignDataService.delete(this.category.id, session().token)
+            CampaignDataService.delete(this.category.id, useUserStore().token)
                 .then(this.$router.push("/categories"))
                 .catch((err) => {
                     console.log(err);

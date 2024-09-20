@@ -151,7 +151,7 @@
 import OrderDataService from "@/services/OrderDataService";
 import ProductCard from "../components/home/ProductCard.vue";
 
-import { session } from "../session";
+import { useUserStore } from "../store/user";
 
 export default {
     name: "cart",
@@ -160,14 +160,17 @@ export default {
     },
     data() {
         return {
-            cart: session().cart,
+            cart: useUserStore().cart,
             products: [],
             campaignsProducts: [],
         };
     },
     methods: {
         getCart() {
-            OrderDataService.getOrderByUser(session().user.id, session().token)
+            OrderDataService.getOrderByUser(
+                useUserStore().user.id,
+                useUserStore().token
+            )
                 .then((res) => {
                     this.cart = res.data;
                     this.getSuggestions();
@@ -177,14 +180,22 @@ export default {
                 });
         },
         getSuggestions() {
-            OrderDataService.getSugestions(this.cart.id, false, session().token)
+            OrderDataService.getSugestions(
+                this.cart.id,
+                false,
+                useUserStore().token
+            )
                 .then((res) => {
                     this.products = res.data;
                 })
                 .catch((err) => {
                     console.log(err);
                 });
-            OrderDataService.getSugestions(this.cart.id, true, session().token)
+            OrderDataService.getSugestions(
+                this.cart.id,
+                true,
+                useUserStore().token
+            )
                 .then((res) => {
                     this.campaignsProducts = res.data;
                 })
@@ -196,16 +207,16 @@ export default {
             OrderDataService.addProduct(
                 this.cart.id,
                 productId,
-                session().token
+                useUserStore().token
             )
                 .then((res) => {
                     OrderDataService.getOrderByUser(
-                        session().user.id,
-                        session().token
+                        useUserStore().user.id,
+                        useUserStore().token
                     )
                         .then((res) => {
-                            session().cart = res.data;
-                            this.cart = session().cart;
+                            useUserStore().cart = res.data;
+                            this.cart = useUserStore().cart;
                             this.getSuggestions();
                         })
                         .catch((err) => console.log(err));
@@ -218,16 +229,16 @@ export default {
             OrderDataService.removeProduct(
                 this.cart.id,
                 productId,
-                session().token
+                useUserStore().token
             )
                 .then((res) => {
                     OrderDataService.getOrderByUser(
-                        session().user.id,
-                        session().token
+                        useUserStore().user.id,
+                        useUserStore().token
                     )
                         .then((res) => {
-                            session().cart = res.data;
-                            this.cart = session().cart;
+                            useUserStore().cart = res.data;
+                            this.cart = useUserStore().cart;
                             this.getSuggestions();
                         })
                         .catch((err) => console.log(err));

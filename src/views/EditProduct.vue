@@ -94,9 +94,8 @@
 <script>
 import ProductDataService from "../services/ProductDataService";
 import CategoryDataService from "../services/CategoryDataService";
-import ImageDataService from "../services/ImageDataService";
 
-import { session } from "../session";
+import { useUserStore } from "../store/user";
 
 export default {
     name: "product-edit",
@@ -109,7 +108,6 @@ export default {
                 quantity: "",
                 price: "",
                 categoryId: "",
-                imageId: "",
             },
             file: "",
             imageUpdated: false,
@@ -142,23 +140,14 @@ export default {
                 quantity: this.product.quantity,
                 price: this.product.price,
                 categoryId: this.product.categoryId,
-                imageId: this.product.imageId,
             };
 
             var formData = new FormData();
             formData.append("file", this.file);
 
-            ProductDataService.update(data.id, data, session().token)
+            ProductDataService.update(data.id, data, useUserStore().token)
                 .then((res) => {
-                    if (this.imageUpdated) {
-                        ImageDataService.update(this.product.imageId, formData)
-                            .then((res) => {
-                                this.submitted = true;
-                            })
-                            .catch((err) => {
-                                console.log(err);
-                            });
-                    }
+                    this.submitted = true;
                     this.getProduct(data.id);
                 })
                 .catch((err) => {
@@ -171,7 +160,7 @@ export default {
             this.imageUpdated = true;
         },
         deleteProduct() {
-            ProductDataService.delete(this.product.id, session().id)
+            ProductDataService.delete(this.product.id, useUserStore().id)
                 .then(this.$router.push("/products"))
                 .catch((err) => {
                     console.log(res);

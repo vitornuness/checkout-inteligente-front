@@ -1,4 +1,6 @@
-<script setup></script>
+<script setup>
+import AuthDataService from "@/services/AuthDataService";
+</script>
 
 <template>
     <div class="container center">
@@ -83,8 +85,6 @@
 </template>
 
 <script>
-import UserDataService from "../services/UserDataService";
-
 export default {
     name: "new-user",
     data() {
@@ -135,7 +135,7 @@ export default {
             return re.test(email);
         },
         saveUser(data) {
-            UserDataService.create(data)
+            AuthDataService.register(data)
                 .then((res) => {
                     this.$route.push("/login");
                 })
