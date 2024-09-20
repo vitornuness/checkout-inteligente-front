@@ -59,7 +59,7 @@
 </template>
 
 <script>
-import UserDataService from "../services/UserDataService";
+import AuthDataService from "../services/AuthDataService";
 export default {
     name: "users-list",
     data() {
@@ -68,15 +68,15 @@ export default {
         };
     },
     methods: {
-        getAllUsers() {
-            UserDataService.getAll()
-                .then((res) => {
-                    this.users = res.data;
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
-        },
+        // getAllUsers() {
+        //     UserDataService.getAll()
+        //         .then((res) => {
+        //             this.users = res.data;
+        //         })
+        //         .catch((err) => {
+        //             console.log(err);
+        //         });
+        // },
     },
     mounted() {
         this.getAllUsers();
