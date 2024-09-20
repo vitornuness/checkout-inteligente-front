@@ -2,11 +2,13 @@
 
 <template>
   <Banner />
+  <BestSellers />
   <ProductList :products="products" />
 </template>
 
 <script>
 import Banner from "../components/home/Banner.vue";
+import BestSellers from "../components/home/BestSellers.vue";
 import ProductList from "../components/home/ProductList.vue";
 import ProductDataService from "../services/ProductDataService";
 import CampaignDataService from "../services/CampaignDataService";
@@ -17,6 +19,7 @@ export default {
   name: "home",
   components: {
     Banner,
+    BestSellers,
     ProductList,
   },
   data() {
