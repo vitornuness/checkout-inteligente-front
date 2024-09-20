@@ -44,7 +44,7 @@
 <script>
 import CampaignDataService from "../services/CampaignDataService";
 
-import { session } from "../session";
+import { useUserStore } from "../store/user";
 
 export default {
     name: "new-campaign",
@@ -62,7 +62,7 @@ export default {
                 title: this.campaign.title,
             };
 
-            CampaignDataService.create(data, session().token)
+            CampaignDataService.create(data, useUserStore().token)
                 .then((res) => {
                     this.submitted = true;
                 })

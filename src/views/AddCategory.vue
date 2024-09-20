@@ -44,7 +44,7 @@
 <script>
 import CategoryDataService from "../services/CategoryDataService";
 
-import { session } from "../session";
+import { useUserStore } from "../store/user";
 
 export default {
     name: "new-category",
@@ -62,7 +62,7 @@ export default {
                 name: this.category.name,
             };
 
-            CategoryDataService.create(data, session().token)
+            CategoryDataService.create(data, useUserStore().token)
                 .then((res) => {
                     this.submitted = true;
                 })

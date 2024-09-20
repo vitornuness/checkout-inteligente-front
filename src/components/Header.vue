@@ -1,6 +1,6 @@
 <script setup>
 import { RouterLink } from "vue-router";
-import { session } from "../session";
+import { useUserStore } from "../store/user";
 </script>
 
 <template>
@@ -42,7 +42,7 @@ import { session } from "../session";
                         id="navbarSupportedContent"
                     >
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0 text-white">
-                            <div v-if="!session().token">
+                            <div v-if="!useUserStore().user">
                                 <li class="nav-item d-flex mt-2">
                                     <RouterLink
                                         to="/login"
@@ -86,7 +86,7 @@ import { session } from "../session";
                                             >
                                         </li>
                                         <li><hr class="dropdown-divider" /></li>
-                                        <div v-if="session().user.admin">
+                                        <div v-if="useUserStore().user">
                                             <li>
                                                 <router-link
                                                     class="dropdown-item"
@@ -147,7 +147,7 @@ export default {
     name: "home",
     methods: {
         logout() {
-            session().clearData();
+            useUserStore().setUser(null);
             location.reload();
         },
     },

@@ -11,8 +11,6 @@ import ProductList from "../components/home/ProductList.vue";
 import ProductDataService from "../services/ProductDataService";
 import CampaignDataService from "../services/CampaignDataService";
 
-import { session } from "../session";
-
 export default {
     name: "home",
     components: {
@@ -48,9 +46,6 @@ export default {
     mounted() {
         this.getAllProducts();
         this.getAllCampaigns();
-        if (session.token) {
-            this.getOrder();
-        }
     },
 };
 </script>
