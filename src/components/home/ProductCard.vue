@@ -6,7 +6,7 @@
         >
             <div style="width: 100%; text-align: center">
                 <img
-                    :src="`http://localhost:5102/api/images/${product.imageId}`"
+                    :src="product.imageUrl"
                     :alt="product.name"
                     class="card-img-top"
                 />
@@ -29,7 +29,7 @@
 
 <script>
 import OrderDataService from "../../services/OrderDataService";
-import { session } from "../../session";
+import { useUserStore } from "../../store/user";
 
 export default {
     name: "product-card",
@@ -46,17 +46,17 @@ export default {
     methods: {
         addToCart() {
             OrderDataService.addProduct(
-                session().cart.id,
+                useUserStore().cart.id,
                 this.product.id,
-                session().token
+                useUserStore().token
             )
                 .then(() => {
                     OrderDataService.getOrderByUser(
-                        session().user.id,
-                        session().token
+                        useUserStore().user.id,
+                        useUserStore().token
                     )
                         .then((res) => {
-                            session().cart = res.data;
+                            useUserStore().cart = res.data;
                         })
                         .catch((err) => console.log(err));
                     this.$emit("productAdded");
