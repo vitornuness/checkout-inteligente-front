@@ -86,7 +86,12 @@ import { useUserStore } from "../store/user";
                                             >
                                         </li>
                                         <li><hr class="dropdown-divider" /></li>
-                                        <div v-if="useUserStore().user">
+                                        <div
+                                            v-if="
+                                                useUserStore().user.role ===
+                                                'ADMIN'
+                                            "
+                                        >
                                             <li>
                                                 <router-link
                                                     class="dropdown-item"
