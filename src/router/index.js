@@ -69,7 +69,7 @@ const router = createRouter({
                     return "/login";
                 }
 
-                if (!useUserStore().user.admin) {
+                if (useUserStore().user.role !== "ADMIN") {
                     return "/";
                 }
             },
@@ -83,7 +83,7 @@ const router = createRouter({
                     return "/login";
                 }
 
-                if (!useUserStore().user.admin) {
+                if (useUserStore().user.role !== "ADMIN") {
                     return "/";
                 }
             },
@@ -97,7 +97,7 @@ const router = createRouter({
                     return "/login";
                 }
 
-                if (!useUserStore().user.admin) {
+                if (useUserStore().user.role !== "ADMIN") {
                     return "/";
                 }
             },
@@ -111,7 +111,7 @@ const router = createRouter({
                     return "/login";
                 }
 
-                if (!useUserStore().user.admin) {
+                if (useUserStore().user.role !== "ADMIN") {
                     return "/";
                 }
             },
@@ -125,7 +125,7 @@ const router = createRouter({
                     return "/login";
                 }
 
-                if (!useUserStore().user.admin) {
+                if (useUserStore().user.role !== "ADMIN") {
                     return "/";
                 }
             },
@@ -139,7 +139,7 @@ const router = createRouter({
                     return "/login";
                 }
 
-                if (!useUserStore().user.admin) {
+                if (useUserStore().user.role !== "ADMIN") {
                     return "/";
                 }
             },
@@ -153,7 +153,7 @@ const router = createRouter({
                     return "/login";
                 }
 
-                if (!useUserStore().user.admin) {
+                if (useUserStore().user.role !== "ADMIN") {
                     return "/";
                 }
             },
@@ -167,7 +167,7 @@ const router = createRouter({
                     return "/login";
                 }
 
-                if (!useUserStore().user.admin) {
+                if (useUserStore().user.role !== "ADMIN") {
                     return "/";
                 }
             },
@@ -181,7 +181,7 @@ const router = createRouter({
                     return "/login";
                 }
 
-                if (!useUserStore().user.admin) {
+                if (useUserStore().user.role !== "ADMIN") {
                     return "/";
                 }
             },
@@ -195,7 +195,7 @@ const router = createRouter({
                     return "/login";
                 }
 
-                if (!useUserStore().user.admin) {
+                if (useUserStore().user.role !== "ADMIN") {
                     return "/";
                 }
             },
@@ -209,7 +209,7 @@ const router = createRouter({
                     return "/login";
                 }
 
-                if (!useUserStore().user.admin) {
+                if (useUserStore().user.role !== "ADMIN") {
                     return "/";
                 }
             },
