@@ -13,12 +13,12 @@ class OrderDataService {
         return http.post(`/orders/${id}/complete`);
     }
 
-    addProduct(id) {
-        return http.post(`/orders/${id}/add-product`);
+    addProduct(id, productId) {
+        return http.post(`/orders/${id}/add-product?productId=${productId}`);
     }
 
-    removeProduct(id) {
-        return http.post(`/orders/${id}/remove-product`);
+    removeProduct(id, productId) {
+        return http.post(`/orders/${id}/remove-product?productId=${productId}`);
     }
 }
 
