@@ -137,11 +137,25 @@ export default {
         saveUser(data) {
             AuthDataService.register(data)
                 .then((res) => {
-                    this.$route.push("/login");
+                    const userStore = useUserStore();
+                    userStore.setUser(res.data.user);
+                    useTokenStore().setToken(res.data.token);
+                    this.fetchUserOrder();
+                    this.$router.push("/");
                 })
                 .catch((err) => {
                     console.log(err);
                 });
+        },
+
+        fetchUserOrder() {
+            const userStore = useUserStore();
+            const cartStore = useCartStore();
+            OrderDataService.fetchCurrentUserOrder(userStore.user.id).then(
+                (res) => {
+                    cartStore.setCart(res.data);
+                }
+            );
         },
     },
 };
