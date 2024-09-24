@@ -5,7 +5,7 @@ class CategoryDataService {
         return http.get("/categories");
     }
 
-    get(id, sort = null) {
+    get(id) {
         return http.get(`/categories/${id}`);
     }
 
