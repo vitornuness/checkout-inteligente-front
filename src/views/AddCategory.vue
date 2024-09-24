@@ -62,7 +62,7 @@ export default {
                 name: this.category.name,
             };
 
-            CategoryDataService.create(data, useUserStore().token)
+            CategoryDataService.create(data)
                 .then((res) => {
                     this.submitted = true;
                 })
