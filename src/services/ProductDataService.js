@@ -13,7 +13,7 @@ class ProductDataService {
     create(data) {
         return http.post("/products", data, {
             headers: {
-                Authorization: `Bearer ${useUserStore().token}`,
+                "Content-Type": "multipart/form-data",
             },
         });
     }
