@@ -21,17 +21,13 @@ class ProductDataService {
     update(id, data) {
         return http.put(`/products/${id}`, data, {
             headers: {
-                Authorization: `Bearer ${useUserStore().token}`,
+                "Content-Type": "multipart/form-data",
             },
         });
     }
 
     delete(id) {
-        return http.delete(`/products/${id}`, {
-            headers: {
-                Authorization: `Bearer ${useUserStore().token}`,
-            },
-        });
+        return http.delete(`/products/${id}`);
     }
 }
 
