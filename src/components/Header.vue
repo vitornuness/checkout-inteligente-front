@@ -80,12 +80,6 @@ import { useUserStore } from "../store/user";
                                         <i class="bi bi-person-fill"></i>
                                     </a>
                                     <ul class="dropdown-menu">
-                                        <li>
-                                            <a class="dropdown-item" href="#"
-                                                >Perfil</a
-                                            >
-                                        </li>
-                                        <li><hr class="dropdown-divider" /></li>
                                         <div
                                             v-if="
                                                 useUserStore().user.role ===
@@ -113,21 +107,8 @@ import { useUserStore } from "../store/user";
                                                     >Campanhas</router-link
                                                 >
                                             </li>
-                                            <li>
-                                                <router-link
-                                                    class="dropdown-item"
-                                                    to="/orders"
-                                                    >Pedidos</router-link
-                                                >
-                                            </li>
-                                            <li>
-                                                <router-link
-                                                    class="dropdown-item"
-                                                    to="/users"
-                                                    >Usuários</router-link
-                                                >
-                                            </li>
                                         </div>
+                                        <li><hr class="dropdown-divider" /></li>
                                         <li>
                                             <button
                                                 class="dropdown-item"
