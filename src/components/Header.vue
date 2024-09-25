@@ -47,15 +47,15 @@ header h1 {
 }
 
 .pesquisa {
-  display: flex; /* Faz com que o input e o button fiquem lado a lado */
-  align-items: center; /* Alinha verticalmente o input e o botão */
+  display: flex;
+  align-items: center;
 }
 
 .pesquisa input {
   padding: 5px;
   width: 300px;
   border: none;
-  border-radius: 4px 0 0 4px; /* Borda arredondada para o input */
+  border-radius: 4px 0 0 4px;
 }
 
 .pesquisa button {
@@ -64,7 +64,7 @@ header h1 {
   border: none;
   color: white;
   cursor: pointer;
-  border-radius: 0 4px 4px 0; /* Borda arredondada no lado direito do botão */
+  border-radius: 0 4px 4px 0;
 }
 
 .pesquisa button:hover {
