@@ -160,7 +160,7 @@ export default {
             this.imageUpdated = true;
         },
         deleteProduct() {
-            ProductDataService.delete(this.product.id, useUserStore().id)
+            ProductDataService.delete(this.product.id)
                 .then(this.$router.push("/products"))
                 .catch((err) => {
                     console.log(res);
