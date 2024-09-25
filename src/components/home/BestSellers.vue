@@ -43,11 +43,41 @@ export default {
 
 .carrossel {
   display: flex;
-  overflow-x: auto;
-  justify-content: center;
+  overflow-x: scroll; 
+  scrollbar-width: none; 
+  -ms-overflow-style: none; 
   gap: 20px;
   padding: 10px;
   max-width: 100%;
+  scroll-behavior: smooth; 
 }
 
+.carrossel::-webkit-scrollbar {
+  display: none;
+}
+
+.produto {
+  min-width: 200px;
+  flex-shrink: 0;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease; 
+}
+
+.produto img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  border-radius: 8px;
+  transition: transform 0.3s ease; 
+}
+
+.produto:hover {
+  transform: scale(1.05); 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+}
+
+.produto img:hover {
+  transform: scale(1.1); 
+}
 </style>
