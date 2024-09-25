@@ -5,15 +5,11 @@ class CampaignDataService {
         return http.get("/campaigns");
     }
 
-    get(id, sort = null) {
-        return http.get(`/campaigns/${id}`, {
-            params: {
-                sort: sort,
-            },
-        });
+    get(id) {
+        return http.get(`/campaigns/${id}`);
     }
 
-    create(data, token) {
+    create(data) {
         return http.post("/campaigns", data);
     }
 
