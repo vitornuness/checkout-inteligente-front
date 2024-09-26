@@ -158,6 +158,10 @@ export default {
                     this.fileUrl = null;
                     this.$refs.image.value = null;
                     this.getProduct(data.id);
+
+                    setTimeout(() => {
+                        this.submitted = false;
+                    }, 3000);
                 })
                 .catch((err) => {
                     console.log(err);

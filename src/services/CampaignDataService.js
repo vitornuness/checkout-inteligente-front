@@ -10,11 +10,19 @@ class CampaignDataService {
     }
 
     create(data) {
-        return http.post("/campaigns", data);
+        return http.post("/campaigns", data, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+        });
     }
 
     update(id, data) {
-        return http.put(`/campaigns/${id}`, data);
+        return http.put(`/campaigns/${id}`, data, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+        });
     }
 
     delete(id) {

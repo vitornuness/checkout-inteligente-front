@@ -6,7 +6,11 @@
             Campanha atualizada com sucesso.
         </div>
 
-        <div class="form row g-3 m-4 needs-validation" novalidate>
+        <div
+            v-if="campaign"
+            class="form row g-3 m-4 needs-validation"
+            novalidate
+        >
             <div class="row">
                 <label for="name" class="form-label">Nome</label>
                 <input
@@ -19,6 +23,27 @@
                     v-model="campaign.title"
                 />
             </div>
+
+            <div class="row">
+                <label for="image" class="form-label">Imagem</label>
+                <div class="row my-4">
+                    <img
+                        :src="fileUrl ?? campaign.imageUrl"
+                        :alt="campaign.name"
+                        style="width: auto; height: 20vh"
+                    />
+                </div>
+                <input
+                    type="file"
+                    class="form-control mb-4"
+                    id="image"
+                    ref="image"
+                    accept="image/*"
+                    required
+                    @change="setImage"
+                />
+            </div>
+
             <div class="row">
                 <div class="form-check form-switch">
                     <input
@@ -57,6 +82,7 @@ import CampaignDataService from "../services/CampaignDataService";
 import ProductDataService from "@/services/ProductDataService";
 import ProductSelector from "../components/campaign/ProductSelector.vue";
 import router from "@/router";
+import { ref } from "vue";
 
 export default {
     name: "campaign-edit",
@@ -66,12 +92,9 @@ export default {
     data() {
         return {
             submitted: false,
-            campaign: {
-                id: "",
-                title: "",
-                products: [],
-                active: true,
-            },
+            campaign: ref(null),
+            file: null,
+            fileUrl: null,
             products: [],
             selectedProductIds: new Set(),
         };
@@ -90,16 +113,25 @@ export default {
                 });
         },
         updateCampaign() {
+            var formData = new FormData();
+            formData.append("file", this.file);
+
             const data = {
                 id: this.campaign.id,
                 title: this.campaign.title,
                 productsId: Array.from(this.selectedProductIds),
                 active: this.campaign.active,
+                image: formData.get("file"),
             };
 
             CampaignDataService.update(data.id, data)
                 .then(() => {
                     this.submitted = true;
+                    this.file = null;
+                    this.fileUrl = null;
+                    this.$refs.image.value = null;
+                    this.getCampaign(data.id);
+
                     setTimeout(() => {
                         this.submitted = false;
                     }, 3000);
@@ -107,6 +139,16 @@ export default {
                 .catch((err) => {
                     console.log(err);
                 });
+        },
+        setImage() {
+            var file = this.$refs.image.files.item(0);
+            this.file = file;
+
+            if (file) {
+                this.fileUrl = URL.createObjectURL(file);
+            } else {
+                this.fileUrl = null;
+            }
         },
         deleteCampaign() {
             CampaignDataService.delete(this.campaign.id)
