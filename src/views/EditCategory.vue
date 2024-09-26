@@ -98,6 +98,10 @@ export default {
                     this.fileUrl = null;
                     this.$refs.image.value = null;
                     this.getCategory(data.id);
+
+                    setTimeout(() => {
+                        this.submitted = false;
+                    }, 3000);
                 })
                 .catch((err) => {
                     console.log(err);
