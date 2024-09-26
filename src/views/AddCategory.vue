@@ -28,6 +28,25 @@
                         v-model="category.name"
                     />
                 </div>
+                <div class="row">
+                    <label for="image" class="form-label">Imagem</label>
+                    <div v-if="fileUrl" class="row my-4">
+                        <img
+                            :src="fileUrl"
+                            :alt="category.name"
+                            style="width: auto; height: 20vh"
+                        />
+                    </div>
+                    <input
+                        type="file"
+                        class="form-control mb-4"
+                        id="image"
+                        ref="image"
+                        accept="image/*"
+                        required
+                        @change="setImage"
+                    />
+                </div>
                 <div class="row my-4 g-4">
                     <button class="btn btn-primary" @click="saveCategory()">
                         Adicionar
@@ -44,8 +63,6 @@
 <script>
 import CategoryDataService from "../services/CategoryDataService";
 
-import { useUserStore } from "../store/user";
-
 export default {
     name: "new-category",
     data() {
@@ -54,12 +71,18 @@ export default {
             category: {
                 name: "",
             },
+            file: null,
+            fileUrl: null,
         };
     },
     methods: {
         saveCategory() {
+            var formData = new FormData();
+            formData.append("file", this.file);
+
             var data = {
                 name: this.category.name,
+                image: formData.get("file"),
             };
 
             CategoryDataService.create(data)
@@ -70,7 +93,16 @@ export default {
                     console.log(err);
                 });
         },
+        setImage() {
+            var file = this.$refs.image.files.item(0);
+            this.file = file;
 
+            if (file) {
+                this.fileUrl = URL.createObjectURL(file);
+            } else {
+                this.fileUrl = null;
+            }
+        },
         newCategory() {
             (this.submitted = false), (this.category = {});
         },

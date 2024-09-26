@@ -10,11 +10,19 @@ class CategoryDataService {
     }
 
     create(data) {
-        return http.post("/categories", data);
+        return http.post("/categories", data, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+        });
     }
 
     update(id, data) {
-        return http.put(`/categories/${id}`, data);
+        return http.put(`/categories/${id}`, data, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+        });
     }
 
     delete(id) {
