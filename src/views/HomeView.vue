@@ -4,6 +4,8 @@
   <Banner />
   <BestSellers />
   <ProductList :products="products" />
+  <Categories />
+
 </template>
 
 <script>
@@ -12,6 +14,8 @@ import BestSellers from "../components/home/BestSellers.vue";
 import ProductList from "../components/home/ProductList.vue";
 import ProductDataService from "../services/ProductDataService";
 import CampaignDataService from "../services/CampaignDataService";
+import Categories from "../components/home/Categories.vue";
+
 
 import { session } from "../session";
 
@@ -21,6 +25,8 @@ export default {
     Banner,
     BestSellers,
     ProductList,
+    Categories,
+
   },
   data() {
     return {
