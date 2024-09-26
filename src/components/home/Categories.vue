@@ -13,11 +13,11 @@ export default {
   data() {
     return {
       categorias: [
-        { nome: "CORSAIR", imagem: "" },
-        { nome: "INTEL", imagem: "" },
-        { nome: "LOGITECH G", imagem: "" },
-        { nome: "KINGSTON", imagem: "" },
-        { nome: "LOGITECH", imagem: "" },
+        { nome: "CORSAIR", imagem: "../../../img/CategoriesCorsair.jpeg" },
+        { nome: "INTEL", imagem: "../../../img/CategoriesIntel.png" },
+        { nome: "LOGITECH", imagem: "../../../img/CategoriesLogitech.jpeg" },
+        { nome: "KINGSTON", imagem: "../../../img/CategoriesKingston.png" },
+        { nome: "RISE MODE", imagem: "../../../img/CategoriesRiseMode.jpeg" },
       ],
     };
   },
