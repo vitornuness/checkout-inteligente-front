@@ -19,6 +19,7 @@
                     <tr>
                         <th scope="col">Código</th>
                         <th scope="col">Nome</th>
+                        <th scope="col">Produtos</th>
                         <th scope="col">Ações</th>
                     </tr>
                 </thead>
@@ -26,6 +27,7 @@
                     <tr v-for="category in categories">
                         <th scope="row">{{ category.id }}</th>
                         <td>{{ category.name }}</td>
+                        <td>{{ category.products.length }}</td>
                         <td>
                             <div class="actions">
                                 <router-link
