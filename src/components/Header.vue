@@ -8,13 +8,20 @@ import { session } from "../session";
     <div
       class="topo container d-flex justify-content-between align-items-center"
     >
-      <h1>SHOP</h1>
+      <h1><RouterLink to="/">SHOP</RouterLink></h1>
       <div class="pesquisa">
         <input type="text" placeholder="Pesquisar um produto" />
         <button class="btn btn-primary">Pesquisar</button>
       </div>
       <div class="login">
-        <a href="#" class="btn btn-outline-secondary">Entrar ou Registrar</a>
+        <RouterLink to="/Login" class="btn btn-outline-secondary"
+          >Entrar ou Registrar</RouterLink
+        >
+      </div>
+      <div class="checkout">
+        <RouterLink to="/Cart" class="btn btn-outline-secondary"
+          >Carrinho</RouterLink
+        >
       </div>
     </div>
   </header>

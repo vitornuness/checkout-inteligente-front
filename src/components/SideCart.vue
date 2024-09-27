@@ -2,11 +2,11 @@
   <button>
     <button
       type="button"
-      class="btn btn-primary"
+      class="btn btn-danger"
       data-bs-toggle="modal"
       data-bs-target="#exampleModal"
     >
-      Launch demo modal
+      <i class="bi bi-cart3"></i>
     </button>
 
     <div
