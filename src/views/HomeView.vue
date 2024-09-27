@@ -5,6 +5,7 @@
   <BestSellers />
   <ProductList :products="products" />
   <Categories />
+  <ProductCommon />
 
 </template>
 
@@ -15,6 +16,8 @@ import ProductList from "../components/home/ProductList.vue";
 import ProductDataService from "../services/ProductDataService";
 import CampaignDataService from "../services/CampaignDataService";
 import Categories from "../components/home/Categories.vue";
+import ProductCommon from "@/components/home/ProductCommon.vue";
+
 
 
 import { session } from "../session";
@@ -26,6 +29,7 @@ export default {
     BestSellers,
     ProductList,
     Categories,
+    ProductCommon,
 
   },
   data() {
