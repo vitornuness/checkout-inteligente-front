@@ -1,10 +1,17 @@
 <template>
     <label for="products">Selecione os produtos para a campanha</label>
-    <div class="row row-cols-1 row-cols-md-3 mt-4">
-        <div v-for="product in products" :key="product.id" class="col">
+    <div
+        class="row mt-4"
+        style="height: 50vh; overflow-y: scroll; overflow-x: hidden"
+    >
+        <div
+            v-for="product in products"
+            :key="product.id"
+            class="col-4"
+            style="padding: 0; margin: 0"
+        >
             <button
-                class="card border p-2 pointer"
-                style="width: 9vw"
+                class="card border pointer w-100"
                 :class="{ 'border-primary': isSelected(product.id) }"
                 @click="toggleProductSelection(product.id)"
             >
@@ -14,17 +21,16 @@
                     class="m-auto"
                     style="width: 4vw"
                 />
-                <div class="card-body">
+                <div class="card-body" style="padding-inline: 10px">
                     <p class="card-title text-truncate">
-                        {{ product.name }}
+                        <small
+                            ><strong>{{ product.name }}</strong></small
+                        >
                     </p>
                     <small class="card-text">
-                        <li class="list-group-item">
-                            {{ product.quantity }}
-                        </li>
-                        <li class="list-group-item">
-                            R${{ product.price.toFixed(2) }}
-                        </li>
+                        {{ product.quantity }}
+                        <hr />
+                        R${{ product.price.toFixed(2) }}
                     </small>
                 </div>
             </button>
