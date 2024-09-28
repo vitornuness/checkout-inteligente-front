@@ -1,3 +1,7 @@
+<script setup>
+import { useUserStore } from "@/store/user";
+</script>
+
 <template>
     <div class="produtos-container">
         <div class="produto-card" v-for="product in products" :key="product.id">
@@ -8,7 +12,11 @@
             />
             <h3 class="text-truncate">{{ product.name }}</h3>
             <p>R$ {{ product.price.toFixed(2) }}</p>
-            <button class="botao-comprar" @click="addToCart(product.id)">
+            <button
+                v-if="useUserStore().user"
+                class="botao-comprar"
+                @click="addToCart(product.id)"
+            >
                 Comprar
             </button>
         </div>
