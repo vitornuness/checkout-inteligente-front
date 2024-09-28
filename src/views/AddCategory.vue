@@ -1,7 +1,7 @@
 <script setup></script>
 
 <template>
-    <div class="container center">
+    <div class="container center bg-white rounded my-4 py-4">
         <div v-if="submitted">
             <h3>Categoria criada com sucesso.</h3>
             <button class="btn btn-primary mt-4" @click="newCategory()">
@@ -15,45 +15,52 @@
         </div>
         <div v-else>
             <h1>Nova categoria</h1>
-            <div class="form row g-3 m-4 needs-validation" novalidate>
+            <div class="form g-3 m-4 needs-validation" novalidate>
                 <div class="row">
-                    <label for="name" class="form-label">Nome</label>
-                    <input
-                        type="text"
-                        class="form-control mb-4"
-                        id="name"
-                        name="name"
-                        placeholder="Categoria exemplo"
-                        required
-                        v-model="category.name"
-                    />
-                </div>
-                <div class="row">
-                    <label for="image" class="form-label">Imagem</label>
-                    <div v-if="fileUrl" class="row my-4">
-                        <img
-                            :src="fileUrl"
-                            :alt="category.name"
-                            style="width: auto; height: 20vh"
+                    <div class="col">
+                        <label for="name" class="form-label">Nome</label>
+                        <input
+                            type="text"
+                            class="form-control mb-4"
+                            id="name"
+                            name="name"
+                            placeholder="Categoria exemplo"
+                            required
+                            v-model="category.name"
                         />
                     </div>
-                    <input
-                        type="file"
-                        class="form-control mb-4"
-                        id="image"
-                        ref="image"
-                        accept="image/*"
-                        required
-                        @change="setImage"
-                    />
                 </div>
-                <div class="row my-4 g-4">
-                    <button class="btn btn-primary" @click="saveCategory()">
+                <div class="row">
+                    <div class="col">
+                        <label for="image" class="form-label">Imagem</label>
+                        <div v-if="fileUrl" class="row my-4">
+                            <img
+                                :src="fileUrl"
+                                :alt="category.name"
+                                style="width: auto; height: 20vh"
+                            />
+                        </div>
+                        <input
+                            type="file"
+                            class="form-control mb-4"
+                            id="image"
+                            ref="image"
+                            accept="image/*"
+                            required
+                            @change="setImage"
+                        />
+                    </div>
+                </div>
+                <div class="row my-4 justify-content-end">
+                    <router-link to="/categories" class="btn btn-danger">
+                        Cancelar
+                    </router-link>
+                    <button
+                        class="btn btn-primary mx-4"
+                        @click="saveCategory()"
+                    >
                         Adicionar
                     </button>
-                    <router-link to="/categories" class="btn btn-danger"
-                        >Cancelar</router-link
-                    >
                 </div>
             </div>
         </div>
