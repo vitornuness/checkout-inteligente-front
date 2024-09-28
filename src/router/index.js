@@ -5,17 +5,16 @@ import RegisterView from "../views/RegisterView.vue";
 import ProductView from "../views/ProductView.vue";
 import AddProduct from "../views/AddProduct.vue";
 import EditProduct from "../views/EditProduct.vue";
-import OrderView from "../views/OrderView.vue";
-import UserView from "../views/UserView.vue";
 import CategoryView from "../views/CategoryView.vue";
 import AddCategory from "../views/AddCategory.vue";
 import EditCategory from "../views/EditCategory.vue";
 import CampaignView from "../views/CampaignView.vue";
 import AddCampaign from "../views/AddCampaign.vue";
 import EditCampaign from "../views/EditCampaign.vue";
+import CampaignProducts from "@/views/CampaignProducts.vue";
+import CategoryProducts from "@/views/CategoryProducts.vue";
 
 import { useUserStore } from "../store/user";
-import CampaignProducts from "@/views/CampaignProducts.vue";
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -120,6 +119,11 @@ const router = createRouter({
             },
         },
         {
+            path: "/categories/:id/products",
+            name: "categoriesProducts",
+            component: CategoryProducts,
+        },
+        {
             path: "/campaigns",
             name: "campaigns",
             component: CampaignView,
@@ -165,34 +169,6 @@ const router = createRouter({
             path: "/campaigns/:id/products",
             name: "campaignsProducts",
             component: CampaignProducts,
-        },
-        {
-            path: "/orders",
-            name: "orders",
-            component: OrderView,
-            beforeEnter: (to, from) => {
-                if (!useUserStore().user) {
-                    return "/login";
-                }
-
-                if (useUserStore().user.role !== "ADMIN") {
-                    return "/";
-                }
-            },
-        },
-        {
-            path: "/users",
-            name: "users",
-            component: UserView,
-            beforeEnter: (to, from) => {
-                if (!useUserStore().user) {
-                    return "/login";
-                }
-
-                if (useUserStore().user.role !== "ADMIN") {
-                    return "/";
-                }
-            },
         },
     ],
 });
