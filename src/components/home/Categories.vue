@@ -1,7 +1,7 @@
 <template>
     <div class="categorias-container">
         <div
-            class="categoria"
+            class="categoria pb-4"
             v-for="category in categories"
             :key="category.id"
         >
@@ -10,23 +10,24 @@
                 :alt="category.name"
                 class="categoria-imagem"
             />
-            <h3>{{ category.name }}</h3>
-            <button @click="verProdutos(category.name)" class="botao-produtos">
+            <h3 class="my-4">{{ category.name }}</h3>
+            <RouterLink
+                :to="`/categories/${category.id}/products`"
+                class="botao-produtos"
+            >
                 Ver Produtos
-            </button>
+            </RouterLink>
         </div>
     </div>
 </template>
 
 <script>
+import { RouterLink } from "vue-router";
+
 export default {
+    name: "Categories",
     props: {
         categories: Array,
-    },
-    methods: {
-        verProdutos(nomeCategoria) {
-            alert(`Exibindo produtos da categoria: ${nomeCategoria}`);
-        },
     },
 };
 </script>
@@ -65,7 +66,6 @@ h3 {
 }
 
 .botao-produtos {
-    margin-top: 10px;
     padding: 10px 20px;
     background-color: #f90;
     color: white;
@@ -77,5 +77,6 @@ h3 {
 
 .botao-produtos:hover {
     background-color: #ff7400;
+    text-decoration: none;
 }
 </style>
