@@ -4,21 +4,15 @@ import { useUserStore } from "@/store/user";
 
 <template>
     <div class="col-md-6 col-sm-12 col-lg-3 mb-4">
-        <div
-            class="card d-flex flex-column justify-content-between bg-white rounded"
-            style="width: 15rem; height: 20rem; position: relative"
-        >
-            <div style="width: 100%; text-align: center">
+        <div class="card bg-white rounded" style="width: 10vw">
+            <div>
                 <img
                     :src="product.imageUrl"
                     :alt="product.name"
-                    class="card-img-top"
+                    class="card-img-top img-fluid"
                 />
             </div>
-            <div
-                class="card-body d-flex flex-column justify-content-between"
-                style="width: 100%; position: absolute; bottom: 0"
-            >
+            <div class="card-body justify-content-between">
                 <div>
                     <h5 class="card-title text-truncate">
                         {{ product.name }}
@@ -27,7 +21,7 @@ import { useUserStore } from "@/store/user";
                 </div>
                 <button
                     v-if="useUserStore().user"
-                    class="btn btn-primary mt-4"
+                    class="btn btn-primary mt-4 w-100"
                     @click="addToCart()"
                 >
                     <i class="bi bi-cart-plus"></i>
@@ -40,20 +34,17 @@ import { useUserStore } from "@/store/user";
 <script>
 import { useCartStore } from "@/store/cart";
 import OrderDataService from "../../services/OrderDataService";
-import SideCart from "../SideCart.vue";
 
 export default {
-    name: "product-card",
-    components: { SideCart },
+    name: "ProductCard",
     props: {
         product: Object,
     },
     methods: {
         addToCart() {
-            OrderDataService.addProduct(
-                useCartStore().cart.id,
-                this.product.id
-            );
+            OrderDataService.addProduct(useCartStore().cart.id, this.product.id)
+                .then(() => this.$emit("productAdded"))
+                .catch((err) => console.log(err));
         },
     },
 };
