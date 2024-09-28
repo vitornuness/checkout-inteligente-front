@@ -1,41 +1,33 @@
+import { useUserStore } from "@/store/user";
 import http from "../http-common";
 
 class ProductDataService {
-    getAll(category = null, sort = null) {
-        return http.get("/products", {
-            params: {
-                category: category,
-                sort: sort,
-            },
-        });
+    getAll() {
+        return http.get("/products");
     }
 
     get(id) {
         return http.get(`/products/${id}`);
     }
 
-    create(data, token) {
+    create(data) {
         return http.post("/products", data, {
             headers: {
-                Authorization: `Bearer ${token}`,
+                "Content-Type": "multipart/form-data",
             },
         });
     }
 
-    update(id, data, token) {
+    update(id, data) {
         return http.put(`/products/${id}`, data, {
             headers: {
-                Authorization: `Bearer ${token}`,
+                "Content-Type": "multipart/form-data",
             },
         });
     }
 
-    delete(id, token) {
-        return http.delete(`/products/${id}`, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        });
+    delete(id) {
+        return http.delete(`/products/${id}`);
     }
 }
 

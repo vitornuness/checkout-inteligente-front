@@ -2,7 +2,15 @@
     <div class="container center">
         <h1>Editar produto</h1>
 
-        <div class="form row g-3 m-4 needs-validation" novalidate>
+        <div v-if="submitted" class="alert alert-success">
+            Produto atualizado com sucesso.
+        </div>
+
+        <div
+            v-if="product"
+            class="form row g-3 m-4 needs-validation"
+            novalidate
+        >
             <div class="row">
                 <label for="name" class="form-label">Nome</label>
                 <input
@@ -16,14 +24,14 @@
                 />
             </div>
             <div class="row">
-                <img
-                    :src="`http://localhost:5102/api/images/${product.imageId}`"
-                    :alt="product.name"
-                    width="100vh"
-                />
-            </div>
-            <div class="row">
                 <label for="image" class="form-label">Imagem</label>
+                <div class="row my-4">
+                    <img
+                        :src="fileUrl ?? product.imageUrl"
+                        :alt="product.name"
+                        style="width: auto; height: 20vh"
+                    />
+                </div>
                 <input
                     type="file"
                     class="form-control mb-4"
@@ -40,9 +48,13 @@
                     name="category"
                     id="category"
                     class="form-control"
-                    v-model="product.categoryId"
+                    v-model="product.category.id"
                 >
-                    <option v-for="category in categories" :value="category.id">
+                    <option
+                        v-for="category in categories"
+                        :key="category.id"
+                        :value="category.id"
+                    >
                         {{ category.name }}
                     </option>
                 </select>
@@ -94,25 +106,16 @@
 <script>
 import ProductDataService from "../services/ProductDataService";
 import CategoryDataService from "../services/CategoryDataService";
-import ImageDataService from "../services/ImageDataService";
-
-import { session } from "../session";
+import { ref } from "vue";
 
 export default {
     name: "product-edit",
     data() {
         return {
-            product: {
-                id: "",
-                name: "",
-                image: "",
-                quantity: "",
-                price: "",
-                categoryId: "",
-                imageId: "",
-            },
-            file: "",
-            imageUpdated: false,
+            submitted: false,
+            product: ref(null),
+            file: null,
+            fileUrl: null,
             categories: [],
         };
     },
@@ -136,30 +139,29 @@ export default {
                 });
         },
         updateProduct() {
+            var formData = new FormData();
+            formData.append("file", this.file);
+
             var data = {
                 id: this.product.id,
                 name: this.product.name,
                 quantity: this.product.quantity,
                 price: this.product.price,
-                categoryId: this.product.categoryId,
-                imageId: this.product.imageId,
+                categoryId: this.product.category.id,
+                image: formData.get("file"),
             };
 
-            var formData = new FormData();
-            formData.append("file", this.file);
-
-            ProductDataService.update(data.id, data, session().token)
+            ProductDataService.update(data.id, data)
                 .then((res) => {
-                    if (this.imageUpdated) {
-                        ImageDataService.update(this.product.imageId, formData)
-                            .then((res) => {
-                                this.submitted = true;
-                            })
-                            .catch((err) => {
-                                console.log(err);
-                            });
-                    }
+                    this.submitted = true;
+                    this.file = null;
+                    this.fileUrl = null;
+                    this.$refs.image.value = null;
                     this.getProduct(data.id);
+
+                    setTimeout(() => {
+                        this.submitted = false;
+                    }, 3000);
                 })
                 .catch((err) => {
                     console.log(err);
@@ -168,10 +170,15 @@ export default {
         setImage() {
             var file = this.$refs.image.files.item(0);
             this.file = file;
-            this.imageUpdated = true;
+
+            if (file) {
+                this.fileUrl = URL.createObjectURL(file);
+            } else {
+                this.fileUrl = null;
+            }
         },
         deleteProduct() {
-            ProductDataService.delete(this.product.id, session().id)
+            ProductDataService.delete(this.product.id)
                 .then(this.$router.push("/products"))
                 .catch((err) => {
                     console.log(res);

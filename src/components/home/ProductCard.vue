@@ -1,3 +1,7 @@
+<script setup>
+import { useUserStore } from "@/store/user";
+</script>
+
 <template>
     <div class="col-md-6 col-sm-12 col-lg-3 mb-4">
         <div
@@ -6,7 +10,7 @@
         >
             <div style="width: 100%; text-align: center">
                 <img
-                    :src="`http://localhost:5102/api/images/${product.imageId}`"
+                    :src="product.imageUrl"
                     :alt="product.name"
                     class="card-img-top"
                 />
@@ -19,7 +23,11 @@
                     <h5 class="card-title">{{ product.name }}</h5>
                     <p class="card-text">R$ {{ product.price.toFixed(2) }}</p>
                 </div>
-                <button class="btn btn-primary" @click="addToCart()">
+                <button
+                    v-if="useUserStore().user"
+                    class="btn btn-primary"
+                    @click="addToCart()"
+                >
                     Adicionar
                 </button>
             </div>
@@ -28,8 +36,8 @@
 </template>
 
 <script>
+import { useCartStore } from "@/store/cart";
 import OrderDataService from "../../services/OrderDataService";
-import { session } from "../../session";
 
 export default {
     name: "product-card",
@@ -46,22 +54,9 @@ export default {
     methods: {
         addToCart() {
             OrderDataService.addProduct(
-                session().cart.id,
-                this.product.id,
-                session().token
-            )
-                .then(() => {
-                    OrderDataService.getOrderByUser(
-                        session().user.id,
-                        session().token
-                    )
-                        .then((res) => {
-                            session().cart = res.data;
-                        })
-                        .catch((err) => console.log(err));
-                    this.$emit("productAdded");
-                })
-                .catch((err) => console.log(err));
+                useCartStore().cart.id,
+                this.product.id
+            );
         },
     },
 };

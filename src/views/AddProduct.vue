@@ -30,6 +30,13 @@
                 </div>
                 <div class="row">
                     <label for="image" class="form-label">Imagem</label>
+                    <div v-if="fileUrl" class="row my-4">
+                        <img
+                            :src="fileUrl"
+                            :alt="product.name"
+                            style="width: auto; height: 20vh"
+                        />
+                    </div>
                     <input
                         type="file"
                         class="form-control mb-4"
@@ -105,9 +112,6 @@
 <script>
 import ProductDataService from "../services/ProductDataService";
 import CategoryDataService from "../services/CategoryDataService";
-import ImageDataService from "../services/ImageDataService";
-
-import { session } from "../session";
 
 export default {
     name: "new-product",
@@ -120,7 +124,8 @@ export default {
                 price: "",
                 categoryId: "",
             },
-            file: "",
+            file: null,
+            fileUrl: null,
             categories: [],
         };
     },
@@ -135,26 +140,20 @@ export default {
                 });
         },
         saveProduct() {
+            var formData = new FormData();
+            formData.append("file", this.file);
+
             var data = {
                 name: this.product.name,
                 quantity: this.product.quantity,
                 price: this.product.price,
                 categoryId: this.product.categoryId,
+                image: formData.get("file"),
             };
 
-            var formData = new FormData();
-            formData.append("file", this.file);
-
-            ProductDataService.create(data, session().token)
+            ProductDataService.create(data)
                 .then((res) => {
-                    formData.append("productId", res.data.id);
-                    ImageDataService.create(formData)
-                        .then((res) => {
-                            this.submitted = true;
-                        })
-                        .catch((err) => {
-                            console.log(err);
-                        });
+                    this.submitted = true;
                 })
                 .catch((err) => {
                     console.log(err);
@@ -163,6 +162,12 @@ export default {
         setImage() {
             var file = this.$refs.image.files.item(0);
             this.file = file;
+
+            if (file) {
+                this.fileUrl = URL.createObjectURL(file);
+            } else {
+                this.fileUrl = null;
+            }
         },
         newProduct() {
             (this.submitted = false), (this.product = {});

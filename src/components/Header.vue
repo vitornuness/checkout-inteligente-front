@@ -1,6 +1,6 @@
 <script setup>
 import { RouterLink } from "vue-router";
-import { session } from "../session";
+import { useUserStore } from "../store/user";
 </script>
 
 <template>
@@ -42,7 +42,7 @@ import { session } from "../session";
                         id="navbarSupportedContent"
                     >
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0 text-white">
-                            <div v-if="!session().token">
+                            <div v-if="!useUserStore().user">
                                 <li class="nav-item d-flex mt-2">
                                     <RouterLink
                                         to="/login"
@@ -80,13 +80,12 @@ import { session } from "../session";
                                         <i class="bi bi-person-fill"></i>
                                     </a>
                                     <ul class="dropdown-menu">
-                                        <li>
-                                            <a class="dropdown-item" href="#"
-                                                >Perfil</a
-                                            >
-                                        </li>
-                                        <li><hr class="dropdown-divider" /></li>
-                                        <div v-if="session().user.admin">
+                                        <div
+                                            v-if="
+                                                useUserStore().user.role ===
+                                                'ADMIN'
+                                            "
+                                        >
                                             <li>
                                                 <router-link
                                                     class="dropdown-item"
@@ -108,21 +107,8 @@ import { session } from "../session";
                                                     >Campanhas</router-link
                                                 >
                                             </li>
-                                            <li>
-                                                <router-link
-                                                    class="dropdown-item"
-                                                    to="/orders"
-                                                    >Pedidos</router-link
-                                                >
-                                            </li>
-                                            <li>
-                                                <router-link
-                                                    class="dropdown-item"
-                                                    to="/users"
-                                                    >Usuários</router-link
-                                                >
-                                            </li>
                                         </div>
+                                        <li><hr class="dropdown-divider" /></li>
                                         <li>
                                             <button
                                                 class="dropdown-item"
@@ -147,7 +133,7 @@ export default {
     name: "home",
     methods: {
         logout() {
-            session().clearData();
+            useUserStore().setUser(null);
             location.reload();
         },
     },

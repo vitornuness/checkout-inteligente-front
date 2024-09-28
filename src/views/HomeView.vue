@@ -20,8 +20,6 @@ import ProductCommon from "@/components/home/ProductCommon.vue";
 
 
 
-import { session } from "../session";
-
 export default {
   name: "home",
   components: {

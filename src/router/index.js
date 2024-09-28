@@ -16,7 +16,7 @@ import CampaignView from "../views/CampaignView.vue";
 import AddCampaign from "../views/AddCampaign.vue";
 import EditCampaign from "../views/EditCampaign.vue";
 
-import { session } from "../session";
+import { useUserStore } from "../store/user";
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -31,7 +31,7 @@ const router = createRouter({
             name: "cart",
             component: CartView,
             beforeEnter: (to, from) => {
-                if (!session().token) {
+                if (!useUserStore().user) {
                     return "/login";
                 }
             },
@@ -41,11 +41,11 @@ const router = createRouter({
             name: "checkout",
             component: CheckoutView,
             beforeEnter: (to, from) => {
-                if (!session().token) {
+                if (!useUserStore().user) {
                     return "/login";
                 }
 
-                if (session().cart.items.length === 0) {
+                if (useUserStore().cart.items.length === 0) {
                     return "/cart";
                 }
             },
@@ -65,11 +65,11 @@ const router = createRouter({
             name: "products",
             component: ProductView,
             beforeEnter: (to, from) => {
-                if (!session().token) {
+                if (!useUserStore().user) {
                     return "/login";
                 }
 
-                if (!session().user.admin) {
+                if (useUserStore().user.role !== "ADMIN") {
                     return "/";
                 }
             },
@@ -79,11 +79,11 @@ const router = createRouter({
             name: "productsNew",
             component: AddProduct,
             beforeEnter: (to, from) => {
-                if (!session().token) {
+                if (!useUserStore().user) {
                     return "/login";
                 }
 
-                if (!session().user.admin) {
+                if (useUserStore().user.role !== "ADMIN") {
                     return "/";
                 }
             },
@@ -93,11 +93,11 @@ const router = createRouter({
             name: "productsEdit",
             component: EditProduct,
             beforeEnter: (to, from) => {
-                if (!session().token) {
+                if (!useUserStore().user) {
                     return "/login";
                 }
 
-                if (!session().user.admin) {
+                if (useUserStore().user.role !== "ADMIN") {
                     return "/";
                 }
             },
@@ -107,11 +107,11 @@ const router = createRouter({
             name: "categories",
             component: CategoryView,
             beforeEnter: (to, from) => {
-                if (!session().token) {
+                if (!useUserStore().user) {
                     return "/login";
                 }
 
-                if (!session().user.admin) {
+                if (useUserStore().user.role !== "ADMIN") {
                     return "/";
                 }
             },
@@ -121,11 +121,11 @@ const router = createRouter({
             name: "categoriesNew",
             component: AddCategory,
             beforeEnter: (to, from) => {
-                if (!session().token) {
+                if (!useUserStore().user) {
                     return "/login";
                 }
 
-                if (!session().user.admin) {
+                if (useUserStore().user.role !== "ADMIN") {
                     return "/";
                 }
             },
@@ -135,11 +135,11 @@ const router = createRouter({
             name: "categoriesEdit",
             component: EditCategory,
             beforeEnter: (to, from) => {
-                if (!session().token) {
+                if (!useUserStore().user) {
                     return "/login";
                 }
 
-                if (!session().user.admin) {
+                if (useUserStore().user.role !== "ADMIN") {
                     return "/";
                 }
             },
@@ -149,11 +149,11 @@ const router = createRouter({
             name: "campaigns",
             component: CampaignView,
             beforeEnter: (to, from) => {
-                if (!session().token) {
+                if (!useUserStore().user) {
                     return "/login";
                 }
 
-                if (!session().user.admin) {
+                if (useUserStore().user.role !== "ADMIN") {
                     return "/";
                 }
             },
@@ -163,11 +163,11 @@ const router = createRouter({
             name: "campaignsNew",
             component: AddCampaign,
             beforeEnter: (to, from) => {
-                if (!session().token) {
+                if (!useUserStore().user) {
                     return "/login";
                 }
 
-                if (!session().user.admin) {
+                if (useUserStore().user.role !== "ADMIN") {
                     return "/";
                 }
             },
@@ -177,11 +177,11 @@ const router = createRouter({
             name: "campaignsEdit",
             component: EditCampaign,
             beforeEnter: (to, from) => {
-                if (!session().token) {
+                if (!useUserStore().user) {
                     return "/login";
                 }
 
-                if (!session().user.admin) {
+                if (useUserStore().user.role !== "ADMIN") {
                     return "/";
                 }
             },
@@ -191,11 +191,11 @@ const router = createRouter({
             name: "orders",
             component: OrderView,
             beforeEnter: (to, from) => {
-                if (!session().token) {
+                if (!useUserStore().user) {
                     return "/login";
                 }
 
-                if (!session().user.admin) {
+                if (useUserStore().user.role !== "ADMIN") {
                     return "/";
                 }
             },
@@ -205,11 +205,11 @@ const router = createRouter({
             name: "users",
             component: UserView,
             beforeEnter: (to, from) => {
-                if (!session().token) {
+                if (!useUserStore().user) {
                     return "/login";
                 }
 
-                if (!session().user.admin) {
+                if (useUserStore().user.role !== "ADMIN") {
                     return "/";
                 }
             },

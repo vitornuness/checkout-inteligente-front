@@ -7,12 +7,15 @@
                         <div class="produtos">
                             <div
                                 class="card mb-3 mt-2"
-                                v-if="cart.items.length > 0"
+                                v-if="cart?.items?.length > 0"
                             >
-                                <div class="row g-0" v-for="item in cart.items">
+                                <div
+                                    class="row g-0"
+                                    v-for="item in cart?.items"
+                                >
                                     <div class="col-md-2">
                                         <img
-                                            :src="`http://localhost:5102/api/images/${item.product.imageId}`"
+                                            :src="`${item.product.imageUrl}`"
                                             class="img-fluid mt-3"
                                             style="height: 5rem"
                                             :alt="item.product.name"
@@ -93,7 +96,7 @@
                         <ul class="list-group list-group-flush">
                             <li
                                 class="list-group-item d-flex justify-content-between"
-                                v-for="item in cart.items"
+                                v-for="item in cart?.items"
                             >
                                 <span>{{ item.product.name }}</span>
                                 <span>{{ item.quantity }} Un.</span>
@@ -103,7 +106,7 @@
                                 </span>
                             </li>
                         </ul>
-                        <div class="card-body" v-if="cart.items.length > 0">
+                        <div class="card-body" v-if="cart?.items?.length > 0">
                             <button type="button" class="btn btn-success">
                                 <div class="row">
                                     <router-link
@@ -120,7 +123,7 @@
             </div>
         </div>
     </div>
-    <div class="container">
+    <!-- <div class="container">
         <div
             class="row suggested-products"
             v-if="campaignsProducts.length > 0 && !cart.freeShipping"
@@ -144,14 +147,15 @@
                 />
             </div>
         </div>
-    </div>
+    </div> -->
 </template>
 
 <script>
 import OrderDataService from "@/services/OrderDataService";
 import ProductCard from "../components/home/ProductCard.vue";
 
-import { session } from "../session";
+import { useUserStore } from "../store/user";
+import { ref } from "vue";
 
 export default {
     name: "cart",
@@ -160,85 +164,34 @@ export default {
     },
     data() {
         return {
-            cart: session().cart,
-            products: [],
-            campaignsProducts: [],
+            cart: ref(null),
         };
     },
     methods: {
         getCart() {
-            OrderDataService.getOrderByUser(session().user.id, session().token)
+            OrderDataService.fetchCurrentUserOrder(useUserStore().user.id)
                 .then((res) => {
                     this.cart = res.data;
-                    this.getSuggestions();
                 })
-                .catch((err) => {
-                    console.log(err);
-                });
-        },
-        getSuggestions() {
-            OrderDataService.getSugestions(this.cart.id, false, session().token)
-                .then((res) => {
-                    this.products = res.data;
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
-            OrderDataService.getSugestions(this.cart.id, true, session().token)
-                .then((res) => {
-                    this.campaignsProducts = res.data;
-                })
-                .catch((err) => {
-                    console.log(err);
+                .catch((error) => {
+                    console.log(error);
                 });
         },
         addProduct(productId) {
-            OrderDataService.addProduct(
-                this.cart.id,
-                productId,
-                session().token
-            )
+            OrderDataService.addProduct(this.cart.id, productId)
                 .then((res) => {
-                    OrderDataService.getOrderByUser(
-                        session().user.id,
-                        session().token
-                    )
-                        .then((res) => {
-                            session().cart = res.data;
-                            this.cart = session().cart;
-                            this.getSuggestions();
-                        })
-                        .catch((err) => console.log(err));
+                    this.getCart();
                 })
                 .catch((err) => {
                     console.log(err);
                 });
         },
         removeProduct(productId) {
-            OrderDataService.removeProduct(
-                this.cart.id,
-                productId,
-                session().token
-            )
-                .then((res) => {
-                    OrderDataService.getOrderByUser(
-                        session().user.id,
-                        session().token
-                    )
-                        .then((res) => {
-                            session().cart = res.data;
-                            this.cart = session().cart;
-                            this.getSuggestions();
-                        })
-                        .catch((err) => console.log(err));
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
-        },
-        updateCart() {
-            this.getCart();
-            this.getSuggestions();
+            OrderDataService.removeProduct(this.cart.id, productId).then(
+                (res) => {
+                    this.getCart();
+                }
+            );
         },
     },
     mounted() {
