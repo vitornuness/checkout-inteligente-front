@@ -126,6 +126,7 @@ import { useUserStore } from "../store/user";
             </div>
         </nav>
     </div>
+  </header>
 </template>
 
 <script>
@@ -137,46 +138,58 @@ export default {
             location.reload();
         },
     },
+  },
 };
 </script>
 
 <style>
-.text-white {
-    color: #fff;
-}
-.header {
-    background: #13293d;
-    box-shadow: 0 1px 4px #000;
-}
-
-.navbar-toggler {
-    color: #fff;
-    border: none;
+header {
+  background-color: #2b2b2b;
+  color: white;
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.bi-search {
-    font-size: 14pt !important;
+header h1 {
+  margin: 0;
 }
 
-i,
-.bi {
-    font-size: 20pt;
+.pesquisa {
+  display: flex;
+  align-items: center;
 }
 
-a:hover,
-i:hover,
-.bi:hover {
-    color: #9193b4 !important;
-    transition: 0.5s ease-in-out;
+.pesquisa input {
+  padding: 5px;
+  width: 300px;
+  border: none;
+  border-radius: 4px 0 0 4px;
 }
 
-.dropdown-item:active {
-    background: #9193b4;
+.pesquisa button {
+  padding: 5px 10px;
+  background-color: #ff9900;
+  border: none;
+  color: white;
+  cursor: pointer;
+  border-radius: 0 4px 4px 0;
 }
 
-.right-nav-side {
-    display: flex;
-    justify-content: end;
-    align-items: end;
+.pesquisa button:hover {
+  background-color: #e68a00;
+}
+
+.login a {
+  padding: 5px 10px;
+  border: 1px solid white;
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+}
+
+.login a:hover {
+  background-color: #444;
 }
 </style>
