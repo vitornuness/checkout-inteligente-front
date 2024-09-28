@@ -1,79 +1,92 @@
 <template>
-    <div class="container center">
+    <div class="container center bg-white rounded my-4 py-4">
         <h1>Editar campanha</h1>
 
         <div v-if="submitted" class="alert alert-success">
             Campanha atualizada com sucesso.
         </div>
 
-        <div
-            v-if="campaign"
-            class="form row g-3 m-4 needs-validation"
-            novalidate
-        >
+        <div v-if="campaign" class="form g-3 m-4 needs-validation" novalidate>
             <div class="row">
-                <label for="name" class="form-label">Nome</label>
-                <input
-                    type="text"
-                    class="form-control mb-4"
-                    id="name"
-                    name="name"
-                    placeholder="Campanha exemplo"
-                    required
-                    v-model="campaign.title"
-                />
-            </div>
-
-            <div class="row">
-                <label for="image" class="form-label">Imagem</label>
-                <div class="row my-4">
-                    <img
-                        :src="fileUrl ?? campaign.imageUrl"
-                        :alt="campaign.name"
-                        style="width: auto; height: 20vh"
-                    />
-                </div>
-                <input
-                    type="file"
-                    class="form-control mb-4"
-                    id="image"
-                    ref="image"
-                    accept="image/*"
-                    required
-                    @change="setImage"
-                />
-            </div>
-
-            <div class="row">
-                <div class="form-check form-switch">
+                <div class="col">
+                    <label for="name" class="form-label">Nome</label>
                     <input
-                        class="form-check-input"
-                        type="checkbox"
-                        id="active"
-                        v-model="campaign.active"
+                        type="text"
+                        class="form-control mb-4"
+                        id="name"
+                        name="name"
+                        placeholder="Campanha exemplo"
+                        required
+                        v-model="campaign.title"
                     />
-                    <label class="form-check-label" for="active">Ativa</label>
                 </div>
             </div>
 
-            <div class="row my-4 g-4">
-                <ProductSelector
-                    :products="products"
-                    :selectedProductIds="selectedProductIds"
-                    @update:products="updateSelectedProducts"
-                />
+            <div class="row">
+                <div class="col">
+                    <label for="image" class="form-label">Imagem</label>
+                    <div class="my-4">
+                        <img
+                            :src="fileUrl ?? campaign.imageUrl"
+                            :alt="campaign.name"
+                            style="width: 20vw"
+                        />
+                    </div>
+                    <input
+                        type="file"
+                        class="form-control mb-4"
+                        id="image"
+                        ref="image"
+                        accept="image/*"
+                        required
+                        @change="setImage"
+                    />
+                </div>
             </div>
 
-            <div class="row my-4 g-4">
-                <button class="btn btn-primary" @click="updateCampaign()">
-                    Confirmar
-                </button>
-                <router-link to="/campaigns" class="btn btn-danger"
-                    >Cancelar</router-link
-                >
-                <button class="btn btn-danger" @click="deleteCampaign()">
-                    Deletar
-                </button>
+            <div class="row">
+                <div class="col">
+                    <div class="form-check form-switch">
+                        <input
+                            class="form-check-input"
+                            type="checkbox"
+                            id="active"
+                            v-model="campaign.active"
+                        />
+                        <label class="form-check-label" for="active"
+                            >Ativa</label
+                        >
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <ProductSelector
+                        :products="products"
+                        :selectedProductIds="selectedProductIds"
+                        @update:products="updateSelectedProducts"
+                    />
+                </div>
+            </div>
+
+            <div class="row my-4 justify-content-end">
+                <div class="col">
+                    <button class="btn btn-danger" @click="deleteCampaign()">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </div>
+                <div class="col d-flex flex-row">
+                    <router-link to="/campaigns" class="btn btn-danger">
+                        <strong>Cancelar</strong>
+                    </router-link>
+                    <button
+                        class="btn btn-primary mx-4"
+                        @click="updateCampaign()"
+                    >
+                        <strong>Confirmar</strong>
+                    </button>
+                </div>
             </div>
         </div>
     </div>

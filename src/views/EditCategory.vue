@@ -1,57 +1,64 @@
 <template>
-    <div class="container center">
+    <div class="container center bg-white rounded py-4 my-4">
         <h1>Editar categoria</h1>
 
         <div v-if="submitted" class="alert alert-success">
             Categoria atualizada com sucesso.
         </div>
 
-        <div
-            v-if="category"
-            class="form row g-3 m-4 needs-validation"
-            novalidate
-        >
+        <div v-if="category" class="form g-3 m-4 needs-validation" novalidate>
             <div class="row">
-                <label for="name" class="form-label">Nome</label>
-                <input
-                    type="text"
-                    class="form-control mb-4"
-                    id="name"
-                    name="name"
-                    placeholder="Categoria exemplo"
-                    required
-                    v-model="category.name"
-                />
-            </div>
-            <div class="row">
-                <label for="image" class="form-label">Imagem</label>
-                <div class="row my-4">
-                    <img
-                        :src="fileUrl ?? category.imageUrl"
-                        :alt="category.name"
-                        style="width: auto; height: 20vh"
+                <div class="col">
+                    <label for="name" class="form-label">Nome</label>
+                    <input
+                        type="text"
+                        class="form-control mb-4"
+                        id="name"
+                        name="name"
+                        placeholder="Categoria exemplo"
+                        required
+                        v-model="category.name"
                     />
                 </div>
-                <input
-                    type="file"
-                    class="form-control mb-4"
-                    id="image"
-                    ref="image"
-                    accept="image/*"
-                    required
-                    @change="setImage"
-                />
             </div>
-            <div class="row my-4 g-4">
-                <button class="btn btn-primary" @click="updateCategory()">
-                    Confirmar
-                </button>
-                <router-link to="/categories" class="btn btn-danger"
-                    >Cancelar</router-link
-                >
-                <button class="btn btn-danger" @click="deleteCategory()">
-                    Deletar
-                </button>
+            <div class="row">
+                <div class="col">
+                    <label for="image" class="form-label">Imagem</label>
+                    <div class="my-4">
+                        <img
+                            :src="fileUrl ?? category.imageUrl"
+                            :alt="category.name"
+                            style="width: auto; height: 20vh"
+                        />
+                    </div>
+                    <input
+                        type="file"
+                        class="form-control mb-4"
+                        id="image"
+                        ref="image"
+                        accept="image/*"
+                        required
+                        @change="setImage"
+                    />
+                </div>
+            </div>
+            <div class="row my-4 justify-content-end">
+                <div class="col">
+                    <button class="btn btn-danger" @click="deleteCategory()">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </div>
+                <div class="col d-flex flex-row">
+                    <router-link to="/categories" class="btn btn-danger">
+                        <strong>Cancelar</strong>
+                    </router-link>
+                    <button
+                        class="btn btn-primary mx-4"
+                        @click="updateCategory()"
+                    >
+                        <strong>Confirmar</strong>
+                    </button>
+                </div>
             </div>
         </div>
     </div>

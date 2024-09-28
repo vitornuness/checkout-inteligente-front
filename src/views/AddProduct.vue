@@ -1,7 +1,7 @@
 <script setup></script>
 
 <template>
-    <div class="container center">
+    <div class="container center bg-white rounded my-4 py-4">
         <div v-if="submitted">
             <h3>Produto criado com sucesso.</h3>
             <button class="btn btn-primary mt-4" @click="newProduct()">
@@ -15,56 +15,64 @@
         </div>
         <div v-else>
             <h1>Novo produto</h1>
-            <div class="form row g-3 m-4 needs-validation" novalidate>
+            <div class="form g-3 m-4 needs-validation" novalidate>
                 <div class="row">
-                    <label for="name" class="form-label">Nome</label>
-                    <input
-                        type="text"
-                        class="form-control mb-4"
-                        id="name"
-                        name="name"
-                        placeholder="Produto exemplo"
-                        required
-                        v-model="product.name"
-                    />
-                </div>
-                <div class="row">
-                    <label for="image" class="form-label">Imagem</label>
-                    <div v-if="fileUrl" class="row my-4">
-                        <img
-                            :src="fileUrl"
-                            :alt="product.name"
-                            style="width: auto; height: 20vh"
+                    <div class="col">
+                        <label for="name" class="form-label">Nome</label>
+                        <input
+                            type="text"
+                            class="form-control mb-4"
+                            id="name"
+                            name="name"
+                            placeholder="Produto exemplo"
+                            required
+                            v-model="product.name"
                         />
                     </div>
-                    <input
-                        type="file"
-                        class="form-control mb-4"
-                        id="image"
-                        ref="image"
-                        accept="image/*"
-                        required
-                        @change="setImage"
-                    />
                 </div>
                 <div class="row">
-                    <label for="category" class="form-label">Categoria</label>
-                    <select
-                        name="category"
-                        id="category"
-                        class="form-control"
-                        v-model="product.categoryId"
-                    >
-                        <option
-                            v-for="category in categories"
-                            :value="category.id"
+                    <div class="col">
+                        <label for="image" class="form-label">Imagem</label>
+                        <div v-if="fileUrl" class="row my-4">
+                            <img
+                                :src="fileUrl"
+                                :alt="product.name"
+                                style="width: auto; height: 20vh"
+                            />
+                        </div>
+                        <input
+                            type="file"
+                            class="form-control mb-4"
+                            id="image"
+                            ref="image"
+                            accept="image/*"
+                            required
+                            @change="setImage"
+                        />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <label for="category" class="form-label"
+                            >Categoria</label
                         >
-                            {{ category.name }}
-                        </option>
-                    </select>
+                        <select
+                            name="category"
+                            id="category"
+                            class="form-control"
+                            v-model="product.categoryId"
+                        >
+                            <option
+                                v-for="category in categories"
+                                :value="category.id"
+                            >
+                                {{ category.name }}
+                            </option>
+                        </select>
+                    </div>
                 </div>
                 <div class="row mt-4">
-                    <div class="col-md-6">
+                    <div class="col">
                         <label for="quantity" class="form-label"
                             >Quantidade</label
                         >
@@ -79,7 +87,7 @@
                             v-model="product.quantity"
                         />
                     </div>
-                    <div class="col-md-6">
+                    <div class="col">
                         <label for="price" class="form-label"
                             >Preço de venda</label
                         >
@@ -96,13 +104,13 @@
                         />
                     </div>
                 </div>
-                <div class="row my-4 g-4">
-                    <button class="btn btn-primary" @click="saveProduct()">
-                        Adicionar
-                    </button>
+                <div class="row my-4 justify-content-end">
                     <router-link to="/products" class="btn btn-danger"
                         >Cancelar</router-link
                     >
+                    <button class="btn btn-primary mx-4" @click="saveProduct()">
+                        Adicionar
+                    </button>
                 </div>
             </div>
         </div>

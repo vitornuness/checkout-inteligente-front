@@ -1,18 +1,18 @@
 <template>
     <div class="container">
         <div class="row my-4">
-            <div class="col-10">
+            <div class="col-11">
                 <h1>Produtos</h1>
             </div>
-            <div class="col-2">
-                <router-link to="products/new">
-                    <button class="btn btn-primary">Adicionar</button>
+            <div class="col-1">
+                <router-link to="products/new" class="btn btn-primary">
+                    <strong>Adicionar</strong>
                 </router-link>
             </div>
         </div>
         <div class="row mt-4 card">
             <table
-                class="table table-striped table-hover"
+                class="table table-light table-hover"
                 v-if="products.length > 0"
             >
                 <thead>
