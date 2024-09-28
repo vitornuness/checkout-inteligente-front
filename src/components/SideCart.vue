@@ -101,10 +101,27 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="card mb-3 mt-2" v-else>
+                        <div class="card my-4 bg-white" v-else>
                             <p v-if="!loading">Não há produtos no carrinho.</p>
+                            <button
+                                class="btn btn-primary"
+                                data-bs-dismiss="modal"
+                            >
+                                <strong>Continuar comprando</strong>
+                            </button>
                         </div>
-                        <div class="cart-summary" v-if="!loading">
+                        <div
+                            class="cart-summary d-flex flex-row justify-content-between"
+                            v-if="!loading"
+                        >
+                            <RouterLink
+                                v-if="cart?.items.length > 0"
+                                to="/cart"
+                                class="btn btn-success btn-cart"
+                            >
+                                Finalizar
+                                <i class="bi bi-cart-check"></i>
+                            </RouterLink>
                             <h3 class="text-right">
                                 Subtotal:
                                 <strong id="subtotal"
@@ -113,50 +130,68 @@
                                 >
                             </h3>
                         </div>
-                        <div class="cart-actions" v-if="!loading">
-                            <RouterLink
-                                to="/cart"
-                                class="btn btn-primary btn-cart"
-                            >
-                                Ir para o Carrinho
-                            </RouterLink>
-                            <button
-                                type="button"
-                                class="btn btn-secondary"
-                                data-bs-dismiss="modal"
-                            >
-                                Continuar comprando
-                            </button>
+                        <hr />
+                        <div
+                            class="container overflow-auto"
+                            style="height: 45vh"
+                        >
+                            <h5 class="my-4">Não perca a promoção!</h5>
+                            <div class="row flex-nowrap overflow-auto">
+                                <ProductCard
+                                    v-for="product in campaignSuggestions"
+                                    :key="product.id"
+                                    :product="product"
+                                    style="margin-right: 4vw"
+                                    @productAdded="getCart()"
+                                />
+                            </div>
+                            <h5 class="my-4">Para seguir a onda</h5>
+                            <div class="row flex-nowrap overflow-auto">
+                                <ProductCard
+                                    v-for="product in productSuggestions"
+                                    :key="product.id"
+                                    :product="product"
+                                    style="margin-right: 4vw"
+                                    @productAdded="getCart()"
+                                />
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer"></div>
             </div>
         </div>
     </div>
 </template>
-
 <script>
+import CampaignDataService from "@/services/CampaignDataService";
+import CategoryDataService from "@/services/CategoryDataService";
 import OrderDataService from "@/services/OrderDataService";
 import { useCartStore } from "@/store/cart";
 import { useUserStore } from "@/store/user";
 import { ref } from "vue";
 import { RouterLink } from "vue-router";
+import ProductCard from "./home/ProductCard.vue";
+import ProductDataService from "@/services/ProductDataService";
 
 export default {
     name: "side-cart",
+    components: { ProductCard },
     data() {
         return {
             cart: ref(null),
             loading: false,
+            campaignSuggestions: ref([]),
+            productSuggestions: ref([]),
         };
     },
     methods: {
-        getCart() {
+        async getCart() {
             this.loading = true;
             OrderDataService.fetchCurrentUserOrder(useUserStore().user.id)
                 .then((res) => {
                     this.cart = res.data;
+                    this.getCampaignSuggestions();
+                    this.getProductSuggestions();
                 })
                 .catch((error) => {
                     console.log(error);
@@ -191,6 +226,68 @@ export default {
                     this.loading = false;
                 });
         },
+        async getCampaigns() {
+            return CampaignDataService.getAll()
+                .then((res) => {
+                    return res.data;
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        },
+        async getCategories() {
+            return CategoryDataService.getAll()
+                .then((res) => {
+                    return res.data;
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        },
+        async getBestSellers() {
+            return ProductDataService.getBestSellers()
+                .then((res) => {
+                    return res.data;
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        },
+        getCampaignSuggestions() {
+            this.getCampaigns().then((res) => {
+                this.campaignSuggestions = this.filterProductsNotInCart(res);
+            });
+        },
+        async getProductSuggestions() {
+            if (this.cart?.items.length == 0) {
+                this.productSuggestions = await this.getBestSellers();
+            } else {
+                const categories = await this.getCategories();
+                const categoryIds = this.cart.items.map(
+                    (item) => item.product.category.id
+                );
+
+                const filteredCategories = categories.filter((category) =>
+                    categoryIds.includes(category.id)
+                );
+
+                const filteredProducts =
+                    this.filterProductsNotInCart(filteredCategories);
+
+                this.productSuggestions = filteredProducts
+                    .sort((a, b) => b.sales - a.sales)
+                    .slice(0, 15);
+            }
+        },
+        filterProductsNotInCart(items) {
+            const cartProductIds =
+                this.cart?.items.map((item) => item.product.id) || [];
+            return items.flatMap((item) =>
+                item.products.filter(
+                    (product) => !cartProductIds.includes(product.id)
+                )
+            );
+        },
     },
     mounted() {
         this.getCart();
@@ -203,14 +300,14 @@ export default {
     position: fixed;
     right: 0;
     top: 0;
-    height: 100%;
+    height: 100vh;
     margin: 0;
     max-width: none;
     width: 30vw;
 }
 
 .modal-content {
-    height: 100%;
+    height: 100vh;
 }
 
 .modal-body {
@@ -250,7 +347,7 @@ export default {
 }
 
 .product-list {
-    max-height: 70vh;
+    max-height: 30vh;
     margin-bottom: 20px;
     overflow-y: auto;
     overflow-x: hidden;
