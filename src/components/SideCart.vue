@@ -4,6 +4,7 @@
         class="btn"
         data-bs-toggle="modal"
         data-bs-target="#exampleModal"
+        @click="getCart()"
     >
         <i class="bi bi-cart3"></i>
     </button>
@@ -17,65 +18,102 @@
     >
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">
-                        Modal title
-                    </h1>
-                    <button
-                        type="button"
-                        class="btn-close"
-                        data-bs-dismiss="modal"
-                        aria-label="Close"
-                    ></button>
-                </div>
-
-                <!-- Corpo Modal -->
                 <div class="modal-body">
                     <div id="sideCart" class="side-cart">
                         <h2>
-                            Itens no carrinho (<span id="item-count">1</span>)
+                            Itens no carrinho (<span id="item-count">{{
+                                cart ? cart.items.length : ""
+                            }}</span
+                            >)
                         </h2>
-                        <div class="cart-item">
-                            <img src="#" alt="Produto" class="product-image" />
-                            <div class="item-info">
-                                <p class="product-name">Nome do Produto</p>
-                                <p class="product-price" id="product-price">
-                                    R$100,00
-                                </p>
-                                <div class="quantity">
-                                    <button
-                                        class="decrease btn btn-outline-secondary"
-                                        onclick="changeQuantity(-1)"
-                                    >
-                                        -
-                                    </button>
-                                    <input
-                                        type="number"
-                                        value="1"
-                                        class="quantity-input"
-                                        id="quantity-input"
-                                        readonly
-                                    />
-                                    <button
-                                        class="increase btn btn-outline-secondary"
-                                        onclick="changeQuantity(1)"
-                                    >
-                                        +
-                                    </button>
+                        <div
+                            v-if="loading"
+                            class="spinner-border"
+                            role="status"
+                        ></div>
+                        <div
+                            v-if="cart?.items.length > 0 && !loading"
+                            class="product-list flex flex-column"
+                        >
+                            <div
+                                v-for="item in cart?.items"
+                                class="card mb-3 bg-white"
+                                style="max-width: 100vw"
+                            >
+                                <div class="row g-0">
+                                    <div class="col-md-4">
+                                        <img
+                                            :src="item.product.imageUrl"
+                                            class="img-fluid rounded-start"
+                                            :alt="item.product.name"
+                                        />
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="card-body text-right">
+                                            <h5
+                                                class="card-title text-truncate"
+                                            >
+                                                {{ item.product.name }}
+                                            </h5>
+                                            <p class="card-text">
+                                                <strong>
+                                                    R$
+                                                    {{
+                                                        item.product.price.toFixed(
+                                                            2
+                                                        )
+                                                    }}
+                                                </strong>
+                                            </p>
+                                            <div>
+                                                <small>
+                                                    <button
+                                                        class="btn btn-primary"
+                                                        @click="
+                                                            add(item.product.id)
+                                                        "
+                                                        :disabled="loading"
+                                                    >
+                                                        <i
+                                                            class="bi bi-plus-circle"
+                                                        ></i>
+                                                    </button>
+                                                    <span class="mx-4">{{
+                                                        item.quantity
+                                                    }}</span>
+                                                    <button
+                                                        class="btn btn-primary"
+                                                        @click="
+                                                            remove(
+                                                                item.product.id
+                                                            )
+                                                        "
+                                                        :disabled="loading"
+                                                    >
+                                                        <i
+                                                            class="bi bi-dash-circle"
+                                                        ></i>
+                                                    </button>
+                                                </small>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="cart-summary">
-                            <p>
-                                Subtotal:
-                                <strong id="subtotal">R$100,00</strong>
-                            </p>
-                            <p>
-                                Valor com 10% de desconto:
-                                <strong id="discounted-total">R$90,00</strong>
-                            </p>
+                        <div class="card mb-3 mt-2" v-else>
+                            <p v-if="!loading">Não há produtos no carrinho.</p>
                         </div>
-                        <div class="cart-actions">
+                        <div class="cart-summary" v-if="!loading">
+                            <h3 class="text-right">
+                                Subtotal:
+                                <strong id="subtotal"
+                                    >R$
+                                    {{ cart?.totalAmount.toFixed(2) }}</strong
+                                >
+                            </h3>
+                        </div>
+                        <div class="cart-actions" v-if="!loading">
                             <RouterLink
                                 to="/cart"
                                 class="btn btn-primary btn-cart"
@@ -98,6 +136,68 @@
     </div>
 </template>
 
+<script>
+import OrderDataService from "@/services/OrderDataService";
+import { useCartStore } from "@/store/cart";
+import { useUserStore } from "@/store/user";
+import { ref } from "vue";
+import { RouterLink } from "vue-router";
+
+export default {
+    name: "side-cart",
+    data() {
+        return {
+            cart: ref(null),
+            loading: false,
+        };
+    },
+    methods: {
+        getCart() {
+            this.loading = true;
+            OrderDataService.fetchCurrentUserOrder(useUserStore().user.id)
+                .then((res) => {
+                    this.cart = res.data;
+                })
+                .catch((error) => {
+                    console.log(error);
+                })
+                .finally(() => {
+                    this.loading = false;
+                });
+        },
+        add(productId) {
+            this.loading = true;
+            OrderDataService.addProduct(useCartStore().cart.id, productId)
+                .then(() => {
+                    this.getCart();
+                })
+                .catch((error) => {
+                    console.log(error);
+                })
+                .finally(() => {
+                    this.loading = false;
+                });
+        },
+        remove(productId) {
+            this.loading = true;
+            OrderDataService.removeProduct(useCartStore().cart.id, productId)
+                .then(() => {
+                    this.getCart();
+                })
+                .catch((error) => {
+                    console.log(error);
+                })
+                .finally(() => {
+                    this.loading = false;
+                });
+        },
+    },
+    mounted() {
+        this.getCart();
+    },
+};
+</script>
+
 <style>
 .modal-dialog {
     position: fixed;
@@ -106,7 +206,7 @@
     height: 100%;
     margin: 0;
     max-width: none;
-    width: 500px;
+    width: 30vw;
 }
 
 .modal-content {
@@ -149,6 +249,13 @@
     margin-top: 20px;
 }
 
+.product-list {
+    max-height: 70vh;
+    margin-bottom: 20px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
 .product-image {
     width: 60px;
     height: 60px;
@@ -157,34 +264,3 @@
     border-radius: 5px;
 }
 </style>
-
-<script>
-import { RouterLink } from "vue-router";
-
-document.addEventListener("DOMContentLoaded", function () {
-    const unitPrice = 100;
-    const discountRate = 0.1;
-
-    window.changeQuantity = function (amount) {
-        const quantityInput = document.getElementById("quantity-input");
-        const itemCount = document.getElementById("item-count");
-        const subtotal = document.getElementById("subtotal");
-        const discountedTotal = document.getElementById("discounted-total");
-
-        let quantity = parseInt(quantityInput.value) + amount;
-
-        if (quantity < 1) {
-            quantity = 1;
-        }
-
-        quantityInput.value = quantity;
-        itemCount.textContent = quantity;
-
-        const subtotalValue = (unitPrice * quantity).toFixed(2);
-        const discountedValue = (subtotalValue * (1 - discountRate)).toFixed(2);
-
-        subtotal.textContent = `R$${subtotalValue}`;
-        discountedTotal.textContent = `R$${discountedValue}`;
-    };
-});
-</script>
