@@ -1,5 +1,4 @@
 <template>
-
     <div class="container text-center">
         <div class="row align-items-start">
             <div class="card mb-3 mt-5">
@@ -89,8 +88,7 @@
                         >
                             <div class="progress-bar" style="width: 70%"></div>
                         </div> -->
-          </div>
-
+                    </div>
 
                     <div class="card col-md-4">
                         <div class="card-body">
@@ -122,13 +120,9 @@
                             </button>
                         </div>
                     </div>
-
                 </div>
-              </button>
             </div>
-          </div>
         </div>
-      </div>
     </div>
 
     <!-- <div class="container">
@@ -156,7 +150,6 @@
             </div>
         </div>
     </div> -->
-
 </template>
 
 <script>
@@ -167,45 +160,10 @@ import { useUserStore } from "../store/user";
 import { ref } from "vue";
 
 export default {
-  name: "cart",
-  components: {
-    ProductCard,
-  },
-  data() {
-    return {
-      cart: session().cart,
-      products: [],
-      campaignsProducts: [],
-    };
-  },
-  methods: {
-    getCart() {
-      OrderDataService.getOrderByUser(session().user.id, session().token)
-        .then((res) => {
-          this.cart = res.data;
-          this.getSuggestions();
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+    name: "cart",
+    components: {
+        ProductCard,
     },
-    getSuggestions() {
-      OrderDataService.getSugestions(this.cart.id, false, session().token)
-        .then((res) => {
-          this.products = res.data;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-      OrderDataService.getSugestions(this.cart.id, true, session().token)
-        .then((res) => {
-          this.campaignsProducts = res.data;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    },
-
     data() {
         return {
             cart: ref(null),
@@ -237,31 +195,25 @@ export default {
                 }
             );
         },
-
     },
-    updateCart() {
-      this.getCart();
-      this.getSuggestions();
+    mounted() {
+        this.getCart();
     },
-  },
-  mounted() {
-    this.getCart();
-  },
 };
 </script>
 
 <style>
 .produtos {
-  height: 500px;
-  overflow: auto;
+    height: 500px;
+    overflow: auto;
 }
 
 .suggested-products {
-  overflow: auto;
+    overflow: auto;
 }
 
 .product-list {
-  display: flex;
-  flex-wrap: nowrap;
+    display: flex;
+    flex-wrap: nowrap;
 }
 </style>
