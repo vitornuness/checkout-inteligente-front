@@ -1,9 +1,8 @@
 <script setup></script>
 
 <template>
-    <Banner />
+    <Banner :campaigns="campaigns" />
     <BestSellers :products="bestSellers" />
-    <!-- <ProductList :products="products" /> -->
     <Categories :categories="categories" />
     <ProductCommon :products="products" />
 </template>
@@ -69,7 +68,7 @@ export default {
                     this.bestSellers = res.data;
                 })
                 .catch((err) => {
-                    console.lof(err);
+                    console.log(err);
                 });
         },
     },

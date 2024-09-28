@@ -7,12 +7,13 @@ import Footer from "./components/Footer.vue";
 </script>
 
 <template>
-  <Header />
-  <router-view />
+    <Header />
+    <router-view />
+    <Footer />
 </template>
 
 <style>
 body {
-  background: #f7f1f1;
+    background: #f7f1f1;
 }
 </style>

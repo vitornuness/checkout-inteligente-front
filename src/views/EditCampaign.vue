@@ -56,11 +56,13 @@
                 </div>
             </div>
 
-            <ProductSelector
-                :products="products"
-                :selectedProductIds="selectedProductIds"
-                @update:products="updateSelectedProducts"
-            />
+            <div class="row my-4 g-4">
+                <ProductSelector
+                    :products="products"
+                    :selectedProductIds="selectedProductIds"
+                    @update:products="updateSelectedProducts"
+                />
+            </div>
 
             <div class="row my-4 g-4">
                 <button class="btn btn-primary" @click="updateCampaign()">
