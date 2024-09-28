@@ -19,7 +19,23 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-body">
-                    <div id="sideCart" class="side-cart">
+                    <div
+                        v-if="complete"
+                        class="center m-auto"
+                        style="width: 20vw; height: 100vh"
+                    >
+                        <h3 class="my-4">
+                            <strong>Pedido realizado!</strong>
+                        </h3>
+                        <CompleteOrder />
+                        <button
+                            class="btn btn-primary my-4"
+                            data-bs-dismiss="modal"
+                        >
+                            <strong>Voltar à loja</strong>
+                        </button>
+                    </div>
+                    <div v-else id="sideCart" class="side-cart">
                         <h2>
                             Itens no carrinho (<span id="item-count">{{
                                 cart ? cart.items.length : ""
@@ -114,14 +130,14 @@
                             class="cart-summary d-flex flex-row justify-content-between"
                             v-if="!loading"
                         >
-                            <RouterLink
+                            <button
                                 v-if="cart?.items.length > 0"
-                                to="/cart"
                                 class="btn btn-success btn-cart"
+                                @click="finish()"
                             >
                                 Finalizar
                                 <i class="bi bi-cart-check"></i>
-                            </RouterLink>
+                            </button>
                             <h3 class="text-right">
                                 Subtotal:
                                 <strong id="subtotal"
@@ -166,26 +182,29 @@
 import CampaignDataService from "@/services/CampaignDataService";
 import CategoryDataService from "@/services/CategoryDataService";
 import OrderDataService from "@/services/OrderDataService";
+import ProductDataService from "@/services/ProductDataService";
 import { useCartStore } from "@/store/cart";
 import { useUserStore } from "@/store/user";
 import { ref } from "vue";
 import { RouterLink } from "vue-router";
 import ProductCard from "./home/ProductCard.vue";
-import ProductDataService from "@/services/ProductDataService";
+import CompleteOrder from "./images/CompleteOrder.vue";
 
 export default {
     name: "side-cart",
-    components: { ProductCard },
+    components: { ProductCard, CompleteOrder },
     data() {
         return {
             cart: ref(null),
             loading: false,
             campaignSuggestions: ref([]),
             productSuggestions: ref([]),
+            complete: false,
         };
     },
     methods: {
         async getCart() {
+            this.complete = false;
             this.loading = true;
             OrderDataService.fetchCurrentUserOrder(useUserStore().user.id)
                 .then((res) => {
@@ -218,6 +237,30 @@ export default {
             OrderDataService.removeProduct(useCartStore().cart.id, productId)
                 .then(() => {
                     this.getCart();
+                })
+                .catch((error) => {
+                    console.log(error);
+                })
+                .finally(() => {
+                    this.loading = false;
+                });
+        },
+        finish() {
+            this.loading = true;
+            OrderDataService.completeOrder(useCartStore().cart.id)
+                .then(() => {
+                    this.cart = null;
+                    this.complete = true;
+
+                    OrderDataService.fetchCurrentUserOrder(
+                        useUserStore().user.id
+                    )
+                        .then((res) => {
+                            useCartStore().setCart(res.data);
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                        });
                 })
                 .catch((error) => {
                     console.log(error);
