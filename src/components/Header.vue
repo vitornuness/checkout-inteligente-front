@@ -14,19 +14,7 @@ import SideCart from "./SideCart.vue";
                             >Loja</RouterLink
                         >
                     </div>
-                    <div class="col-md-6">
-                        <form class="d-flex" role="search">
-                            <input
-                                class="form-control"
-                                type="search"
-                                placeholder="Procure em toda loja"
-                                aria-label="Procure em toda loja"
-                            />
-                            <button class="btn" type="submit">
-                                <i class="bi bi-search text-white"></i>
-                            </button>
-                        </form>
-                    </div>
+
                     <div>
                         <button
                             class="navbar-toggler"
