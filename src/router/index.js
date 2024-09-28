@@ -15,6 +15,7 @@ import AddCampaign from "../views/AddCampaign.vue";
 import EditCampaign from "../views/EditCampaign.vue";
 
 import { useUserStore } from "../store/user";
+import CampaignProducts from "@/views/CampaignProducts.vue";
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -159,6 +160,11 @@ const router = createRouter({
                     return "/";
                 }
             },
+        },
+        {
+            path: "/campaigns/:id/products",
+            name: "campaignsProducts",
+            component: CampaignProducts,
         },
         {
             path: "/orders",
