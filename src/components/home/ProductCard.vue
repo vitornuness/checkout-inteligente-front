@@ -5,7 +5,7 @@ import { useUserStore } from "@/store/user";
 <template>
     <div class="col-md-6 col-sm-12 col-lg-3 mb-4">
         <div
-            class="card p-2 d-flex flex-column justify-content-between"
+            class="card d-flex flex-column justify-content-between bg-white rounded"
             style="width: 15rem; height: 20rem; position: relative"
         >
             <div style="width: 100%; text-align: center">
@@ -30,7 +30,7 @@ import { useUserStore } from "@/store/user";
                     class="btn btn-primary mt-4"
                     @click="addToCart()"
                 >
-                    Adicionar
+                    <i class="bi bi-cart-plus"></i>
                 </button>
             </div>
         </div>
@@ -46,21 +46,14 @@ export default {
     name: "product-card",
     components: { SideCart },
     props: {
-        product: {
-            id: "",
-            name: "",
-            image: "",
-            category: "",
-            quantity: "",
-            price: "",
-        },
-        methods: {
-            addToCart() {
-                OrderDataService.addProduct(
-                    useCartStore().cart.id,
-                    this.product.id
-                );
-            },
+        product: Object,
+    },
+    methods: {
+        addToCart() {
+            OrderDataService.addProduct(
+                useCartStore().cart.id,
+                this.product.id
+            );
         },
     },
 };

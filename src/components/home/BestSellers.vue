@@ -1,7 +1,7 @@
 <template>
     <div class="mais-vendidos-container">
         <h2>Mais Vendidos da Semana</h2>
-        <div class="carrossel">
+        <div class="carrossel bg-white rounded">
             <Produto
                 v-for="product in products"
                 :key="product.id"
@@ -38,7 +38,6 @@ export default {
     scrollbar-width: none;
     -ms-overflow-style: none;
     gap: 20px;
-    padding: 10px;
     max-width: 100%;
     scroll-behavior: smooth;
 }

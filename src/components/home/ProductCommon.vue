@@ -17,7 +17,7 @@ import { useUserStore } from "@/store/user";
                 class="botao-comprar"
                 @click="addToCart(product.id)"
             >
-                Comprar
+                <i class="bi bi-cart-plus"></i>
             </button>
         </div>
     </div>
