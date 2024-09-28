@@ -1,5 +1,9 @@
 <script setup>
 import AuthDataService from "@/services/AuthDataService";
+import OrderDataService from "@/services/OrderDataService";
+import { useCartStore } from "@/store/cart";
+import { useTokenStore } from "@/store/token";
+import { useUserStore } from "@/store/user";
 </script>
 
 <template>
