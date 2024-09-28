@@ -1,12 +1,11 @@
 <script setup></script>
 
 <template>
-  <Banner />
-  <BestSellers />
-  <ProductList :products="products" />
-  <Categories />
-  <ProductCommon />
-
+    <Banner />
+    <BestSellers :products="bestSellers" />
+    <!-- <ProductList :products="products" /> -->
+    <Categories :categories="categories" />
+    <ProductCommon :products="products" />
 </template>
 
 <script>
@@ -17,68 +16,85 @@ import ProductDataService from "../services/ProductDataService";
 import CampaignDataService from "../services/CampaignDataService";
 import Categories from "../components/home/Categories.vue";
 import ProductCommon from "@/components/home/ProductCommon.vue";
-
-
+import CategoryDataService from "@/services/CategoryDataService";
 
 export default {
-  name: "home",
-  components: {
-    Banner,
-    BestSellers,
-    ProductList,
-    Categories,
-    ProductCommon,
-
-  },
-  data() {
-    return {
-      campaigns: [],
-      products: [],
-    };
-  },
-  methods: {
-    getAllProducts() {
-      ProductDataService.getAll()
-        .then((res) => {
-          this.products = res.data;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+    name: "home",
+    components: {
+        Banner,
+        BestSellers,
+        ProductList,
+        Categories,
+        ProductCommon,
     },
-    getAllCampaigns() {
-      CampaignDataService.getAll()
-        .then((res) => {
-          this.campaigns = res.data;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+    data() {
+        return {
+            campaigns: [],
+            categories: [],
+            products: [],
+            bestSellers: [],
+        };
     },
-  },
-  mounted() {
-    this.getAllProducts();
-    this.getAllCampaigns();
-    if (session.token) {
-      this.getOrder();
-    }
-  },
+    methods: {
+        getAllProducts() {
+            ProductDataService.getAll()
+                .then((res) => {
+                    this.products = res.data;
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        },
+        getAllCampaigns() {
+            CampaignDataService.getAll()
+                .then((res) => {
+                    this.campaigns = res.data;
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        },
+        getCategories() {
+            CategoryDataService.getAll()
+                .then((res) => {
+                    this.categories = res.data;
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        },
+        getBestSellers() {
+            ProductDataService.getBestSellers()
+                .then((res) => {
+                    this.bestSellers = res.data;
+                })
+                .catch((err) => {
+                    console.lof(err);
+                });
+        },
+    },
+    mounted() {
+        this.getAllProducts();
+        this.getAllCampaigns();
+        this.getCategories();
+        this.getBestSellers();
+    },
 };
 </script>
 
 <style>
 .pagination-content {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .actions {
-  display: flex;
-  gap: 10px;
+    display: flex;
+    gap: 10px;
 }
 
 .bi {
-  color: white;
+    color: white;
 }
 </style>

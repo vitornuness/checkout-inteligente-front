@@ -20,12 +20,14 @@ import { useUserStore } from "@/store/user";
                 style="width: 100%; position: absolute; bottom: 0"
             >
                 <div>
-                    <h5 class="card-title">{{ product.name }}</h5>
+                    <h5 class="card-title text-truncate">
+                        {{ product.name }}
+                    </h5>
                     <p class="card-text">R$ {{ product.price.toFixed(2) }}</p>
                 </div>
                 <button
                     v-if="useUserStore().user"
-                    class="btn btn-primary"
+                    class="btn btn-primary mt-4"
                     @click="addToCart()"
                 >
                     Adicionar
@@ -74,14 +76,16 @@ export default {
 }
 
 .btn-primary {
-    background: #13293d;
+    background-color: #007bff;
+    color: white;
+    padding: 10px;
     border: none;
-    width: 100%;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
 .btn-primary:hover {
-    background: #13293d;
-    opacity: 0.9;
-    transition: 0.5s ease-in-out;
+    background-color: #0056b3;
 }
 </style>
