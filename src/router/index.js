@@ -1,7 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
-import CartView from "../views/CartView.vue";
-import CheckoutView from "../views/CheckoutView.vue";
 import LoginView from "../views/LoginView.vue";
 import RegisterView from "../views/RegisterView.vue";
 import ProductView from "../views/ProductView.vue";
@@ -25,30 +23,6 @@ const router = createRouter({
             path: "/",
             name: "home",
             component: HomeView,
-        },
-        {
-            path: "/cart",
-            name: "cart",
-            component: CartView,
-            beforeEnter: (to, from) => {
-                if (!useUserStore().user) {
-                    return "/login";
-                }
-            },
-        },
-        {
-            path: "/checkout",
-            name: "checkout",
-            component: CheckoutView,
-            beforeEnter: (to, from) => {
-                if (!useUserStore().user) {
-                    return "/login";
-                }
-
-                if (useUserStore().cart.items.length === 0) {
-                    return "/cart";
-                }
-            },
         },
         {
             path: "/login",
