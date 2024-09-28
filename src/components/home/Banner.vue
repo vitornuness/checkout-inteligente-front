@@ -17,11 +17,13 @@
                     class="carousel-item"
                     :class="{ active: index === 0 }"
                 >
-                    <img
-                        :src="campaign.imageUrl"
-                        class="d-block w-100"
-                        :alt="campaign.name"
-                    />
+                    <RouterLink :to="`/campaigns/${campaign.id}/products`">
+                        <img
+                            :src="campaign.imageUrl"
+                            class="d-block w-100"
+                            :alt="campaign.name"
+                        />
+                    </RouterLink>
                     <div class="carousel-caption d-none d-md-block">
                         <h5>{{ campaign.name }}</h5>
                     </div>
@@ -57,6 +59,8 @@
 </template>
 
 <script>
+import { RouterLink } from "vue-router";
+
 export default {
     props: {
         campaigns: {
