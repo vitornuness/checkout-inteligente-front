@@ -1,56 +1,72 @@
 <template>
-    <div class="container-fluid banner">
-        <div
-            id="carouselExampleIndicators"
-            class="carousel slide carousel-fade"
-            data-bs-ride="carousel"
-        >
+    <section class="banner">
+        <div id="carrosselBanner" class="carousel slide" data-ride="carousel">
+            <ol class="carousel-indicators">
+                <li
+                    v-for="(campaign, index) in campaigns"
+                    :key="campaign.id"
+                    data-target="#carrosselBanner"
+                    :data-slide-to="index"
+                    :class="{ active: index === 0 }"
+                ></li>
+            </ol>
             <div class="carousel-inner">
                 <div
-                    class="carousel-item active"
-                    v-for="campaign in campaigns"
+                    v-for="(campaign, index) in campaigns"
                     :key="campaign.id"
+                    class="carousel-item"
+                    :class="{ active: index === 0 }"
                 >
-                    <!-- <img
-                        :src="campaign.image"
-                        class="d-block w-100"
-                        :alt="campaign.title"
-                    /> -->
-                    <p class="banner-item">{{ campaign.title }}</p>
+                    <RouterLink :to="`/campaigns/${campaign.id}/products`">
+                        <img
+                            :src="campaign.imageUrl"
+                            class="d-block w-100"
+                            :alt="campaign.name"
+                        />
+                    </RouterLink>
+                    <div class="carousel-caption d-none d-md-block">
+                        <h5>{{ campaign.name }}</h5>
+                    </div>
                 </div>
             </div>
-            <button
+
+            <a
                 class="carousel-control-prev"
-                type="button"
-                data-bs-target="#carouselExampleIndicators"
-                data-bs-slide="prev"
+                href="#carrosselBanner"
+                role="button"
+                data-slide="prev"
             >
                 <span
                     class="carousel-control-prev-icon"
                     aria-hidden="true"
                 ></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button
+                <span class="sr-only">Anterior</span>
+            </a>
+            <a
                 class="carousel-control-next"
-                type="button"
-                data-bs-target="#carouselExampleIndicators"
-                data-bs-slide="next"
+                href="#carrosselBanner"
+                role="button"
+                data-slide="next"
             >
                 <span
                     class="carousel-control-next-icon"
                     aria-hidden="true"
                 ></span>
-                <span class="visually-hidden">Next</span>
-            </button>
+                <span class="sr-only">Próximo</span>
+            </a>
         </div>
-    </div>
+    </section>
 </template>
 
 <script>
+import { RouterLink } from "vue-router";
+
 export default {
     props: {
-        campaigns: Array,
+        campaigns: {
+            type: Array,
+            required: true,
+        },
     },
 };
 </script>
@@ -60,7 +76,7 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
-    widows: 100%;
+    width: 100%;
     background-color: #dddd;
     height: 400px;
 }

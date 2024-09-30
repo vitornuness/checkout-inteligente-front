@@ -2,7 +2,11 @@ import http from "../http-common";
 
 class AuthDataService {
     login(data) {
-        return http.post("/auth/signIn", data);
+        return http.post("/auth/login", data);
+    }
+
+    register(data) {
+        return http.post("/auth/register", data);
     }
 }
 

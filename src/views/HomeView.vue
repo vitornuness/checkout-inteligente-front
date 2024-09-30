@@ -1,28 +1,37 @@
 <script setup></script>
 
 <template>
-    <!-- <Banner v-if="campaigns.length > 0" :campaigns="campaigns" /> -->
-    <ProductList :products="products" />
+    <Banner :campaigns="campaigns" />
+    <BestSellers :products="bestSellers" />
+    <Categories :categories="categories" />
+    <ProductCommon :products="products" />
 </template>
 
 <script>
 import Banner from "../components/home/Banner.vue";
+import BestSellers from "../components/home/BestSellers.vue";
 import ProductList from "../components/home/ProductList.vue";
 import ProductDataService from "../services/ProductDataService";
 import CampaignDataService from "../services/CampaignDataService";
-
-import { session } from "../session";
+import Categories from "../components/home/Categories.vue";
+import ProductCommon from "@/components/home/ProductCommon.vue";
+import CategoryDataService from "@/services/CategoryDataService";
 
 export default {
     name: "home",
     components: {
         Banner,
+        BestSellers,
         ProductList,
+        Categories,
+        ProductCommon,
     },
     data() {
         return {
             campaigns: [],
+            categories: [],
             products: [],
+            bestSellers: [],
         };
     },
     methods: {
@@ -44,13 +53,30 @@ export default {
                     console.log(err);
                 });
         },
+        getCategories() {
+            CategoryDataService.getAll()
+                .then((res) => {
+                    this.categories = res.data;
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        },
+        getBestSellers() {
+            ProductDataService.getBestSellers()
+                .then((res) => {
+                    this.bestSellers = res.data;
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        },
     },
     mounted() {
         this.getAllProducts();
         this.getAllCampaigns();
-        if (session.token) {
-            this.getOrder();
-        }
+        this.getCategories();
+        this.getBestSellers();
     },
 };
 </script>

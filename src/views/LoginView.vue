@@ -1,7 +1,7 @@
 <script setup></script>
 
 <template>
-    <div class="container center">
+    <div class="container center bg-white py-4 rounded">
         <h1>Entre na sua conta</h1>
         <div v-if="messages.length > 0" class="text-danger">
             <ul>
@@ -10,7 +10,7 @@
                 </li>
             </ul>
         </div>
-        <div class="form row g-3 m-4 needs-validation" novalidate>
+        <div class="form g-3 mx-auto my-4 py-4 needs-validation" novalidate>
             <div class="row">
                 <label for="email" class="form-label">E-mail</label>
                 <input
@@ -35,13 +35,14 @@
                     required
                 />
             </div>
-            <div class="row my-4">
+            <div class="row my-4 justify-content-end align-middle">
+                <router-link to="/signup">Não possui uma conta?</router-link>
                 <button
-                    class="btn btn-primary"
+                    class="btn btn-primary mx-4"
                     @click="login()"
                     @keyup.enter="login()"
                 >
-                    Entrar
+                    <strong>Entrar</strong>
                 </button>
             </div>
         </div>
@@ -49,9 +50,11 @@
 </template>
 
 <script>
+import { useUserStore } from "@/store/user";
 import AuthDataService from "../services/AuthDataService";
-import OrderDataService from "../services/OrderDataService";
-import { session } from "../session";
+import { useTokenStore } from "@/store/token";
+import { useCartStore } from "@/store/cart";
+import OrderDataService from "@/services/OrderDataService";
 
 export default {
     name: "login",
@@ -73,16 +76,11 @@ export default {
             };
             AuthDataService.login(data)
                 .then((res) => {
-                    var user = res.data.user;
-                    var token = res.data.token;
-                    OrderDataService.getOrderByUser(user.id, token)
-                        .then((res) => {
-                            session().setData(user, res.data, token);
-                            this.$router.push("/");
-                        })
-                        .catch((err) => {
-                            console.log(err);
-                        });
+                    const userStore = useUserStore();
+                    userStore.setUser(res.data.user);
+                    useTokenStore().setToken(res.data.token);
+                    this.fetchUserOrder();
+                    this.$router.push("/");
                 })
                 .catch((err) => {
                     console.log(err);
@@ -90,6 +88,16 @@ export default {
                         this.messages.push("Credenciais inválidas.");
                     }
                 });
+        },
+
+        fetchUserOrder() {
+            const userStore = useUserStore();
+            const cartStore = useCartStore();
+            OrderDataService.fetchCurrentUserOrder(userStore.user.id).then(
+                (res) => {
+                    cartStore.setCart(res.data);
+                }
+            );
         },
     },
 };
@@ -105,6 +113,6 @@ export default {
 }
 
 .form {
-    width: 500px;
+    width: 20vw;
 }
 </style>

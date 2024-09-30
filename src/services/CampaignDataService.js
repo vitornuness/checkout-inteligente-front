@@ -5,20 +5,24 @@ class CampaignDataService {
         return http.get("/campaigns");
     }
 
-    get(id, sort = null) {
-        return http.get(`/campaigns/${id}`, {
-            params: {
-                sort: sort,
+    get(id) {
+        return http.get(`/campaigns/${id}`);
+    }
+
+    create(data) {
+        return http.post("/campaigns", data, {
+            headers: {
+                "Content-Type": "multipart/form-data",
             },
         });
     }
 
-    create(data, token) {
-        return http.post("/campaigns", data);
-    }
-
     update(id, data) {
-        return http.put(`/campaigns/${id}`, data);
+        return http.put(`/campaigns/${id}`, data, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+        });
     }
 
     delete(id) {

@@ -1,18 +1,18 @@
 <template>
     <div class="container">
         <div class="row my-4">
-            <div class="col-10">
+            <div class="col-11">
                 <h1>Campanhas</h1>
             </div>
-            <div class="col-2">
-                <router-link to="campaigns/new">
-                    <button class="btn btn-primary">Adicionar</button>
+            <div class="col-1">
+                <router-link to="campaigns/new" class="btn btn-primary">
+                    <strong>Adicionar</strong>
                 </router-link>
             </div>
         </div>
         <div class="row mt-4 card">
             <table
-                class="table table-striped table-hover"
+                class="table table-light table-hover"
                 v-if="campaigns.length > 0"
             >
                 <thead>
@@ -43,29 +43,6 @@
                 <p>Não há campanhas registradas.</p>
             </div>
         </div>
-        <!-- <div class="row">
-            <div class="pagination-content">
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination">
-                        <li class="page-item">
-                            <a class="page-link" href="#">Anterior</a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link" href="#">1</a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link" href="#">2</a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link" href="#">3</a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link" href="#">Próximo</a>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
-        </div> -->
     </div>
 </template>
 
