@@ -1,26 +1,30 @@
+<script setup>
+import { useUserStore } from "@/store/user";
+</script>
+
 <template>
     <div class="col-md-6 col-sm-12 col-lg-3 mb-4">
-        <div
-            class="card p-2 d-flex flex-column justify-content-between"
-            style="width: 15rem; height: 20rem; position: relative"
-        >
-            <div style="width: 100%; text-align: center">
+        <div class="card bg-white rounded" style="width: 10vw">
+            <div>
                 <img
-                    :src="`http://localhost:5102/api/images/${product.imageId}`"
+                    :src="product.imageUrl"
                     :alt="product.name"
-                    class="card-img-top"
+                    class="card-img-top img-fluid"
                 />
             </div>
-            <div
-                class="card-body d-flex flex-column justify-content-between"
-                style="width: 100%; position: absolute; bottom: 0"
-            >
+            <div class="card-body justify-content-between">
                 <div>
-                    <h5 class="card-title">{{ product.name }}</h5>
+                    <h5 class="card-title text-truncate">
+                        {{ product.name }}
+                    </h5>
                     <p class="card-text">R$ {{ product.price.toFixed(2) }}</p>
                 </div>
-                <button class="btn btn-primary" @click="addToCart()">
-                    Adicionar
+                <button
+                    v-if="useUserStore().user"
+                    class="btn btn-primary mt-4 w-100"
+                    @click="addToCart()"
+                >
+                    <i class="bi bi-cart-plus"></i>
                 </button>
             </div>
         </div>
@@ -28,39 +32,18 @@
 </template>
 
 <script>
+import { useCartStore } from "@/store/cart";
 import OrderDataService from "../../services/OrderDataService";
-import { session } from "../../session";
 
 export default {
-    name: "product-card",
+    name: "ProductCard",
     props: {
-        product: {
-            id: "",
-            name: "",
-            image: "",
-            category: "",
-            quantity: "",
-            price: "",
-        },
+        product: Object,
     },
     methods: {
         addToCart() {
-            OrderDataService.addProduct(
-                session().cart.id,
-                this.product.id,
-                session().token
-            )
-                .then(() => {
-                    OrderDataService.getOrderByUser(
-                        session().user.id,
-                        session().token
-                    )
-                        .then((res) => {
-                            session().cart = res.data;
-                        })
-                        .catch((err) => console.log(err));
-                    this.$emit("productAdded");
-                })
+            OrderDataService.addProduct(useCartStore().cart.id, this.product.id)
+                .then(() => this.$emit("productAdded"))
                 .catch((err) => console.log(err));
         },
     },
@@ -79,14 +62,16 @@ export default {
 }
 
 .btn-primary {
-    background: #13293d;
+    background-color: #007bff;
+    color: white;
+    padding: 10px;
     border: none;
-    width: 100%;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
 .btn-primary:hover {
-    background: #13293d;
-    opacity: 0.9;
-    transition: 0.5s ease-in-out;
+    background-color: #0056b3;
 }
 </style>

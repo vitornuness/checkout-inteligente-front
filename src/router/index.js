@@ -1,22 +1,21 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
-import CartView from "../views/CartView.vue";
-import CheckoutView from "../views/CheckoutView.vue";
 import LoginView from "../views/LoginView.vue";
 import RegisterView from "../views/RegisterView.vue";
 import ProductView from "../views/ProductView.vue";
 import AddProduct from "../views/AddProduct.vue";
 import EditProduct from "../views/EditProduct.vue";
-import OrderView from "../views/OrderView.vue";
-import UserView from "../views/UserView.vue";
 import CategoryView from "../views/CategoryView.vue";
 import AddCategory from "../views/AddCategory.vue";
 import EditCategory from "../views/EditCategory.vue";
 import CampaignView from "../views/CampaignView.vue";
 import AddCampaign from "../views/AddCampaign.vue";
 import EditCampaign from "../views/EditCampaign.vue";
+import CampaignProducts from "@/views/CampaignProducts.vue";
+import CategoryProducts from "@/views/CategoryProducts.vue";
 
-import { session } from "../session";
+import { useUserStore } from "../store/user";
+import ReportsView from "@/views/ReportsView.vue";
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -25,30 +24,6 @@ const router = createRouter({
             path: "/",
             name: "home",
             component: HomeView,
-        },
-        {
-            path: "/cart",
-            name: "cart",
-            component: CartView,
-            beforeEnter: (to, from) => {
-                if (!session().token) {
-                    return "/login";
-                }
-            },
-        },
-        {
-            path: "/checkout",
-            name: "checkout",
-            component: CheckoutView,
-            beforeEnter: (to, from) => {
-                if (!session().token) {
-                    return "/login";
-                }
-
-                if (session().cart.items.length === 0) {
-                    return "/cart";
-                }
-            },
         },
         {
             path: "/login",
@@ -61,15 +36,28 @@ const router = createRouter({
             component: RegisterView,
         },
         {
+            path: "/reports",
+            name: "reports",
+            component: ReportsView,
+            beforeEnter: (to, from) => {
+                if (!useUserStore().user) {
+                    return "/login";
+                }
+                if (useUserStore().user.role !== "ADMIN") {
+                    return "/";
+                }
+            }
+        },
+        {
             path: "/products",
             name: "products",
             component: ProductView,
             beforeEnter: (to, from) => {
-                if (!session().token) {
+                if (!useUserStore().user) {
                     return "/login";
                 }
 
-                if (!session().user.admin) {
+                if (useUserStore().user.role !== "ADMIN") {
                     return "/";
                 }
             },
@@ -79,11 +67,11 @@ const router = createRouter({
             name: "productsNew",
             component: AddProduct,
             beforeEnter: (to, from) => {
-                if (!session().token) {
+                if (!useUserStore().user) {
                     return "/login";
                 }
 
-                if (!session().user.admin) {
+                if (useUserStore().user.role !== "ADMIN") {
                     return "/";
                 }
             },
@@ -93,11 +81,11 @@ const router = createRouter({
             name: "productsEdit",
             component: EditProduct,
             beforeEnter: (to, from) => {
-                if (!session().token) {
+                if (!useUserStore().user) {
                     return "/login";
                 }
 
-                if (!session().user.admin) {
+                if (useUserStore().user.role !== "ADMIN") {
                     return "/";
                 }
             },
@@ -107,11 +95,11 @@ const router = createRouter({
             name: "categories",
             component: CategoryView,
             beforeEnter: (to, from) => {
-                if (!session().token) {
+                if (!useUserStore().user) {
                     return "/login";
                 }
 
-                if (!session().user.admin) {
+                if (useUserStore().user.role !== "ADMIN") {
                     return "/";
                 }
             },
@@ -121,11 +109,11 @@ const router = createRouter({
             name: "categoriesNew",
             component: AddCategory,
             beforeEnter: (to, from) => {
-                if (!session().token) {
+                if (!useUserStore().user) {
                     return "/login";
                 }
 
-                if (!session().user.admin) {
+                if (useUserStore().user.role !== "ADMIN") {
                     return "/";
                 }
             },
@@ -135,25 +123,30 @@ const router = createRouter({
             name: "categoriesEdit",
             component: EditCategory,
             beforeEnter: (to, from) => {
-                if (!session().token) {
+                if (!useUserStore().user) {
                     return "/login";
                 }
 
-                if (!session().user.admin) {
+                if (useUserStore().user.role !== "ADMIN") {
                     return "/";
                 }
             },
+        },
+        {
+            path: "/categories/:id/products",
+            name: "categoriesProducts",
+            component: CategoryProducts,
         },
         {
             path: "/campaigns",
             name: "campaigns",
             component: CampaignView,
             beforeEnter: (to, from) => {
-                if (!session().token) {
+                if (!useUserStore().user) {
                     return "/login";
                 }
 
-                if (!session().user.admin) {
+                if (useUserStore().user.role !== "ADMIN") {
                     return "/";
                 }
             },
@@ -163,11 +156,11 @@ const router = createRouter({
             name: "campaignsNew",
             component: AddCampaign,
             beforeEnter: (to, from) => {
-                if (!session().token) {
+                if (!useUserStore().user) {
                     return "/login";
                 }
 
-                if (!session().user.admin) {
+                if (useUserStore().user.role !== "ADMIN") {
                     return "/";
                 }
             },
@@ -177,42 +170,19 @@ const router = createRouter({
             name: "campaignsEdit",
             component: EditCampaign,
             beforeEnter: (to, from) => {
-                if (!session().token) {
+                if (!useUserStore().user) {
                     return "/login";
                 }
 
-                if (!session().user.admin) {
+                if (useUserStore().user.role !== "ADMIN") {
                     return "/";
                 }
             },
         },
         {
-            path: "/orders",
-            name: "orders",
-            component: OrderView,
-            beforeEnter: (to, from) => {
-                if (!session().token) {
-                    return "/login";
-                }
-
-                if (!session().user.admin) {
-                    return "/";
-                }
-            },
-        },
-        {
-            path: "/users",
-            name: "users",
-            component: UserView,
-            beforeEnter: (to, from) => {
-                if (!session().token) {
-                    return "/login";
-                }
-
-                if (!session().user.admin) {
-                    return "/";
-                }
-            },
+            path: "/campaigns/:id/products",
+            name: "campaignsProducts",
+            component: CampaignProducts,
         },
     ],
 });

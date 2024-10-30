@@ -1,93 +1,173 @@
-# Checkout Inteligênte
+# Checkout Inteligente (Aplicação Front-end)
 
-## Telas para todos:
+Esta aplicação é destinada a simular um e-commerce, fazendo o consumo de uma API.
 
-### Tela Inicial (usuário não logado):
+-   **[Instalação](#instalação)**
+-   **[Aplicação](#aplicação)**
+-   **[Colaboradores](#colaboradores)**
 
-![Tela inicial sem usuário](image.png)
+## Instalação
 
-### Tela Inicial (usuário logado):
+### Pré-requisitos
 
-![Tela inicial com usuário](image-3.png)
+Antes de começar, você precisa ter os seguintes itens instalados em sua máquina:
 
-### Menu Cliente:
+1. **[Node.js](https://nodejs.org/)**
+2. **[Git](https://git-scm.com/downloads)**
+3. **[API (Back-end)](https://github.com/VitorNuness/checkout-inteligente-back)**
 
-![Menu cliente](image-4.png)
+### Clonando o Repositório
 
-### Tela de Registro:
+```bash
+git clone https://github.com/VitorNuness/checkout-inteligente-front.git
 
-![Tela de Registro](image-2.png)
+cd checkout-inteligente-front
+```
 
-### Tela de Login:
+### Instalando Dependências
 
-![Tela de login](image-1.png)
+Execute o seguinte comando para instalar as dependências do projeto:
 
-### Carrinho:
+```bash
+npm install
+```
 
-![Carrinho](image-6.png)
+### Executando a Aplicação
 
-### Checkout:
+Para executar a aplicação, use o seguinte comando:
 
-**Apenas se o carrinho não estiver vazio**
+```bash
+npm run dev
+```
 
-![Finalizar pedido](image-18.png)
+O servidor deve iniciar e você verá uma mensagem indicando que a aplicação está rodando em http://localhost:5173.
 
-## Telas Administrativas:
+---
 
-### Menu Administrador:
+## Aplicação
 
-![Menu administrador](image-5.png)
+### Página principal
 
-### Produto:
+A página principal demonstra para os usuários, campanhas, produtos mais vendidos, campanhas e os demais produtos. Podendo ser acessada por usuários autenticados e não autenticados.
 
-#### Tela de Produtos:
+![Cabeçalho, campanhas e lista dos mais vendidos](./docs/images/home-1.png)
+![Categorias e lista de produtos](./docs/images/home-2.png)
+![Lista de produtos e rodapé](./docs/images/home-3.png)
 
-![Tela de produtos](image-7.png)
+Quando o usuário é autenticado, os produtos apresentam a opção de compra e o cabeçalho mostra o carrinho e menu do usuário.
 
-#### Tela para adicionar um produto:
+![Cabeçalho com, carrinho e menu do usuário, e lista de produtos com botão para compra](./docs/images/home-4.png)
 
-![Tela para adicionar produto](image-8.png)
+---
 
-#### Tela para editar ou remover um produto:
+### Autenticação
 
-![Tela para editar ou remover um produto](image-9.png)
+Para a autenticação o usuário poderá fazer o login ou, caso não tenha uma conta, fazer seu cadastro.
 
-### Categoria:
+**Entrar:**
 
-#### Tela de Categorias:
+![Formulário de login](./docs/images/login.png)
 
-![Tela de categorias](image-10.png)
+**Registro:**
 
-#### Tela para adicionar uma categoria:
+![Formuláio de registro](./docs/images/signup.png)
 
-![Tela para adicionar uma categoria](image-11.png)
+---
 
-#### Tela para editar ou remover uma categoria:
+### Carrinho
 
-![Tela para editar ou remover uma categoria](image-12.png)
+O carrinho apresenta os produtos que o cliente selecionou para compra, podendo ser finalizado, somente se, houver algum produto adicionado.
 
-### Campanhas:
+O carrinho além de mostrar os produtos que o usuário quer comprar, também traz sugestões de produtos, podendo assim, aumentar o ticket médio. A primeira sugestão é baseada nos produtos em campanha. Já a segunda, é baseado nos produtos mais vendidos, por categoria dos produtos, que estão no carrinho.
 
-#### Tela de campanhas:
+**Carrinho vazio:**
 
-![Tela de campanhas](image-13.png)
+![Carrinho vazio](./docs/images/cart-1.png)
 
-#### Tela para adicionar uma campanha:
+**Carrinho com produtos:**
 
-![Tela para adicionar uma campanha](image-14.png)
+![Carrinho com produtos](./docs/images/cart-2.png)
 
-#### Tela para editar ou remover uma campanha:
+**Carrinho finalizado:**
 
-![Tela para editar ou remover uma campanha](image-15.png)
+![Carrinho finalizado](./docs/images/cart-3.png)
 
-### Usuários:
+---
 
-**Admistradores em azul**
+### Menu do usuário
 
-![Tela de usuários](image-16.png)
+O menu que os usuários podem sair de sua conta. Também, é onde os administradores podem acessar o gerenciamento de, campanhas, categorias e produtos.
 
-### Pedidos:
+**Menu cliente:**
 
-**Apenas pedidos finalizados**
+![Menu cliente](./docs/images/menu-1.png)
 
-![Tela de pedidos](image-17.png)
+**Menu administrador:**
+
+![Menu administrador](./docs/images/menu-2.png)
+
+---
+
+### Importante!
+
+As próximas sessões são específicas para **administradores**.
+
+### Produtos
+
+Esta página, lista todos os produtos cadastrados no sistema. Também, é possível adicionar novos produtos, por meio do botão "Adicionar", editar ou deletar o produto, pelo botão no final de cada linha da tabela, na coluna "Ações".
+
+**Lista de produtos:**
+
+![Lista de produtos](./docs/images/produtos-1.png)
+
+**Adicionar um produto:**
+
+![Adicionar um produto](./docs/images/produtos-2.png)
+
+**Editar ou deletar um produto:**
+
+![Editar um produto](./docs/images/produtos-3.png)
+
+---
+
+### Categorias
+
+Esta página, lista todas as categorias cadastradas no sistema. Também, é possível adicionar novas categorias, por meio do botão "Adicionar", editar ou deletar a categoria, pelo botão no final de cada linha da tabela, na coluna "Ações".
+
+**Lista de categorias:**
+
+![Lista de categorias](./docs/images/categorias-1.png)
+
+**Adicionar uma categoria:**
+
+![Adicionar uma categoria](./docs/images/categorias-2.png)
+
+**Editar ou deletar uma categoria:**
+
+![Editar uma categoria](./docs/images/categorias-3.png)
+
+---
+
+### Campanhas
+
+Esta página, lista todas as campanhas cadastradas no sistema. Também, é possível adicionar novas campanhas, por meio do botão "Adicionar", editar ou deletar a campanha, pelo botão no final de cada linha da tabela, na coluna "Ações".
+
+Nas telas de adicionar e editar, podem ser selecionados os produtos que fazem parte da campanha.
+
+**Lista de campanhas:**
+
+![Lista de campanhas](./docs/images/campanhas-1.png)
+
+**Adicionar uma campanha:**
+
+![Adicionar uma campanha](./docs/images/campanhas-2.png)
+
+**Editar ou deletar uma campanha:**
+
+![Editar uma campanha](./docs/images/campanhas-3.png)
+
+---
+
+## Colaboradores
+
+**@[AlexHPasquini](https://github.com/AlexHPasquini) | @[MayconMacedo23](https://github.com/MayconMacedo23) | @[vinirainho](https://github.com/vinirainho) | @[VitorNuness](https://github.com/VitorNuness)**

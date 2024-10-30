@@ -1,81 +1,96 @@
-<script setup></script>
+<script setup>
+import AuthDataService from "@/services/AuthDataService";
+import OrderDataService from "@/services/OrderDataService";
+import { useCartStore } from "@/store/cart";
+import { useTokenStore } from "@/store/token";
+import { useUserStore } from "@/store/user";
+</script>
 
 <template>
-    <div class="container center">
+    <div class="container center bg-white rounded py-4">
         <h1>Registre uma nova conta</h1>
         <div v-if="errors.length > 0" class="text-danger">
             <ul>
                 <li v-for="error in errors" :key="error">{{ error }}</li>
             </ul>
         </div>
-        <div class="row g-3">
-            <div>
-                <label for="name" class="form-label">Nome</label>
-                <input
-                    type="text"
-                    class="form-control"
-                    id="name"
-                    name="name"
-                    placeholder="Seu nome completo"
-                    required
-                    v-model="user.name"
-                />
+        <div class="form my-4 py-4">
+            <div class="row">
+                <div class="col">
+                    <label for="name" class="form-label">Nome</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="name"
+                        name="name"
+                        placeholder="Seu nome completo"
+                        required
+                        v-model="user.name"
+                    />
+                </div>
             </div>
-            <div class="col-md-6">
-                <label for="email" class="form-label">Email</label>
-                <input
-                    type="email"
-                    class="form-control"
-                    id="email"
-                    name="email"
-                    placeholder="exemplo@email.com"
-                    required
-                    v-model="user.email"
-                />
+            <div class="row my-2">
+                <div class="col">
+                    <label for="email" class="form-label">Email</label>
+                    <input
+                        type="email"
+                        class="form-control"
+                        id="email"
+                        name="email"
+                        placeholder="exemplo@email.com"
+                        required
+                        v-model="user.email"
+                        autocomplete="false"
+                    />
+                </div>
+                <div class="col">
+                    <label for="emailConfirmation" class="form-label"
+                        >Confirmar email</label
+                    >
+                    <input
+                        type="email"
+                        class="form-control"
+                        id="emailConfirmation"
+                        name="emailConfirmation"
+                        placeholder="exemplo@email.com"
+                        required
+                        v-model="user.emailConfirmation"
+                    />
+                </div>
             </div>
-            <div class="col-md-6">
-                <label for="emailConfirmation" class="form-label"
-                    >Confirmar email</label
-                >
-                <input
-                    type="email"
-                    class="form-control"
-                    id="emailConfirmation"
-                    name="emailConfirmation"
-                    placeholder="exemplo@email.com"
-                    required
-                    v-model="user.emailConfirmation"
-                />
+            <div class="row my-2">
+                <div class="col">
+                    <label for="password" class="form-label">Senha</label>
+                    <input
+                        type="password"
+                        class="form-control"
+                        id="password"
+                        name="password"
+                        placeholder="Digite uma senha"
+                        required
+                        v-model="user.password"
+                        autocomplete="false"
+                    />
+                </div>
+                <div class="col">
+                    <label for="passwordConfirmation" class="form-label"
+                        >Confirmar senha</label
+                    >
+                    <input
+                        type="password"
+                        class="form-control"
+                        id="passwordConfirmation"
+                        name="passwordConfirmation"
+                        placeholder="Confirme a senha"
+                        required
+                        v-model="user.passwordConfirmation"
+                    />
+                </div>
             </div>
-            <div class="col-md-6">
-                <label for="password" class="form-label">Senha</label>
-                <input
-                    type="password"
-                    class="form-control"
-                    id="password"
-                    name="password"
-                    placeholder="Digite uma senha"
-                    required
-                    v-model="user.password"
-                />
-            </div>
-            <div class="col-md-6">
-                <label for="passwordConfirmation" class="form-label"
-                    >Confirmar senha</label
-                >
-                <input
-                    type="password"
-                    class="form-control"
-                    id="passwordConfirmation"
-                    name="passwordConfirmation"
-                    placeholder="Confirme a senha"
-                    required
-                    v-model="user.passwordConfirmation"
-                />
-            </div>
-            <div class="col-12">
-                <button class="btn btn-primary" @click="validateData()">
-                    Confirmar
+            <div class="row justify-content-end my-4">
+                <router-link to="/login">Já possui uma conta?</router-link>
+                <button class="btn btn-primary mx-4" @click="validateData()">
+                    <strong>Confirmar</strong>
                 </button>
             </div>
         </div>
@@ -83,8 +98,6 @@
 </template>
 
 <script>
-import UserDataService from "../services/UserDataService";
-
 export default {
     name: "new-user",
     data() {
@@ -135,13 +148,27 @@ export default {
             return re.test(email);
         },
         saveUser(data) {
-            UserDataService.create(data)
+            AuthDataService.register(data)
                 .then((res) => {
-                    this.$route.push("/login");
+                    const userStore = useUserStore();
+                    userStore.setUser(res.data.user);
+                    useTokenStore().setToken(res.data.token);
+                    this.fetchUserOrder();
+                    this.$router.push("/");
                 })
                 .catch((err) => {
                     console.log(err);
                 });
+        },
+
+        fetchUserOrder() {
+            const userStore = useUserStore();
+            const cartStore = useCartStore();
+            OrderDataService.fetchCurrentUserOrder(userStore.user.id).then(
+                (res) => {
+                    cartStore.setCart(res.data);
+                }
+            );
         },
     },
 };

@@ -5,20 +5,24 @@ class CategoryDataService {
         return http.get("/categories");
     }
 
-    get(id, sort = null) {
-        return http.get(`/categories/${id}`, {
-            params: {
-                sort: sort,
+    get(id) {
+        return http.get(`/categories/${id}`);
+    }
+
+    create(data) {
+        return http.post("/categories", data, {
+            headers: {
+                "Content-Type": "multipart/form-data",
             },
         });
     }
 
-    create(data) {
-        return http.post("/categories", data);
-    }
-
     update(id, data) {
-        return http.put(`/categories/${id}`, data);
+        return http.put(`/categories/${id}`, data, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+        });
     }
 
     delete(id) {
