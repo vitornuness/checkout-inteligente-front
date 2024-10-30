@@ -15,6 +15,7 @@ import CampaignProducts from "@/views/CampaignProducts.vue";
 import CategoryProducts from "@/views/CategoryProducts.vue";
 
 import { useUserStore } from "../store/user";
+import ReportsView from "@/views/ReportsView.vue";
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -33,6 +34,19 @@ const router = createRouter({
             path: "/signup",
             name: "signup",
             component: RegisterView,
+        },
+        {
+            path: "/reports",
+            name: "reports",
+            component: ReportsView,
+            beforeEnter: (to, from) => {
+                if (!useUserStore().user) {
+                    return "/login";
+                }
+                if (useUserStore().user.role !== "ADMIN") {
+                    return "/";
+                }
+            }
         },
         {
             path: "/products",
