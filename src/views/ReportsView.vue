@@ -48,17 +48,14 @@
         <ul class="dropdown-menu">
           <li><a class="dropdown-item" href="#">Relatório de Produtos</a></li>
           <li>
-            <!-- Button trigger modal -->
             <button
               type="button"
-              class="btn btn-primary"
+              class="btn"
               data-bs-toggle="modal"
               data-bs-target="#ModalReports"
             >
-              Launch demo modal
+              Relatorio de Vendas
             </button>
-
-            <!-- Modal -->
           </li>
         </ul>
       </div>
@@ -74,7 +71,7 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h1 class="modal-title fs-5" id="ModalReports">Modal title</h1>
+          <h1 class="modal-title fs-5" id="ModalReports">Informe o Período:</h1>
           <button
             type="button"
             class="btn-close"
@@ -82,16 +79,21 @@
             aria-label="Close"
           ></button>
         </div>
-        <div class="modal-body">...</div>
+        <div class="modal-body">
+          <div class="date-inputs">
+            <input type="text" placeholder="00/00/0000" />
+            <input type="text" placeholder="00/00/0000" />
+          </div>
+        </div>
         <div class="modal-footer">
           <button
             type="button"
             class="btn btn-secondary"
             data-bs-dismiss="modal"
           >
-            Close
+            Cancelar
           </button>
-          <button type="button" class="btn btn-primary">Save changes</button>
+          <button type="button" class="btn btn-primary">Salvar</button>
         </div>
       </div>
     </div>
@@ -99,6 +101,36 @@
 </template>
 
 <style scoped>
+.date-inputs {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.date-inputs input {
+  width: 200px;
+  padding: 15x;
+  text-align: center;
+  font-size: 30px;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.modal-footer .btn {
+  padding: 10px 40px;
+  font-size: 18px;
+  border-radius: 5px;
+}
+
+.btn-secondary {
+  background-color: #ccc;
+  color: #333;
+}
+
 body {
   font-family: Arial, sans-serif;
   background-color: #f4f4f4;
@@ -169,6 +201,15 @@ table td {
 .delete-btn:hover {
   color: #dc3545;
 }
+
+.dropdown-menu {
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+}
+
+
+
 
 /* .modal-content {
   top: 0;
