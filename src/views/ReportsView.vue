@@ -1,7 +1,41 @@
 <template>
-  <main>
+  <div class="container">
+    <div class="row my-4">
+      <div class="col-11">
+        <h1>Exportações</h1>
+      </div>
+      <div class="col-1">
+        <div class="dropdown">
+          <button
+            class="btn btn-primary dropdown-toggle"
+            type="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            Adicionar
+          </button>
+          <ul class="dropdown-menu">
+            <li>
+              <a class="dropdown-item" href="#">Relatório de Produtos</a>
+            </li>
+            <li>
+              <!-- Button trigger modal -->
+              <button
+                type="button"
+                class="btn btn-primary"
+                data-bs-toggle="modal"
+                data-bs-target="#ModalReports"
+              >
+                Launch demo modal
+              </button>
+
+              <!-- Modal -->
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
     <div class="export-container">
-      <h1>Exportações</h1>
       <table>
         <thead>
           <tr>
@@ -35,7 +69,6 @@
           </tr>
         </tbody>
       </table>
-
       <div class="dropdown">
         <button
           class="btn btn-primary dropdown-toggle"
@@ -60,7 +93,7 @@
         </ul>
       </div>
     </div>
-  </main>
+  </div>
   <div
     class="modal"
     id="ModalReports"
@@ -158,10 +191,6 @@ header {
   border-radius: 5px;
 }
 
-main {
-  padding: 20px;
-}
-
 .export-container {
   background-color: white;
   padding: 20px;
@@ -207,9 +236,6 @@ table td {
   flex-direction: column;
   align-items: center; 
 }
-
-
-
 
 /* .modal-content {
   top: 0;

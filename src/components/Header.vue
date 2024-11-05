@@ -14,80 +14,67 @@ import SideCart from "./SideCart.vue";
           </div>
 
           <div>
-            <button
-              class="navbar-toggler"
-              type="button"
-              data-bs-toggle="collapse"
-              data-bs-target="#navbarSupportedContent"
-              aria-controls="navbarSupportedContent"
-              aria-expanded="false"
-              aria-label="Toggle navigation"
-            >
-              <i class="bi bi-list"></i>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-              <ul class="navbar-nav me-auto mb-2 mb-lg-0 text-white">
-                <div v-if="!useUserStore().user">
-                  <li class="nav-item d-flex mt-2">
-                    <RouterLink to="/login" class="nav-link text-white"
-                      >Entrar</RouterLink
-                    >
-                    <span class="row align-items-start mt-2 mx-2">|</span>
-                    <RouterLink to="/signup" class="nav-link text-white"
-                      >Registrar-se</RouterLink
-                    >
-                  </li>
-                </div>
-                <div v-else class="d-flex">
-                  <li class="nav-item">
-                    <SideCart />
-                  </li>
-                  <li class="nav-item dropdown">
-                    <a
-                      class="nav-link text-white dropdown-toggle"
-                      href="#"
-                      role="button"
-                      data-bs-toggle="dropdown"
-                      aria-expanded="false"
-                    >
-                      <i class="bi bi-person-fill"></i>
-                    </a>
-                    <ul class="dropdown-menu">
-                      <div v-if="useUserStore().user.role === 'ADMIN'">
-                        <li>
-                          <router-link class="dropdown-item" to="/products"
-                            >Produtos</router-link
-                          >
-                        </li>
-                        <li>
-                          <router-link class="dropdown-item" to="/categories"
-                            >Categorias</router-link
-                          >
-                        </li>
-                        <li>
-                          <router-link class="dropdown-item" to="/campaigns"
-                            >Campanhas</router-link
-                          >
-                        </li>
-                        <li>
-                          <router-link class="dropdown-item" to="/reports"
-                            >Exportações</router-link
-                          >
-                        </li>
-                      </div>
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0 text-white">
+              <div v-if="!useUserStore().handleUser()">
+                <li class="nav-item d-flex mt-2">
+                  <RouterLink to="/login" class="nav-link text-white"
+                    >Entrar</RouterLink
+                  >
+                  <span class="row align-items-start mt-2 mx-2">|</span>
+                  <RouterLink to="/signup" class="nav-link text-white"
+                    >Registrar-se</RouterLink
+                  >
+                </li>
+              </div>
+              <div v-else class="d-flex">
+                <li class="nav-item">
+                  <SideCart />
+                </li>
+                <li class="nav-item dropdown">
+                  <a
+                    class="nav-link text-white dropdown-toggle"
+                    href="#"
+                    role="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    <i class="bi bi-person-fill"></i>
+                  </a>
+                  <ul class="dropdown-menu">
+                    <div v-if="useUserStore().user.role === 'ADMIN'">
                       <li>
-                        <hr class="dropdown-divider" />
+                        <router-link class="dropdown-item" to="/products"
+                          >Produtos</router-link
+                        >
                       </li>
                       <li>
-                        <button class="dropdown-item" @click="logout()">
-                          Sair
-                        </button>
+                        <router-link class="dropdown-item" to="/categories"
+                          >Categorias</router-link
+                        >
                       </li>
-                    </ul>
-                  </li>
-                </div>
-              </ul>
-            </div>
+                      <li>
+                        <router-link class="dropdown-item" to="/campaigns"
+                          >Campanhas</router-link
+                        >
+                      </li>
+                      <li>
+                        <router-link class="dropdown-item" to="/reports"
+                          >Exportações</router-link
+                        >
+                      </li>
+                    </div>
+                    <li>
+                      <hr class="dropdown-divider" />
+                    </li>
+                    <li>
+                      <button class="dropdown-item" @click="logout()">
+                        Sair
+                      </button>
+                    </li>
+                  </ul>
+                </li>
+              </div>
+            </ul>
           </div>
         </div>
       </nav>

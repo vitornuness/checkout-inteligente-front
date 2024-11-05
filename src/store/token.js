@@ -7,6 +7,7 @@ export const useTokenStore = defineStore("token", {
     actions: {
         setToken(token) {
             this.token = token;
+            window.localStorage.setItem("AUTH_TOKEN", token);
         },
     },
 });
