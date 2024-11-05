@@ -17,6 +17,10 @@ import CategoryProducts from "@/views/CategoryProducts.vue";
 import { useUserStore } from "../store/user";
 import ReportsView from "@/views/ReportsView.vue";
 
+function isAuthenticated() {
+    return Boolean(window.localStorage.getItem('AUTH_TOKEN'))
+}
+
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
     routes: [
@@ -40,9 +44,11 @@ const router = createRouter({
             name: "reports",
             component: ReportsView,
             beforeEnter: (to, from) => {
-                if (!useUserStore().user) {
+                if (!isAuthenticated()) {
                     return "/login";
                 }
+            },
+            afterEnter: (to, from) => {
                 if (useUserStore().user.role !== "ADMIN") {
                     return "/";
                 }
@@ -53,28 +59,30 @@ const router = createRouter({
             name: "products",
             component: ProductView,
             beforeEnter: (to, from) => {
-                if (!useUserStore().user) {
+                if (!isAuthenticated()) {
                     return "/login";
                 }
-
+            },
+            afterEnter: (to, from) => { 
                 if (useUserStore().user.role !== "ADMIN") {
                     return "/";
                 }
-            },
+             }
         },
         {
             path: "/products/new",
             name: "productsNew",
             component: AddProduct,
             beforeEnter: (to, from) => {
-                if (!useUserStore().user) {
+                if (!isAuthenticated()) {
                     return "/login";
                 }
-
+            },
+            afterEnter: (to, from) => {
                 if (useUserStore().user.role !== "ADMIN") {
                     return "/";
                 }
-            },
+            }
         },
         {
             path: "/products/:id/edit",
@@ -84,53 +92,57 @@ const router = createRouter({
                 if (!useUserStore().user) {
                     return "/login";
                 }
-
+            },
+            afterEnter: (to, from) => {
                 if (useUserStore().user.role !== "ADMIN") {
                     return "/";
                 }
-            },
+            }
         },
         {
             path: "/categories",
             name: "categories",
             component: CategoryView,
             beforeEnter: (to, from) => {
-                if (!useUserStore().user) {
+                if (!isAuthenticated()) {
                     return "/login";
                 }
-
+            },
+            afterEnter: (to, from) => {
                 if (useUserStore().user.role !== "ADMIN") {
                     return "/";
                 }
-            },
+            }
         },
         {
             path: "/categories/new",
             name: "categoriesNew",
             component: AddCategory,
             beforeEnter: (to, from) => {
-                if (!useUserStore().user) {
+                if (!isAuthenticated()) {
                     return "/login";
                 }
-
+            },
+            afterEnter: (to, from) => {
                 if (useUserStore().user.role !== "ADMIN") {
                     return "/";
                 }
-            },
+            }
         },
         {
             path: "/categories/:id/edit",
             name: "categoriesEdit",
             component: EditCategory,
             beforeEnter: (to, from) => {
-                if (!useUserStore().user) {
+                if (!isAuthenticated()) {
                     return "/login";
                 }
-
+            },
+            afterEnter: (to, from) => {
                 if (useUserStore().user.role !== "ADMIN") {
                     return "/";
                 }
-            },
+            }
         },
         {
             path: "/categories/:id/products",
@@ -142,42 +154,45 @@ const router = createRouter({
             name: "campaigns",
             component: CampaignView,
             beforeEnter: (to, from) => {
-                if (!useUserStore().user) {
+                if (!isAuthenticated()) {
                     return "/login";
                 }
-
+            },
+            afterEnter: (to, from) => {
                 if (useUserStore().user.role !== "ADMIN") {
                     return "/";
                 }
-            },
+            }
         },
         {
             path: "/campaigns/new",
             name: "campaignsNew",
             component: AddCampaign,
             beforeEnter: (to, from) => {
-                if (!useUserStore().user) {
+                if (!isAuthenticated()) {
                     return "/login";
                 }
-
+            },
+            afterEnter: (to, from) => {
                 if (useUserStore().user.role !== "ADMIN") {
                     return "/";
                 }
-            },
+            }
         },
         {
             path: "/campaigns/:id/edit",
             name: "campaignsEdit",
             component: EditCampaign,
             beforeEnter: (to, from) => {
-                if (!useUserStore().user) {
+                if (!isAuthenticated()) {
                     return "/login";
                 }
-
+            },
+            afterEnter: (to, from) => {
                 if (useUserStore().user.role !== "ADMIN") {
                     return "/";
                 }
-            },
+            }
         },
         {
             path: "/campaigns/:id/products",
@@ -186,5 +201,4 @@ const router = createRouter({
         },
     ],
 });
-
 export default router;

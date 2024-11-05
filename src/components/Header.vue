@@ -27,7 +27,7 @@ import SideCart from "./SideCart.vue";
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
               <ul class="navbar-nav me-auto mb-2 mb-lg-0 text-white">
-                <div v-if="!useUserStore().user">
+                <div v-if="!useUserStore().handleUser()">
                   <li class="nav-item d-flex mt-2">
                     <RouterLink to="/login" class="nav-link text-white"
                       >Entrar</RouterLink

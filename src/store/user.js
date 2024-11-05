@@ -27,6 +27,7 @@ export const useUserStore = defineStore("user", {
                         console.log(err);
                     });
             }
+            return this.user;
         }
     },
 });
