@@ -44,24 +44,16 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>1</td>
-            <td>11102024products.csv</td>
-            <td>Produtos</td>
-            <td>11/10/2024</td>
+          <tr v-for="report in reports" :key="report.id">
+            <td>{{ report.id }}</td>
+            <td>{{ report.fileName }}</td>
+            <td>{{ report.reference }}</td>
+            <td>{{ report.date }}</td>
             <td>
               <button class="download-btn">⬇️</button>
-              <button class="delete-btn">🗑️</button>
-            </td>
-          </tr>
-          <tr>
-            <td>2</td>
-            <td>11102024sales14012024.csv</td>
-            <td>Vendas</td>
-            <td>11/10/2024</td>
-            <td>
-              <button class="download-btn">⬇️</button>
-              <button class="delete-btn">🗑️</button>
+              <button class="delete-btn" @click="handleDeleteReport(report.id)">
+                🗑️
+              </button>
             </td>
           </tr>
         </tbody>
@@ -100,17 +92,20 @@
               v-model="exportData.endDate"
               @input="formatAndValidateDate('endDate')"
             />
+            </div>
           </div>
-        </div>
-        <div class="modal-footer">
-          <button
-            type="button"
-            class="btn btn-secondary"
-            data-bs-dismiss="modal"
-          >
-            Cancelar
-          </button>
-          <button type="button" class="btn btn-primary">Salvar</button>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancelar
+            </button>
+            <button type="button" class="btn btn-primary" @click="validateData">
+              Salvar
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -118,10 +113,13 @@
 </template>
 
 <script>
+import ReportDataService from "@/services/ReportDataService";
+
 export default {
-  name: "Exportations",
+  name: "export-period",
   data() {
     return {
+      reports: [],
       exportData: {
         startDate: "",
         endDate: "",
@@ -162,7 +160,75 @@ export default {
       }
       return value;
     }
-  }
+  },
+  methods: {
+    fetchReports(startDate = null, endDate = null) {
+      if (startDate && endDate) {
+        ReportDataService.getSalesReport(startDate, endDate)
+          .then((res) => {
+            this.reports = res.data;
+          })
+          .catch((err) => {
+            console.log("Erro ao carregar relatórios:", err);
+          });
+      } else {
+        ReportDataService.getAllReports()
+          .then((res) => {
+            this.reports = res.data;
+          })
+          .catch((err) => {
+            console.log("Erro ao carregar todos os relatórios:", err);
+          });
+      }
+    },
+    handleDeleteReport(reportId) {
+      ReportDataService.deleteSalesReport(reportId)
+        .then(() => {
+          alert("Relatório deletado com sucesso.");
+          this.fetchReports();
+        })
+        .catch((error) => {
+          console.log("Erro ao deletar relatório:", error);
+          alert("Erro ao deletar o relatório.");
+        });
+    },
+
+    validateData() {
+      if (!this.exportData.startDate || !this.exportData.endDate) {
+        alert("Por favor, preencha ambos os campos de data.");
+        return;
+      }
+      this.saveExportData(this.exportData);
+    },
+    saveExportData(data) {
+      ReportDataService.exportSales(data)
+        .then((res) => {
+          console.log("Dados exportados com sucesso:", res.data);
+          this.fetchReports();
+          this.closeModal();
+        })
+        .catch((err) => {
+          console.log("Erro ao exportar dados:", err);
+        });
+    },
+    deleteReport(reportId) {
+      ReportDataService.deleteSalesReport({ id: reportId })
+        .then(() => {
+          this.fetchReports();
+        })
+        .catch((err) => {
+          console.log("Erro ao deletar relatório:", err);
+        });
+    },
+    closeModal() {
+      const modal = document.getElementById("ModalReports");
+      const modalInstance = bootstrap.Modal.getInstance(modal);
+      modalInstance.hide();
+    },
+  },
+  mounted() {
+    this.fetchReports();
+  },
 };
 </script>
 
