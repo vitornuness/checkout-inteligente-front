@@ -22,14 +22,12 @@
               <!-- Button trigger modal -->
               <button
                 type="button"
-                class="btn btn-primary"
+                class="btn"
                 data-bs-toggle="modal"
                 data-bs-target="#ModalReports"
               >
-                Launch demo modal
+                Relatório de Vendas
               </button>
-
-              <!-- Modal -->
             </li>
           </ul>
         </div>
@@ -69,31 +67,9 @@
           </tr>
         </tbody>
       </table>
-      <div class="dropdown">
-        <button
-          class="btn btn-primary dropdown-toggle"
-          type="button"
-          data-bs-toggle="dropdown"
-          aria-expanded="false"
-        >
-          Adicionar
-        </button>
-        <ul class="dropdown-menu">
-          <li><a class="dropdown-item" href="#">Relatório de Produtos</a></li>
-          <li>
-            <button
-              type="button"
-              class="btn"
-              data-bs-toggle="modal"
-              data-bs-target="#ModalReports"
-            >
-              Relatorio de Vendas
-            </button>
-          </li>
-        </ul>
-      </div>
     </div>
   </div>
+  <!--CORPO DO MODAL-->
   <div
     class="modal"
     id="ModalReports"
@@ -114,8 +90,16 @@
         </div>
         <div class="modal-body">
           <div class="date-inputs">
-            <input type="text" placeholder="00/00/0000" />
-            <input type="text" placeholder="00/00/0000" />
+            <input
+              type="text"
+              placeholder="00/00/0000"
+              v-model="exportData.startDate"
+            />
+            <input
+              type="text"
+              placeholder="00/00/0000"
+              v-model="exportData.endDate"
+            />
           </div>
         </div>
         <div class="modal-footer">
@@ -131,7 +115,22 @@
       </div>
     </div>
   </div>
+  <!--FIM DO MODAL-->
 </template>
+
+<script>
+export default {
+  name: "Exportations",
+  data() {
+    return {
+      exportData: {
+        startDate: " ",
+        endDate: " ",
+      },
+    };
+  },
+};
+</script>
 
 <style scoped>
 .date-inputs {
@@ -232,15 +231,105 @@ table td {
 }
 
 .dropdown-menu {
-  display: flex;
   flex-direction: column;
-  align-items: center; 
+  align-items: center !important;
+  text-align: center;
 }
 
-/* .modal-content {
-  top: 0;
-  left: 0;
-  position: absolute;
-  z-index: 99;
-} */
+/* ESTILO MODAL */
+.modal {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.modal-content {
+  border-radius: 12px;
+  padding: 20px 30px;
+  background-color: #ffffff;
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+  border: none;
+}
+
+.modal-header {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.modal-title {
+  color: #333;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.btn-close {
+  color: #999;
+  opacity: 1;
+  font-size: 1.2rem;
+}
+
+.date-inputs {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.date-inputs input {
+  padding: 10px;
+  border: 1px solid #ced4da;
+  border-radius: 6px;
+  width: 100%;
+  max-width: 150px;
+  text-align: center;
+  font-size: 1rem;
+  color: #333;
+  background-color: #f1f3f5;
+  transition: border-color 0.3s ease;
+}
+
+.date-inputs input:focus {
+  outline: none;
+  border-color: #007bff;
+  background-color: #ffffff;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  border-top: none;
+  padding-top: 20px;
+}
+
+.modal-footer .btn {
+  width: 110px;
+  font-weight: bold;
+  padding: 10px 0;
+  border-radius: 6px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.modal-footer .btn-secondary {
+  background-color: #6c757d;
+  color: #ffffff;
+  border: none;
+}
+
+.modal-footer .btn-secondary:hover {
+  background-color: #5a6268;
+  transform: scale(1.05);
+}
+
+.modal-footer .btn-primary {
+  background-color: #007bff;
+  color: #ffffff;
+  border: none;
+}
+
+.modal-footer .btn-primary:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+}
+/* ESTILO MODAL*/
 </style>
