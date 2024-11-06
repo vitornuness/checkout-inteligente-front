@@ -19,7 +19,6 @@
               <a class="dropdown-item" href="#">Relatório de Produtos</a>
             </li>
             <li>
-              <!-- Button trigger modal -->
               <button
                 type="button"
                 class="btn"
@@ -69,7 +68,6 @@
       </table>
     </div>
   </div>
-  <!--CORPO DO MODAL-->
   <div
     class="modal"
     id="ModalReports"
@@ -92,13 +90,15 @@
           <div class="date-inputs">
             <input
               type="text"
-              placeholder="00/00/0000"
+              placeholder="DD/MM/AAAA"
               v-model="exportData.startDate"
+              @input="formatAndValidateDate('startDate')"
             />
             <input
               type="text"
-              placeholder="00/00/0000"
+              placeholder="DD/MM/AAAA"
               v-model="exportData.endDate"
+              @input="formatAndValidateDate('endDate')"
             />
           </div>
         </div>
@@ -115,7 +115,6 @@
       </div>
     </div>
   </div>
-  <!--FIM DO MODAL-->
 </template>
 
 <script>
@@ -124,13 +123,49 @@ export default {
   data() {
     return {
       exportData: {
-        startDate: " ",
-        endDate: " ",
-      },
+        startDate: "",
+        endDate: "",
+        formattedStartDate: "",
+        formattedEndDate: ""
+      }
     };
   },
+  watch: {
+    "exportData.startDate"(value) {
+      this.exportData.formattedStartDate = this.formatDate(value);
+    },
+    "exportData.endDate"(value) {
+      this.exportData.formattedEndDate = this.formatDate(value);
+    }
+  },
+  methods: {
+    formatAndValidateDate(field) {
+      let value = this.exportData[field].replace(/\D/g, "");
+
+      if (value.length <= 2) {
+        value = value.replace(/^(\d{0,2})/, "$1");
+      } else if (value.length <= 4) {
+        value = value.replace(/^(\d{2})(\d{0,2})/, "$1/$2");
+      } else if (value.length <= 8) {
+        value = value.replace(/^(\d{2})(\d{2})(\d{0,4})/, "$1/$2/$3");
+      }
+
+      this.exportData[field] = value;
+    },
+    formatDate(value) {
+      const regex = /^(\d{2})\/(\d{2})\/(\d{4})$/;
+      const match = value.match(regex);
+
+      if (match) {
+        const [, dia, mes, ano] = match;
+        return `${ano}-${mes}-${dia}`;
+      }
+      return value;
+    }
+  }
 };
 </script>
+
 
 <style scoped>
 .date-inputs {
