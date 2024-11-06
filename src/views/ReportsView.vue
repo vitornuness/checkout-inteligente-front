@@ -1,5 +1,14 @@
 <template>
   <div class="container">
+
+  <div v-if="this.submitted" class="alert alert-success" role="alert">
+    O relatório foi solicitado com sucesso! Aguarde até que apareça na lista de exportações abaixo.
+  </div>
+
+  <div v-if="this.deleted" class="alert alert-success" role="alert">
+    O relatório foi removido com sucesso!
+  </div>
+
     <div class="row my-4">
       <div class="col-11">
         <h1>Exportações</h1>
@@ -12,12 +21,9 @@
             data-bs-toggle="dropdown"
             aria-expanded="false"
           >
-            Adicionar
+            Adicionar Relatório
           </button>
           <ul class="dropdown-menu">
-            <li>
-              <a class="dropdown-item" href="#">Relatório de Produtos</a>
-            </li>
             <li>
               <button
                 type="button"
@@ -25,7 +31,7 @@
                 data-bs-toggle="modal"
                 data-bs-target="#ModalReports"
               >
-                Relatório de Vendas
+                Vendas
               </button>
             </li>
           </ul>
@@ -46,11 +52,11 @@
         <tbody>
           <tr v-for="report in reports" :key="report.id">
             <td>{{ report.id }}</td>
-            <td>{{ report.fileName }}</td>
+            <td>{{ report.name }}</td>
             <td>{{ report.reference }}</td>
-            <td>{{ report.date }}</td>
+            <td>{{ report.createdAt }}</td>
             <td>
-              <button class="download-btn">⬇️</button>
+              <a class="download-btn" :href="report.url">⬇️</a>
               <button class="delete-btn" @click="handleDeleteReport(report.id)">
                 🗑️
               </button>
@@ -71,27 +77,23 @@
       <div class="modal-content">
         <div class="modal-header">
           <h1 class="modal-title fs-5" id="ModalReports">Informe o Período:</h1>
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          ></button>
         </div>
         <div class="modal-body">
           <div class="date-inputs">
-            <input
-              type="text"
-              placeholder="DD/MM/AAAA"
+            <div class="input-with-label">
+              <label for="startDate">Início</label>
+              <input
+              type="date"
               v-model="exportData.startDate"
-              @input="formatAndValidateDate('startDate')"
-            />
-            <input
-              type="text"
-              placeholder="DD/MM/AAAA"
-              v-model="exportData.endDate"
-              @input="formatAndValidateDate('endDate')"
-            />
+              />
+            </div>
+            <div class="input-with-label">
+              <label for="startDate">Fim</label>
+              <input
+                type="date"
+                v-model="exportData.endDate"
+              />
+            </div>
             </div>
           </div>
           <div class="modal-footer">
@@ -109,7 +111,6 @@
         </div>
       </div>
     </div>
-  </div>
 </template>
 
 <script>
@@ -123,101 +124,53 @@ export default {
       exportData: {
         startDate: "",
         endDate: "",
-        formattedStartDate: "",
-        formattedEndDate: ""
-      }
+      },
+      submitted: false,
+      deleted: false,
     };
   },
-  watch: {
-    "exportData.startDate"(value) {
-      this.exportData.formattedStartDate = this.formatDate(value);
-    },
-    "exportData.endDate"(value) {
-      this.exportData.formattedEndDate = this.formatDate(value);
-    }
-  },
   methods: {
-    formatAndValidateDate(field) {
-      let value = this.exportData[field].replace(/\D/g, "");
-
-      if (value.length <= 2) {
-        value = value.replace(/^(\d{0,2})/, "$1");
-      } else if (value.length <= 4) {
-        value = value.replace(/^(\d{2})(\d{0,2})/, "$1/$2");
-      } else if (value.length <= 8) {
-        value = value.replace(/^(\d{2})(\d{2})(\d{0,4})/, "$1/$2/$3");
-      }
-
-      this.exportData[field] = value;
-    },
-    formatDate(value) {
-      const regex = /^(\d{2})\/(\d{2})\/(\d{4})$/;
-      const match = value.match(regex);
-
-      if (match) {
-        const [, dia, mes, ano] = match;
-        return `${ano}-${mes}-${dia}`;
-      }
-      return value;
-    }
-  },
-  methods: {
-    fetchReports(startDate = null, endDate = null) {
-      if (startDate && endDate) {
-        ReportDataService.getSalesReport(startDate, endDate)
-          .then((res) => {
-            this.reports = res.data;
-          })
-          .catch((err) => {
-            console.log("Erro ao carregar relatórios:", err);
-          });
-      } else {
-        ReportDataService.getAllReports()
+    fetchReports() {
+      ReportDataService.getAllReports()
           .then((res) => {
             this.reports = res.data;
           })
           .catch((err) => {
             console.log("Erro ao carregar todos os relatórios:", err);
           });
-      }
     },
     handleDeleteReport(reportId) {
       ReportDataService.deleteSalesReport(reportId)
         .then(() => {
-          alert("Relatório deletado com sucesso.");
           this.fetchReports();
+          this.delete();
         })
         .catch((error) => {
           console.log("Erro ao deletar relatório:", error);
           alert("Erro ao deletar o relatório.");
         });
     },
-
     validateData() {
       if (!this.exportData.startDate || !this.exportData.endDate) {
         alert("Por favor, preencha ambos os campos de data.");
         return;
       }
-      this.saveExportData(this.exportData);
+      if (this.exportData.startDate > this.exportData.endDate) {
+        alert("A data inicial deve ser menor ou igual a data final.");
+        return;
+      }
+
+      this.saveExportData();
     },
-    saveExportData(data) {
-      ReportDataService.exportSales(data)
-        .then((res) => {
-          console.log("Dados exportados com sucesso:", res.data);
+    saveExportData() {
+      ReportDataService.exportSales(this.exportData.startDate, this.exportData.endDate)
+        .then(() => {
           this.fetchReports();
           this.closeModal();
+          this.submit();
         })
         .catch((err) => {
           console.log("Erro ao exportar dados:", err);
-        });
-    },
-    deleteReport(reportId) {
-      ReportDataService.deleteSalesReport({ id: reportId })
-        .then(() => {
-          this.fetchReports();
-        })
-        .catch((err) => {
-          console.log("Erro ao deletar relatório:", err);
         });
     },
     closeModal() {
@@ -225,6 +178,20 @@ export default {
       const modalInstance = bootstrap.Modal.getInstance(modal);
       modalInstance.hide();
     },
+    submit() {
+      this.submitted = true;
+
+      setTimeout(() => {
+        this.submitted = false
+      }, 3000)
+    },
+    delete() {
+      this.deleted = true;
+
+      setTimeout(() => {
+        this.deleted = false
+      }, 3000)
+    }
   },
   mounted() {
     this.fetchReports();
@@ -234,6 +201,10 @@ export default {
 
 
 <style scoped>
+.alert {
+  margin-top: 2rem;
+}
+
 .date-inputs {
   display: flex;
   justify-content: center;
@@ -395,6 +366,11 @@ table td {
   background-color: #ffffff;
 }
 
+.input-with-label {
+  display: flex;
+  flex-direction: column;
+}
+
 .modal-footer {
   display: flex;
   justify-content: center;
@@ -432,5 +408,4 @@ table td {
   background-color: #0056b3;
   transform: scale(1.05);
 }
-/* ESTILO MODAL*/
 </style>
