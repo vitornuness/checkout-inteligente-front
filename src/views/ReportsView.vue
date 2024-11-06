@@ -19,7 +19,6 @@
               <a class="dropdown-item" href="#">Relatório de Produtos</a>
             </li>
             <li>
-              <!-- Button trigger modal -->
               <button
                 type="button"
                 class="btn"
@@ -45,89 +44,161 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>1</td>
-            <td>11102024products.csv</td>
-            <td>Produtos</td>
-            <td>11/10/2024</td>
+          <tr v-for="report in reports" :key="report.id">
+            <td>{{ report.id }}</td>
+            <td>{{ report.fileName }}</td>
+            <td>{{ report.reference }}</td>
+            <td>{{ report.date }}</td>
             <td>
               <button class="download-btn">⬇️</button>
-              <button class="delete-btn">🗑️</button>
-            </td>
-          </tr>
-          <tr>
-            <td>2</td>
-            <td>11102024sales14012024.csv</td>
-            <td>Vendas</td>
-            <td>11/10/2024</td>
-            <td>
-              <button class="download-btn">⬇️</button>
-              <button class="delete-btn">🗑️</button>
+              <button class="delete-btn" @click="handleDeleteReport(report.id)">
+                🗑️
+              </button>
             </td>
           </tr>
         </tbody>
       </table>
     </div>
-  </div>
-  <!--CORPO DO MODAL-->
-  <div
-    class="modal"
-    id="ModalReports"
-    tabindex="-1"
-    aria-labelledby="ModalReports"
-    aria-hidden="true"
-  >
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title fs-5" id="ModalReports">Informe o Período:</h1>
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          ></button>
-        </div>
-        <div class="modal-body">
-          <div class="date-inputs">
-            <input
-              type="text"
-              placeholder="00/00/0000"
-              v-model="exportData.startDate"
-            />
-            <input
-              type="text"
-              placeholder="00/00/0000"
-              v-model="exportData.endDate"
-            />
+
+    <!-- Modal para Relatório de Vendas -->
+    <div
+      class="modal"
+      id="ModalReports"
+      tabindex="-1"
+      aria-labelledby="ModalReports"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="ModalReports">
+              Informe o Período:
+            </h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
           </div>
-        </div>
-        <div class="modal-footer">
-          <button
-            type="button"
-            class="btn btn-secondary"
-            data-bs-dismiss="modal"
-          >
-            Cancelar
-          </button>
-          <button type="button" class="btn btn-primary">Salvar</button>
+          <div class="modal-body">
+            <div class="date-inputs">
+              <label for="startDate" class="form-label">Data Inicial</label>
+              <input
+                type="text"
+                placeholder="00/00/0000"
+                v-model="exportData.startDate"
+                required="required"
+              />
+              <label for="endDate" class="form-label">Data Final</label>
+              <input
+                type="text"
+                placeholder="00/00/0000"
+                v-model="exportData.endDate"
+                required
+              />
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancelar
+            </button>
+            <button type="button" class="btn btn-primary" @click="validateData">
+              Salvar
+            </button>
+          </div>
         </div>
       </div>
     </div>
   </div>
-  <!--FIM DO MODAL-->
 </template>
 
 <script>
+import ReportDataService from "@/services/ReportDataService";
+
 export default {
-  name: "Exportations",
+  name: "export-period",
   data() {
     return {
+      reports: [],
       exportData: {
-        startDate: " ",
-        endDate: " ",
+        startDate: "",
+        endDate: "",
       },
+      errors: [],
     };
+  },
+  methods: {
+    fetchReports(startDate = null, endDate = null) {
+      if (startDate && endDate) {
+        ReportDataService.getSalesReport(startDate, endDate)
+          .then((res) => {
+            this.reports = res.data;
+          })
+          .catch((err) => {
+            console.log("Erro ao carregar relatórios:", err);
+          });
+      } else {
+        ReportDataService.getAllReports()
+          .then((res) => {
+            this.reports = res.data;
+          })
+          .catch((err) => {
+            console.log("Erro ao carregar todos os relatórios:", err);
+          });
+      }
+    },
+    handleDeleteReport(reportId) {
+      ReportDataService.deleteSalesReport(reportId)
+        .then(() => {
+          alert("Relatório deletado com sucesso.");
+          this.fetchReports();
+        })
+        .catch((error) => {
+          console.log("Erro ao deletar relatório:", error);
+          alert("Erro ao deletar o relatório.");
+        });
+    },
+
+    validateData() {
+      if (!this.exportData.startDate || !this.exportData.endDate) {
+        alert("Por favor, preencha ambos os campos de data.");
+        return;
+      }
+      this.saveExportData(this.exportData);
+    },
+    saveExportData(data) {
+      ReportDataService.exportSales(data)
+        .then((res) => {
+          console.log("Dados exportados com sucesso:", res.data);
+          this.fetchReports();
+          this.closeModal();
+        })
+        .catch((err) => {
+          console.log("Erro ao exportar dados:", err);
+        });
+    },
+    deleteReport(reportId) {
+      ReportDataService.deleteSalesReport({ id: reportId })
+        .then(() => {
+          this.fetchReports();
+        })
+        .catch((err) => {
+          console.log("Erro ao deletar relatório:", err);
+        });
+    },
+    closeModal() {
+      const modal = document.getElementById("ModalReports");
+      const modalInstance = bootstrap.Modal.getInstance(modal);
+      modalInstance.hide();
+    },
+  },
+  mounted() {
+    this.fetchReports();
   },
 };
 </script>
