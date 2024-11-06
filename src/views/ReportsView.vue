@@ -92,13 +92,15 @@
           <div class="date-inputs">
             <input
               type="text"
-              placeholder="00/00/0000"
+              placeholder="AAAA-MM-DD"
               v-model="exportData.startDate"
+              @input="formatDate"
             />
             <input
               type="text"
-              placeholder="00/00/0000"
+              placeholder="AAAA-MM-DD"
               v-model="exportData.endDate"
+              @input="formatDate"
             />
           </div>
         </div>
@@ -124,12 +126,25 @@ export default {
   data() {
     return {
       exportData: {
-        startDate: " ",
-        endDate: " ",
+        startDate: "",
+        endDate: "",
       },
     };
   },
+  methods: {
+    formatDate(event) {
+      let date = event.target.value.replace(/[^0-9]/g, "");
+      if (date.length >= 8) {
+        this[event.target.getAttribute("v-model")] = `${date.slice(0, 4)}-${date.slice(4, 6)}-${date.slice(6, 8)}`;
+      }
+    },
+    saveData() {
+      console.log("Data de início:", this.exportData.startDate);
+      console.log("Data de fim:", this.exportData.endDate);
+    },
+  },
 };
+
 </script>
 
 <style scoped>
