@@ -59,44 +59,39 @@
         </tbody>
       </table>
     </div>
-
-    <!-- Modal para Relatório de Vendas -->
-    <div
-      class="modal"
-      id="ModalReports"
-      tabindex="-1"
-      aria-labelledby="ModalReports"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h1 class="modal-title fs-5" id="ModalReports">
-              Informe o Período:
-            </h1>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
-          </div>
-          <div class="modal-body">
-            <div class="date-inputs">
-              <label for="startDate" class="form-label">Data Inicial</label>
-              <input
-                type="text"
-                placeholder="00/00/0000"
-                v-model="exportData.startDate"
-                required="required"
-              />
-              <label for="endDate" class="form-label">Data Final</label>
-              <input
-                type="text"
-                placeholder="00/00/0000"
-                v-model="exportData.endDate"
-                required
-              />
+  </div>
+  <div
+    class="modal"
+    id="ModalReports"
+    tabindex="-1"
+    aria-labelledby="ModalReports"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="ModalReports">Informe o Período:</h1>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <div class="date-inputs">
+            <input
+              type="text"
+              placeholder="DD/MM/AAAA"
+              v-model="exportData.startDate"
+              @input="formatAndValidateDate('startDate')"
+            />
+            <input
+              type="text"
+              placeholder="DD/MM/AAAA"
+              v-model="exportData.endDate"
+              @input="formatAndValidateDate('endDate')"
+            />
             </div>
           </div>
           <div class="modal-footer">
@@ -128,9 +123,43 @@ export default {
       exportData: {
         startDate: "",
         endDate: "",
-      },
-      errors: [],
+        formattedStartDate: "",
+        formattedEndDate: ""
+      }
     };
+  },
+  watch: {
+    "exportData.startDate"(value) {
+      this.exportData.formattedStartDate = this.formatDate(value);
+    },
+    "exportData.endDate"(value) {
+      this.exportData.formattedEndDate = this.formatDate(value);
+    }
+  },
+  methods: {
+    formatAndValidateDate(field) {
+      let value = this.exportData[field].replace(/\D/g, "");
+
+      if (value.length <= 2) {
+        value = value.replace(/^(\d{0,2})/, "$1");
+      } else if (value.length <= 4) {
+        value = value.replace(/^(\d{2})(\d{0,2})/, "$1/$2");
+      } else if (value.length <= 8) {
+        value = value.replace(/^(\d{2})(\d{2})(\d{0,4})/, "$1/$2/$3");
+      }
+
+      this.exportData[field] = value;
+    },
+    formatDate(value) {
+      const regex = /^(\d{2})\/(\d{2})\/(\d{4})$/;
+      const match = value.match(regex);
+
+      if (match) {
+        const [, dia, mes, ano] = match;
+        return `${ano}-${mes}-${dia}`;
+      }
+      return value;
+    }
   },
   methods: {
     fetchReports(startDate = null, endDate = null) {
@@ -202,6 +231,7 @@ export default {
   },
 };
 </script>
+
 
 <style scoped>
 .date-inputs {
