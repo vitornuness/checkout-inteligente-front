@@ -32,8 +32,9 @@ export default {
         products: Array,
     },
     methods: {
-        addToCart(id) {
-            OrderDataService.addProduct(useCartStore().cart.id, id);
+        async addToCart(id) {
+            var cart = await useCartStore().handleCart()
+            OrderDataService.addProduct(cart.id, id);
         },
     },
 };
