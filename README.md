@@ -2,9 +2,9 @@
 
 Esta aplicação é destinada a simular um e-commerce, fazendo o consumo de uma API.
 
--   **[Instalação](#instalação)**
--   **[Aplicação](#aplicação)**
--   **[Colaboradores](#colaboradores)**
+- **[Instalação](#instalação)**
+- **[Aplicação](#aplicação)**
+- **[Colaboradores](#colaboradores)**
 
 ## Instalação
 
@@ -165,6 +165,14 @@ Nas telas de adicionar e editar, podem ser selecionados os produtos que fazem pa
 **Editar ou deletar uma campanha:**
 
 ![Editar uma campanha](./docs/images/campanhas-3.png)
+
+---
+
+### Exportações
+
+Está página lista todos os relatórios de vendas. Também, sendo possível solicitar novos relatórios pelo botão "Adicionar" e deletar ou baixar pelos botões em cada linha.
+
+![Lista de exportações](./docs/images/reports.png)
 
 ---
 
