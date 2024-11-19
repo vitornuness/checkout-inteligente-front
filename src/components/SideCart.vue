@@ -187,9 +187,10 @@ export default {
           this.loading = false;
         });
     },
-    add(productId) {
+    async add(productId) {
       this.loading = true;
-      OrderDataService.addProduct(useCartStore().cart.id, productId)
+      var cart = await useCartStore().handleCart();
+      OrderDataService.addProduct(cart.id, productId)
         .then(() => {
           this.getCart();
         })
@@ -200,9 +201,10 @@ export default {
           this.loading = false;
         });
     },
-    remove(productId) {
+    async remove(productId) {
       this.loading = true;
-      OrderDataService.removeProduct(useCartStore().cart.id, productId)
+      var cart = await useCartStore().handleCart();
+      OrderDataService.removeProduct(cart.id, productId)
         .then(() => {
           this.getCart();
         })
@@ -213,9 +215,10 @@ export default {
           this.loading = false;
         });
     },
-    finish() {
+    async finish() {
       this.loading = true;
-      OrderDataService.completeOrder(useCartStore().cart.id)
+      var cart = await useCartStore().handleCart();
+      OrderDataService.completeOrder(cart.id)
         .then(() => {
           this.cart = null;
           this.complete = true;

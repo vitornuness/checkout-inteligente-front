@@ -2,6 +2,7 @@
 import { RouterLink } from "vue-router";
 import { useUserStore } from "../store/user";
 import SideCart from "./SideCart.vue";
+import { useTokenStore } from "@/store/token";
 </script>
 
 <template>
@@ -89,6 +90,7 @@ export default {
   methods: {
     logout() {
       useUserStore().setUser(null);
+      useTokenStore().revokeToken();
       location.reload();
     },
   },

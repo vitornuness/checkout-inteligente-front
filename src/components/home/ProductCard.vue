@@ -41,8 +41,9 @@ export default {
         product: Object,
     },
     methods: {
-        addToCart() {
-            OrderDataService.addProduct(useCartStore().cart.id, this.product.id)
+        async addToCart() {
+            var cart = await useCartStore().handleCart()
+            OrderDataService.addProduct(cart.id, this.product.id)
                 .then(() => this.$emit("productAdded"))
                 .catch((err) => console.log(err));
         },

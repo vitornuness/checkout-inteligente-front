@@ -9,9 +9,6 @@ export const useUserStore = defineStore("user", {
     getters: {
         getUser: computed((state) => state),
     },
-
-
-
     actions: {
         setUser(user) {
             this.user = user;
