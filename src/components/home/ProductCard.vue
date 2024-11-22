@@ -4,8 +4,13 @@ import { useUserStore } from "@/store/user";
 
 <template>
     <div class="col-md-6 col-sm-12 col-lg-3 mb-4">
-        <div class="card bg-white rounded" style="width: 10vw">
-            <div>
+
+        <div class="product-alert" :hidden="!showAlert">
+            <i class="bi bi-bag-check-fill"></i>
+            Produto adicionado ao carrinho!
+        </div>
+        <div class="card bg-white rounded" style="width: 16vw">
+            <div class="img-card">
                 <img
                     :src="product.imageUrl"
                     :alt="product.name"
@@ -38,20 +43,34 @@ import OrderDataService from "../../services/OrderDataService";
 export default {
     name: "ProductCard",
     props: {
-        product: Object,
+        product: Object
+    },
+    data () {
+        return {
+            showAlert: false,
+        }
     },
     methods: {
         async addToCart() {
             var cart = await useCartStore().handleCart()
             OrderDataService.addProduct(cart.id, this.product.id)
-                .then(() => this.$emit("productAdded"))
+                .then(() => {
+                    this.$emit("productAdded");
+                    this.displayAlert();
+                })
                 .catch((err) => console.log(err));
         },
+        displayAlert() {
+            this.showAlert = true;
+            setTimeout(() => {
+                this.showAlert = false;
+            }, 3000);
+        }
     },
 };
 </script>
 
-<style>
+<style scoped>
 .card {
     border: none;
     border-radius: 4px !important;
@@ -60,6 +79,10 @@ export default {
 
 .card-img-top {
     width: 8rem;
+}
+
+.img-card {
+    text-align: center;
 }
 
 .btn-primary {
@@ -74,5 +97,20 @@ export default {
 
 .btn-primary:hover {
     background-color: #0056b3;
+}
+
+.product-alert {
+    position: fixed !important;
+    text-align: end;
+    top: 2rem;
+    right: 2rem;
+    max-width: 60vw;
+    padding: 0.4rem 2rem;
+    border-radius: 4px;
+    z-index: 99;
+    background-color: #f90;
+    color: white;
+    font-weight: bold;
+    font-size: 14pt;
 }
 </style>

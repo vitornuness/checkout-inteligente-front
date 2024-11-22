@@ -4,21 +4,21 @@
         <hr />
         <div class="row">
             <div class="col-xxl-8">
-                <ProductCommon :products="category.products" />
+                <ProductList :products="category.products" />
             </div>
         </div>
     </div>
 </template>
 
 <script>
-import ProductCommon from "@/components/home/ProductCommon.vue";
+import ProductList from "@/components/home/ProductList.vue";
 import CategoryDataService from "@/services/CategoryDataService";
 import { ref } from "vue";
 
 export default {
     name: "CategoryProducts",
     components: {
-        ProductCommon,
+        ProductList,
     },
     data() {
         return {
