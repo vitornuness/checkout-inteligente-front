@@ -1,7 +1,7 @@
 <script setup></script>
 
 <template>
-    <div class="container">
+    <div class="container-fluid">
         <div class="row">
             <ProductCard
                 v-for="product in products"
