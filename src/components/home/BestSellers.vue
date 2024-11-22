@@ -62,11 +62,6 @@ export default {
     transition: transform 0.3s ease;
 }
 
-.produto:hover {
-    transform: scale(1.05);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
 .produto img:hover {
     transform: scale(1.1);
 }
