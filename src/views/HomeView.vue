@@ -4,7 +4,9 @@
     <Banner :campaigns="campaigns" />
     <BestSellers :products="bestSellers" />
     <Categories :categories="categories" />
-    <ProductCommon :products="products" />
+    <div class="product-list">
+        <ProductList :products="products" />
+    </div>
 </template>
 
 <script>
@@ -14,7 +16,6 @@ import ProductList from "../components/home/ProductList.vue";
 import ProductDataService from "../services/ProductDataService";
 import CampaignDataService from "../services/CampaignDataService";
 import Categories from "../components/home/Categories.vue";
-import ProductCommon from "@/components/home/ProductCommon.vue";
 import CategoryDataService from "@/services/CategoryDataService";
 
 export default {
@@ -24,7 +25,7 @@ export default {
         BestSellers,
         ProductList,
         Categories,
-        ProductCommon,
+        ProductList,
     },
     data() {
         return {
@@ -95,5 +96,9 @@ export default {
 
 .bi {
     color: white;
+}
+
+.product-list {
+    width: 100%;
 }
 </style>
