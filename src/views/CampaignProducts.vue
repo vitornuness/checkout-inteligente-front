@@ -5,11 +5,7 @@
             :alt="campaign.title"
             class="d-block w-100"
         />
-        <div class="row">
-            <div class="col-xxl-8">
-                <ProductCommon :products="campaign.products" />
-            </div>
-        </div>
+        <ProductList :products="campaign.products" />
     </div>
 </template>
 
@@ -18,11 +14,12 @@ import ProductCommon from "@/components/home/ProductCommon.vue";
 import CampaignDataService from "../services/CampaignDataService";
 import router from "@/router";
 import { ref } from "vue";
+import ProductList from "@/components/home/ProductList.vue";
 
 export default {
     name: "CampaignProducts",
     components: {
-        ProductCommon,
+        ProductList,
     },
     data() {
         return {

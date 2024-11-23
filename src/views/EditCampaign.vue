@@ -60,10 +60,28 @@
                 </div>
             </div>
 
+            <div class="row my-3">
+                <div class="col">
+                    <label for="searchProducts" class="form-label"
+                        >Pesquisar Produtos</label
+                    >
+                    <div class="input-group">
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="searchProducts"
+                            placeholder="Digite o nome do produto"
+                            v-model="searchQuery"
+                            @keyup="searchProducts" 
+                        />
+                    </div>
+                </div>
+            </div>
+
             <div class="row">
                 <div class="col">
                     <ProductSelector
-                        :products="products"
+                        :products="filteredProducts"
                         :selectedProductIds="selectedProductIds"
                         @update:products="updateSelectedProducts"
                     />
@@ -111,7 +129,9 @@ export default {
             file: null,
             fileUrl: null,
             products: [],
+            filteredProducts: [],
             selectedProductIds: new Set(),
+            searchQuery: "",
         };
     },
     methods: {
@@ -180,7 +200,14 @@ export default {
         getProducts() {
             ProductDataService.getAll().then((res) => {
                 this.products = res.data;
+                this.filteredProducts = res.data;
             });
+        },
+        searchProducts() {
+            const query = this.searchQuery.trim().toLowerCase();
+            this.filteredProducts = this.products.filter((product) =>
+                product.name.toLowerCase().includes(query)
+            );
         },
     },
     mounted() {
