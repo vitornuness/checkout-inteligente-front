@@ -2,10 +2,8 @@
     <div v-if="category" class="container-fluid">
         <h1 class="my-4">{{ category.name }}</h1>
         <hr />
-        <div class="row">
-            <div class="col-xxl-8">
-                <ProductList :products="category.products" />
-            </div>
+        <div class="col-xxl-8">
+            <ProductList :products="category.products" />
         </div>
     </div>
 </template>
