@@ -79,14 +79,8 @@
                                 id="searchProducts"
                                 placeholder="Digite o nome do produto"
                                 v-model="searchQuery"
-                                @keydown.enter="searchProducts"
+                                @keyup="searchProducts"
                             />
-                            <button
-                                class="btn btn-outline-secondary"
-                                @click="searchProducts"
-                            >
-                                <i class="bi bi-search"></i> Pesquisar
-                            </button>
                         </div>
                     </div>
                 </div>
