@@ -103,6 +103,7 @@
               v-if="!loading"
             >
               <button
+                id="btnFinalizar"
                 v-if="cart?.items.length > 0"
                 class="btn btn-success btn-cart"
                 @click="finish()"
